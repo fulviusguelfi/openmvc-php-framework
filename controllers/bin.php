@@ -22,7 +22,7 @@ class Bin extends Controller {
         } else {
             echo "<center>";
             echo "<h2>Erro ao ciar CRUD da tabela {$table_name}! Verifique a permisa&atilde;o da pasta do OpenMvc.</h2>";
-            echo "<h4>De a permisa&atilde;o 0777 reucsivamente para a pasta {$_SERVER[DOCUMENT_ROOT]}</h4>";
+            echo "<h4>De a permisa&atilde;o 0777 reucsivamente para a pasta {$_SERVER[DOCUMENT_ROOT]} e tente novamente.</h4>";
             echo "<p>EX: sudo chmod -Rf 0777 {$_SERVER[DOCUMENT_ROOT]}</p>";
             echo "<a href='/'><button>Voltar ao In&iacute;cio</button></a>";
             echo "</center>";
