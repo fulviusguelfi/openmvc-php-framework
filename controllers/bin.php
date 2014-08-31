@@ -110,7 +110,7 @@ class Bin extends Controller {
 
                     $OBJECTS .= 'if (!empty($_FILES["' . $structure->Field . '"]["tmp_name"])){' . $quebra;
                     $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$_FILES["' . $structure->Field . '"]["type"].";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
-                    $OBJECTS .= '}' . $quebra;
+                    $OBJECTS .= '            }' . $quebra;
                 }
             }
             $php = str_replace("/* LOAD_MODELS */", $LOAD_MODELS, $php);
