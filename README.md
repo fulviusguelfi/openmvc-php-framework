@@ -413,7 +413,6 @@ seguido pela lista de Tabelas encontradas no Mysql conectado.
 com o seguinte nome 'id_$NOME_DA_TABELA_A_RELACIONAR' ou '$NOME_DA_TABELA_A_RELACIONAR_id', 
 neste caso o crud irá gerar um select com os ids dos objetos da tabela relacionada
 
-- 2: Assim que um crud for gerado, caso deseje editar algo deve-se dar permissões recursivamente para a raiz do OpenMvc pois o mesmo gera os arquivos somente com permissão de leitura.
 __________________________________________________________________________________________________
 
 
