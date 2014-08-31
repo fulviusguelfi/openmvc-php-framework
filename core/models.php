@@ -110,6 +110,7 @@ class Model extends Loader {
     }
 
     public function download($params) {
+        $tableName = $params[0];
         $fieldFile = $params[2];
         $fileId = $params[3];
         $sql = "SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}";
@@ -117,7 +118,7 @@ class Model extends Loader {
         $indexHeader = strpos($obj->$fieldFile, ';');
         $header = substr($obj->$fieldFile, 0, $indexHeader);
         $mimeType = str_replace('data:', '', $header);
-        header('Content-Disposition: filename="' . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+        header('Content-Disposition: filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
         header('Content-type: ' . $mimeType);
         echo $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
     }
