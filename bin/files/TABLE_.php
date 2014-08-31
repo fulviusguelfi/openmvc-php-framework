@@ -22,6 +22,10 @@ class CLASS_NAME_TABLE_ extends Controller {
         $this->redirect("/TABLE_/listar");
     }
 
+    public function adicionar($param) {
+        $this->editar($param);
+    }
+
     public function editar($param) {
         $id = (!isset($_REQUEST[id]) ? @$param[2] : @$_REQUEST[id]);
         /* LIST_RELATIONS */
