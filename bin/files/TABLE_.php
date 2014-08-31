@@ -11,6 +11,8 @@ class CLASS_NAME_TABLE_ extends Controller {
         $this->listar();
     }
 
+    /* FUNCTIONS */
+
     public function listar($page = null, $max_for_page = null) {
         $list = $this->TABLE_Model->list_($page, $max_for_page);
         $this->view("TABLE_/list", array("list" => $list));

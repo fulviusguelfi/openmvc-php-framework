@@ -13,7 +13,7 @@ class CLASS_NAME_TABLE_Model extends Model {
     }
 
     public function list_($page = null, $max_for_page = null) {
-        return $this->listar($page, $max_for_page);
+        return /* RETURN_LISTAR */;
     }
 
     public function get_($id) {

@@ -64,10 +64,27 @@ class Bin extends Controller {
 
     public function makeModel($table_name) {
         if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php")) {
+            $RETURN_LISTAR = '$this->listar($page, $max_for_page)';
+            $HAVE_FILEFIELD = '';
+            $EXECUTE_FILEFIELD = FALSE;
+            $table_structure = $this->binModel->getTableStructure($table_name);
+            foreach ($table_structure as $keyStructure => $structure) {
+                $inputType = $this->binModel->formType($structure->Type);
+                if ($inputType != "file") {
+                    $HAVE_FILEFIELD .= $structure->Field . ',';
+                } else {
+                    $EXECUTE_FILEFIELD = TRUE;
+                }
+            }
+            if ($EXECUTE_FILEFIELD) {
+                $RETURN_LISTAR = '$this->listar($page, $max_for_page, null, "' . substr($HAVE_FILEFIELD, 0, -1) . '")';
+            }
+
             $fp = fopen($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php", "wa");
             $php = file_get_contents($_SERVER[DOCUMENT_ROOT] . "/bin/files/TABLE_Model.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
+            $php = str_replace("/* RETURN_LISTAR */", $RETURN_LISTAR, $php);
             fwrite($fp, $php);
             fclose($fp);
         }
@@ -90,6 +107,8 @@ class Bin extends Controller {
             $VAR_RELATIONS = "";
             $CONDITIONS = "";
             $OBJECTS = "";
+            $FUNCTIONS = "";
+            $HAVEFILEFIELD = FALSE;
 
             $DB_KEY = "Tables_in_" . DB_NAME;
             $tables = $this->binModel->getTables();
@@ -117,17 +136,24 @@ class Bin extends Controller {
                     $CONDITIONS .= '}' . $quebra;
                 }
                 if ($inputType == "file") {
+                    $HAVEFILEFIELD = TRUE;
 
                     $OBJECTS .= 'if (!empty($_FILES["' . $structure->Field . '"]["tmp_name"])){' . $quebra;
                     $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$_FILES["' . $structure->Field . '"]["type"].";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
                     $OBJECTS .= '            }' . $quebra;
                 }
             }
+            IF ($HAVEFILEFIELD) {
+                $FUNCTIONS .='public function download($params){' . $quebra;
+                $FUNCTIONS .='        $this->' . $table_name . 'Model->download($params);' . $quebra;
+                $FUNCTIONS .='     }' . $quebra;
+            }
             $php = str_replace("/* LOAD_MODELS */", $LOAD_MODELS, $php);
             $php = str_replace("/* LIST_RELATIONS */", $LIST_RELATIONS, $php);
             $php = str_replace("/* VAR_RELATIONS */", $VAR_RELATIONS, $php);
             $php = str_replace("/* CONDITIONS */", $CONDITIONS, $php);
             $php = str_replace("/* OBJECTS */", $OBJECTS, $php);
+            $php = str_replace("/* FUNCTIONS */", $FUNCTIONS, $php);
 
             fwrite($fp, $php);
             fclose($fp);
@@ -140,6 +166,7 @@ class Bin extends Controller {
         } else {
             $quebra = "\n";
         }
+        $idStyle = 'id';
         $fp = fopen($view_dir . '/list.php', 'wa');
         $php = "<table>" . $quebra
                 . "<thead>" . $quebra
@@ -147,6 +174,8 @@ class Bin extends Controller {
         foreach ($table_structure as $key => $obj) {
             if ($obj->Field != "id" && $obj->Field != "ID") {
                 $php .= "<th>" . ucwords($obj->Field) . "</th>" . $quebra;
+            } else {
+                $idStyle = $obj->Field;
             }
         }
         $php .= "<th>A&ccedil;&otilde;es</th>" . $quebra;
@@ -157,7 +186,11 @@ class Bin extends Controller {
                 . '<tr>' . $quebra;
         foreach ($table_structure as $key => $obj) {
             if ($obj->Field != "id" && $obj->Field != "ID") {
-                $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
+                $inputType = $this->binModel->formType($obj->Type);
+                if ($inputType != 'file')
+                    $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
+                else
+                    $php .= '<td><a href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>">Baixar</a></td>' . $quebra;
             } else {
                 $fieldId = $obj->Field;
             }
