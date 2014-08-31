@@ -9,14 +9,24 @@ class Bin extends Controller {
     public function crud($params) {
         $table_name = $params[2];
         $this->gerarCrud($table_name);
-        echo "<center>";
-        echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2>";
-        echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
-        echo "<a href='/'><button>Voltar ao In&iacute;cio</button></a>";
-        echo "</center>";
-        echo "<pre>";
-        print_r($table_structure);
-        echo "</pre>";
+        if (file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php")) {
+            echo "<center>";
+            echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2>";
+            echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
+            echo "<a href='/'><button>Voltar ao In&iacute;cio</button></a>";
+            echo "</center>";
+            echo "<pre>";
+            $table_structure = $this->binModel->getTableStructure($table_name);
+            print_r($table_structure);
+            echo "</pre>";
+        } else {
+            echo "<center>";
+            echo "<h2>Erro ao ciar CRUD da tabela {$table_name}! Verifique a permisa&atilde;o da pasta do OpenMvc.</h2>";
+            echo "<h4>De a permisa&atilde;o 0777 reucsivamente para a pasta {$_SERVER[DOCUMENT_ROOT]}</h4>";
+            echo "<p>EX: sudo chmod -Rf 0777 {$_SERVER[DOCUMENT_ROOT]}</p>";
+            echo "<a href='/'><button>Voltar ao In&iacute;cio</button></a>";
+            echo "</center>";
+        }
     }
 
     public function gerarCrud($table_name) {
