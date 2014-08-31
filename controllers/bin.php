@@ -198,6 +198,7 @@ class Bin extends Controller {
                                 $idTable = $value->Field;
                             }
                         }
+                        //CREATE SELECT RELATION TABLES
                         $php .='<div>' . $quebra;
                         $php .='<select  name="' . $obj->Field . '" id="' . $obj->Field . '_ID">' . $quebra;
                         $php .='<?php foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '): ?>' . $quebra;
@@ -211,10 +212,13 @@ class Bin extends Controller {
 //                        echo $obj->Type." <br/>";
                         $inputType = $this->binModel->formType($obj->Type);
                         if ($inputType == "checkbox") {
+                            //CREATE CHECKBOX
                             $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> ><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
                         } else if ($inputType != "textarea") {
-                            $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="<?php echo $obj->' . $obj->Field . ' ?>"><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
+                            //CREATE DEFAULT
+                            $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '"><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
                         } else if ($inputType == "textarea") {
+                            //CREATE TEXTAREA
                             $php .= '<div><textarea id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
                         }
                         $escreveu = 1;
