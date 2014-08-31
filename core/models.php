@@ -168,6 +168,7 @@ class Model extends Loader {
             'doc' => 'application/msword',
             'rtf' => 'application/rtf',
             'xls' => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'ppt' => 'application/vnd.ms-powerpoint',
             // open office
             'odt' => 'application/vnd.oasis.opendocument.text',
