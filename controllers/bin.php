@@ -11,7 +11,7 @@ class Bin extends Controller {
         $this->gerarCrud($table_name);
         echo "<center>";
         echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2>";
-        echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/editar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
+        echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
         echo "<a href='/'><button>Voltar ao In&iacute;cio</button></a>";
         echo "</center>";
         echo "<pre>";
