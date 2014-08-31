@@ -339,13 +339,35 @@ ________________________________________________________________________________
 
     RETORNO:
 
-    (array ou FALSE) $objeto - //* Retorna um array dos objetos encontrados pela Query ou FALSE  */
+    (array ou FALSE) $objeto - //* Retorna um array de objetos com os resultados encontrados pela Query ou FALSE  */
 
 Exemplo:
 
 <code>$query = "SELECT * FROM tabela_exemplo";</code>
 
 <code>$objeto = $this->query($query);</code>
+______________________________________________________________________________________________________________
+  
+  
+  
+
+- 8: Função row() do Model 
+
+    - Esta função serve para escrver uma Query manualmente e retornar apenas uma linha.
+    
+    PARÂMETROS:
+
+    (string)  $query - //* Query a ser executada no Mysql */
+
+    RETORNO:
+
+    (array ou FALSE) $objeto - //* Retorna um objeto encontrados pela Query ou FALSE  */
+
+Exemplo:
+
+<code>$query = "SELECT * FROM tabela_exemplo WHERE id=10";</code>
+
+<code>$objeto = $this->row($query);</code>
 ______________________________________________________________________________________________________________
   
 
