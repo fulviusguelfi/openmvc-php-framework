@@ -22,15 +22,34 @@ class Bin extends Controller {
     public function gerarCrud($table_name) {
         $table_structure = $this->binModel->getTableStructure($table_name);
         $view_dir = $_SERVER[DOCUMENT_ROOT] . "/views/{$table_name}";
+        // CREATE VIEWS DIR
         mkdir($view_dir, 0777, true);
-        if (!file_exists($view_dir . '/list.php'))
+        touch($view_dir);
+        chmod($view_dir, 0777);
+        // CREATE VIEW list.php
+        if (!file_exists($view_dir . '/list.php')) {
             $this->makeViewList($view_dir, $table_structure, $table_name);
-        if (!file_exists($view_dir . '/edit.php'))
+            touch($view_dir . '/list.php');
+            chmod($view_dir . '/list.php', 0777);
+        }
+        // CREATE VIEW edit.php
+        if (!file_exists($view_dir . '/edit.php')) {
             $this->makeViewEdit($view_dir, $table_structure);
-        if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php"))
+            touch($view_dir . '/edit.php');
+            chmod($view_dir . '/edit.php', 0777);
+        }
+        // CREATE CONTROLLER {$table_name}.php
+        if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php")) {
             $this->makeController($table_name);
-        if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php"))
+            touch($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php");
+            chmod($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php", 0777);
+        }
+        // CREATE MODEL {$table_name}.php
+        if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php")) {
             $this->makeModel($table_name);
+            touch($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php");
+            chmod($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php", 0777);
+        }
     }
 
     public function makeModel($table_name) {
@@ -60,6 +79,7 @@ class Bin extends Controller {
             $LIST_RELATIONS = "";
             $VAR_RELATIONS = "";
             $CONDITIONS = "";
+            $OBJECTS = "";
 
             $DB_KEY = "Tables_in_" . DB_NAME;
             $tables = $this->binModel->getTables();
@@ -73,7 +93,7 @@ class Bin extends Controller {
                             ($structure->Field == $table->$DB_KEY . "_ID")
                     ) {
                         $this->makeModel($table->$DB_KEY);
-                        $LOAD_MODELS .='$this->load("models", "' . $table->$DB_KEY . 'Model");' . $quebra;
+                        $LOAD_MODELS .='        $this->load("models", "' . $table->$DB_KEY . 'Model");' . $quebra;
                         $LIST_RELATIONS .= '$' . $table->$DB_KEY . ' = $this->' . $table->$DB_KEY . 'Model->list_();' . $quebra;
                         $VAR_RELATIONS .= ', "' . $table->$DB_KEY . '" => $' . $table->$DB_KEY . '';
                     }
@@ -86,11 +106,17 @@ class Bin extends Controller {
                     $CONDITIONS .= '$_POST[' . $structure->Field . '] = 0;';
                     $CONDITIONS .= '}' . $quebra;
                 }
+                if ($inputType == "file") {
+
+                    $OBJECTS .= 'if (!empty($_FILES["' . $structure->Field . '"]["tmp_name"]))' . $quebra;
+                    $OBJECTS .= '                $obj->' . $structure->Field . ' = file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
+                }
             }
-            $php = str_replace("LOAD_MODELS", $LOAD_MODELS, $php);
-            $php = str_replace("LIST_RELATIONS", $LIST_RELATIONS, $php);
-            $php = str_replace("VAR_RELATIONS", $VAR_RELATIONS, $php);
-            $php = str_replace("CONDITIONS", $CONDITIONS, $php);
+            $php = str_replace("/* LOAD_MODELS */", $LOAD_MODELS, $php);
+            $php = str_replace("/* LIST_RELATIONS */", $LIST_RELATIONS, $php);
+            $php = str_replace("/* VAR_RELATIONS */", $VAR_RELATIONS, $php);
+            $php = str_replace("/* CONDITIONS */", $CONDITIONS, $php);
+            $php = str_replace("/* OBJECTS */", $OBJECTS, $php);
 
             fwrite($fp, $php);
             fclose($fp);
@@ -152,7 +178,7 @@ class Bin extends Controller {
             $mytables[] = $table1->$DB_KEY . "_id";
             $mytables[] = $table1->$DB_KEY . "_ID";
         }
-        $php = "<form method='POST'>" . $quebra;
+        $php = "<form method='POST' enctype='multipart/form-data'>" . $quebra;
 //        print_r($table_structure);
         foreach ($table_structure as $key => $obj) {
             $escreveu = 0;
@@ -182,6 +208,7 @@ class Bin extends Controller {
                         $php .= '</div>' . $quebra;
                         $escreveu = 1;
                     } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
+//                        echo $obj->Type." <br/>";
                         $inputType = $this->binModel->formType($obj->Type);
                         if ($inputType == "checkbox") {
                             $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> ><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;

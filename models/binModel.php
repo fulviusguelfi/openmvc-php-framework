@@ -19,9 +19,12 @@ class BinModel extends Model {
         $types = array(
             "default" => "text", // TIPO DE FORM DEFAULT
             "int" => "number",
+            "tinyint" => "checkbox",
             "varchar" => "text",
             "text" => "textarea",
-            "tinyint" => "checkbox",
+            "blob" => "file",
+            "longblob" => "file",
+            "tinyblob" => "file",
         );
         if (array_key_exists($tipo_db, $types)) {
             return $types[$tipo_db];

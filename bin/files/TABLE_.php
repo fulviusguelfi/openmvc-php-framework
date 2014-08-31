@@ -4,7 +4,7 @@ class CLASS_NAME_TABLE_ extends Controller {
 
     public function init() {
         $this->load("models", "TABLE_Model");
-        LOAD_MODELS
+        /* LOAD_MODELS */
     }
 
     public function index() {
@@ -24,17 +24,16 @@ class CLASS_NAME_TABLE_ extends Controller {
 
     public function editar($param) {
         $id = (!isset($_REQUEST[id]) ? @$param[2] : @$_REQUEST[id]);
-        LIST_RELATIONS
+        /* LIST_RELATIONS */
         if (empty($_POST)) {
             $obj = $this->TABLE_Model->get_($id);
         } else {
-            CONDITIONS
+            /* CONDITIONS */
             $obj = (object) $_POST;
+            /* OBJECTS */
+            $salvo = $this->TABLE_Model->insert_($obj);
         }
-        if (!empty($_POST)) {
-            $salvo = $this->TABLE_Model->insert_($_POST);
-        }
-        $this->view("TABLE_/edit", array("obj" => $obj VAR_RELATIONS));
+        $this->view("TABLE_/edit", array("obj" => $obj /* VAR_RELATIONS */));
     }
 
 }
