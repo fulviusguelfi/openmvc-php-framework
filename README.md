@@ -403,7 +403,9 @@ $data = array('coluna' => 'valor');
 $where = array('coluna' => 'valor');
 
 $retorno = $this->updateWhere($data, $where);
+
     ou ainda
+
 $retorno = $this->updateWhere($data, $where, 'AND', '=', $nome_da_tabela);
 ______________________________________________________________________________________________________________
   
