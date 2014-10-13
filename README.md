@@ -460,4 +460,4 @@ Licença:
 ========
 
 - Copyright (c) 2013 Thiago Valentoni Guelfi - BSWS
-- Open Source - MIT License (MIT)
+- Open Source - Licença Pública Geral GNU

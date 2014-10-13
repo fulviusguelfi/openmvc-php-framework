@@ -1,3 +1,24 @@
+
+<?php
+
+/*
+  Este arquivo é parte do OpenMvc PHP Framework
+
+  OpenMvc PHP Framework é um software livre; você pode redistribuí-lo e/ou
+  modificá-lo dentro dos termos da Licença Pública Geral GNU como
+  publicada pela Fundação do Software Livre (FSF); na versão 2 da
+  Licença, ou (na sua opinião) qualquer versão.
+
+  Este programa é distribuído na esperança de que possa ser  útil,
+  mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+  Licença Pública Geral GNU para maiores detalhes.
+
+  Você deve ter recebido uma cópia da Licença Pública Geral GNU
+  junto com este programa, se não, escreva para a Fundação do Software
+  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+?>
 <?php
 
 class Bin extends Controller {
@@ -168,7 +189,8 @@ class Bin extends Controller {
         }
         $idStyle = 'id';
         $fp = fopen($view_dir . '/list.php', 'wa');
-        $php = "<table>" . $quebra
+        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
+        $php .= "<table>" . $quebra
                 . "<thead>" . $quebra
                 . "<tr>" . $quebra;
         foreach ($table_structure as $key => $obj) {
@@ -222,7 +244,8 @@ class Bin extends Controller {
             $mytables[] = $table1->$DB_KEY . "_id";
             $mytables[] = $table1->$DB_KEY . "_ID";
         }
-        $php = "<form method='POST' enctype='multipart/form-data'>" . $quebra;
+        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
+        $php .= "<form method='POST' enctype='multipart/form-data'>" . $quebra;
 //        print_r($table_structure);
         foreach ($table_structure as $key => $obj) {
             $escreveu = 0;
