@@ -2502,6 +2502,31 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -4381,11 +4406,26 @@ function _wp_mysql_week($column) {
 
 function execute_action($controller, $action, $params = null) {
     require_once("core/functions.php");
-    require_once("controllers/{$controller}.php");
-    $klass = ucfirst($controller);
-    $instance = new $klass($controller, $action);
-    if (empty($params))
-        return $instance->$action();
-    else
-        return $instance->$action($params);
+    if (is_file($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$controller}.php")) {
+        require_once("controllers/{$controller}.php");
+        $klass = ucfirst($controller);
+        $instance = new $klass($controller, $action);
+        if (method_exists($instance, $action)) {
+            if (empty($params))
+                return $instance->$action();
+            else
+                return $instance->$action($params);
+        }else {
+            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>controllers/{$controller}.php</b>!<br> Verifique o controller.");
+        }
+    } else {
+        echo_error("O Arquivo <b>controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.");
+    }
+}
+
+function echo_error($error_message) {
+    echo "<center>";
+    echo "<h2>OpenMVC ERROR::</h2>";
+    echo "<p>{$error_message}</p>";
+    echo "</center>";
 }
