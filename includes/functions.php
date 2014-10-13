@@ -2527,6 +2527,14 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
+
+
+
+
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -4416,16 +4424,25 @@ function execute_action($controller, $action, $params = null) {
             else
                 return $instance->$action($params);
         }else {
-            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>controllers/{$controller}.php</b>!<br> Verifique o controller.");
+            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>controllers/{$controller}.php</b>!<br> Verifique o controller.", 500);
         }
     } else {
-        echo_error("O Arquivo <b>controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.");
+        echo_error("O Arquivo <b>controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.", 404);
     }
 }
 
-function echo_error($error_message) {
+function echo_error($error_message, $num_error = null) {
+    echo "<style>
+        #openmvc-error {
+                        width: 500px;
+                        background: #f5f5f5;
+                        padding: 10px;
+                        box-shadow: 1px 1px 3px #333;
+                        }
+         </style>";
     echo "<center>";
     echo "<h2>OpenMVC ERROR::</h2>";
-    echo "<p>{$error_message}</p>";
+    echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
+    echo "<div id='openmvc-error'>{$error_message}</div>";
     echo "</center>";
 }
