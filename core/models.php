@@ -90,13 +90,13 @@ class Model extends Loader {
     /**
      * Gera um UPDATE em uma tabela com base em um array WHERE.
      * 
-     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
      * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
      * @param array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
      * @param string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
      * @param string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
      */
-    public function updateWhere($table = null, $data = array(), $where = array(), $join = 'AND', $operator = '=') {
+    public function updateWhere($data, $where, $join = 'AND', $operator = '=', $table = null) {
         $fields = array();
         $values = array();
         if (empty($table))
