@@ -14,9 +14,11 @@ Instalação:
  - Passo 1: Clonar o OpenMvc e iniciar um projeto
  
 
-<code>git clone https://thiago-bsws@bitbucket.org/thiago-bsws/openmvc.git</code>
+<code> 
+git clone https://thiago-bsws@bitbucket.org/thiago-bsws/openmvc.git
 
-<code>git remote set-url origin https://github.com/user/$NOVO_REPOSITORIO.git</code>
+git remote set-url origin https://github.com/user/$NOVO_REPOSITORIO.git
+</code>
 ____________________________________________________________________________________________________________________
 
 
