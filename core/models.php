@@ -88,7 +88,7 @@ class Model extends Loader {
     }
 
     /**
-     * Constroi uma clausua WHERE baseado nos parâmetros passados e na clausula de junção (AND ou OR).
+     * Gera um UPDATE em uma tabela com base em um array WHERE.
      * 
      * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
      * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
