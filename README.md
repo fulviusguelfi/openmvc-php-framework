@@ -380,17 +380,26 @@ ________________________________________________________________________________
 
     - Gera um UPDATE em uma tabela com base em um array WHERE.
 
-     array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
-     array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
-     string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
-     string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
-     string $table Nome da tabela (opcional) ----- Padrão $this->name
+    PARÂMETROS:
+
+     (array) $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+     (array) $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+     (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+     (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     (string) $table Nome da tabela (opcional) ----- Padrão $this->name
+
+    RETORNO:
+
+    (TRUE ou FALSE)//* Retorna TRUE ou FALSE  */
 
 Exemplo:
 
-$query = "SELECT * FROM tabela_exemplo WHERE id=10";
+$data = array('coluna' => 'valor');
+$where = array('coluna' => 'valor');
 
-$objeto = $this->row($query);
+$retorno = $this->updateWhere($data, $where);
+    ou ainda
+$retorno = $this->updateWhere($data, $where, 'AND', '=', $nome_da_tabela);
 ______________________________________________________________________________________________________________
   
 
