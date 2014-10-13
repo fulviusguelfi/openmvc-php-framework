@@ -28,22 +28,22 @@ Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as cons
 
 
 
-// Nome do host do MySQL */
+/* Nome do host do MySQL */
 define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
 
 
 
-// Usuário do banco de dados MySQL */
+/* Usuário do banco de dados MySQL */
 define('DB_USER', '$USUARIO_DO_BANCO_DE_DADOS');
 
 
 
-// Senha do banco de dados MySQL */
+/* Senha do banco de dados MySQL */
 define('DB_PASSWORD', '$SENHA_DO_BANCO_DE_DADOS');
 
 
 
-// IP do host do MySQL */
+/* IP do host do MySQL */
 define('DB_HOST', '$ENDEREÇO_DO_BANCO_DE_DADOS');
 
 ______________________________________________________________________________________________________________________
@@ -214,11 +214,11 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (int)  $id - /// id da linha a ser excluída na tabela default */
+    (int)  $id - //* id da linha a ser excluída na tabela default */
 
     RETORNO:
 
-    (Bool) TRUE ou FALSE - /// Retorno da ação de deletar no Mysql  */
+    (Bool) TRUE ou FALSE - //* Retorno da ação de deletar no Mysql  */
 
 Exemplo:
 
@@ -232,11 +232,11 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (object or array)  $dados - /// Objeto para salvar onde as posições tenham o mesmo nome que as colunas da tabela default */
+    (object or array)  $dados - //* Objeto para salvar onde as posições tenham o mesmo nome que as colunas da tabela default */
 
     RETORNO:
 
-    (Bool) TRUE ou FALSE - /// Retorno da ação de UPDATE ou INSERT no Mysql  */
+    (Bool) TRUE ou FALSE - //* Retorno da ação de UPDATE ou INSERT no Mysql  */
 
 Exemplo:
 
@@ -270,15 +270,15 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (int)  $pagina (não obrigatorio);       /// Página em que se encontra dentro da paginação */
+    (int)  $pagina (não obrigatorio);       //* Página em que se encontra dentro da paginação */
 
-    (int)  $max_per_page (não obrigatorio); /// Máximo de resultados por página */
+    (int)  $max_per_page (não obrigatorio); //* Máximo de resultados por página */
 
-    (int) $status (não obrigatorio);       /// Caso exista uma coluna 'status' na tabela, traz apenas resultados com o status desejado */
+    (int) $status (não obrigatorio);       //* Caso exista uma coluna 'status' na tabela, traz apenas resultados com o status desejado */
 
     RETORNO:
 
-    (object) $lista - /// Retorna a lista de objetos encontrados na tabela default */
+    (object) $lista - //* Retorna a lista de objetos encontrados na tabela default */
 
 Exemplo:
 
@@ -318,11 +318,11 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (int)  $id - /// id da linha a ser retornada na tabela default */
+    (int)  $id - //* id da linha a ser retornada na tabela default */
 
     RETORNO:
 
-    (object ou FALSE) $linha - /// Retorno do objeto encontrado na tabela default ou FALSE  */
+    (object ou FALSE) $linha - //* Retorno do objeto encontrado na tabela default ou FALSE  */
 
 Exemplo:
 
@@ -337,11 +337,11 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (string)  $query - /// Query a ser executada no Mysql */
+    (string)  $query - //* Query a ser executada no Mysql */
 
     RETORNO:
 
-    (array ou FALSE) $objeto - /// Retorna um array de objetos com os resultados encontrados pela Query ou FALSE  */
+    (array ou FALSE) $objeto - //* Retorna um array de objetos com os resultados encontrados pela Query ou FALSE  */
 
 Exemplo:
 
@@ -359,11 +359,11 @@ ________________________________________________________________________________
     
     PARÂMETROS:
 
-    (string)  $query - /// Query a ser executada no Mysql */
+    (string)  $query - //* Query a ser executada no Mysql */
 
     RETORNO:
 
-    (array ou FALSE) $objeto - /// Retorna um objeto encontrados pela Query ou FALSE  */
+    (array ou FALSE) $objeto - //* Retorna um objeto encontrados pela Query ou FALSE  */
 
 Exemplo:
 
