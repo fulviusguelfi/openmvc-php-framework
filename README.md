@@ -441,7 +441,7 @@ jQuery.ajax({
 ______________________________________________________________________________________________________________
 
 
-GERADOR DE CRUD AUTOMÁTICO (1.0 beta)
+GERADOR DE CRUD AUTOMÁTICO (1.2)
 =====================================
 CrudGenerator CRUD - Create, Read, Update, Delete
 
@@ -451,6 +451,7 @@ seguido pela lista de Tabelas encontradas no Mysql conectado.
     - Para que o CrudGenerator relacione automaticamente duas ou mais tabelas basta que na tabela em questão exista a coluna 
 com o seguinte nome 'id_$NOME_DA_TABELA_A_RELACIONAR' ou '$NOME_DA_TABELA_A_RELACIONAR_id', 
 neste caso o crud irá gerar um select com os ids dos objetos da tabela relacionada
+    - Para gerar um upload de arquivo junto ao crud basta criar uma coluna do tipo BLOB na tabela
 
 __________________________________________________________________________________________________
 
