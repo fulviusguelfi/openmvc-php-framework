@@ -177,8 +177,7 @@ class Model extends Loader {
 //        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
         header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $mimeType . '"');
         header('Content-type: ' . $mimeType);
-        print $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
-//        echo $fileContent =$obj->$fieldFile;
+        echo $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
     }
 
     public function get_filename_ext($filename) {

@@ -162,6 +162,7 @@ class Bin extends Controller {
                     $OBJECTS .= 'if (!empty($_FILES["' . $structure->Field . '"]["tmp_name"])){' . $quebra;
                     $OBJECTS .= '                $' . $structure->Field . 'ext = $this->' . $table_name . 'Model->get_filename_ext($_FILES["' . $structure->Field . '"]["name"]);' . $quebra;
                     $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$' . $structure->Field . 'ext.";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
+//                    $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$_FILES["' . $structure->Field . '"]["type"].";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
                     $OBJECTS .= '            }' . $quebra.'            ';
                 }
             }
