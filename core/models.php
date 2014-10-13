@@ -87,6 +87,41 @@ class Model extends Loader {
         );
     }
 
+    /**
+     * Constroi uma clausua WHERE baseado nos parâmetros passados e na clausula de junção (AND ou OR).
+     * 
+     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
+     * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+     * @param array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+     * @param string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+     * @param string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     */
+    public function updateWhere($table = null, $data = array(), $where = array(), $join = 'AND', $operator = '=') {
+        $fields = array();
+        $values = array();
+        if (empty($table))
+            $table = $this->name;
+        if (empty($where))
+            $myWhere = $this->buildWhere($where, $join, true, $operator);
+
+
+        foreach ($data as $key => $value) {
+            if ($key == "id" || $key == "ID")
+                continue;
+
+            if ($value === NULL || strtoupper($value) === 'NULL') {
+                $fields[] = "{$key} = NULL";
+            } else {
+                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $values[] = $value;
+            }
+        }
+        $field_and_value = implode(",", $fields);
+
+        $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} {$myWhere}", $values);
+        return $this->query($sql);
+    }
+
     protected function generateUpdate($table, $data, $id) {
         $fields = array();
         $values = array();
