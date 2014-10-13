@@ -174,9 +174,15 @@ class Model extends Loader {
         $indexHeader = strpos($obj->$fieldFile, ';');
         $header = substr($obj->$fieldFile, 0, $indexHeader);
         $mimeType = str_replace('data:', '', $header);
-        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+//        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $mimeType . '"');
         header('Content-type: ' . $mimeType);
-        echo $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
+        print $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
+//        echo $fileContent =$obj->$fieldFile;
+    }
+
+    public function get_filename_ext($filename) {
+        return strrev(substr(strrev($filename), 0, stripos(strrev($filename), '.')));
     }
 
     public function mime_types_map($ext = null, $mimeType = null) {
