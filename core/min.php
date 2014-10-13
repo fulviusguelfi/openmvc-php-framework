@@ -53,6 +53,7 @@ function carregar_pagina($controller, $action, $param = NULL) {
 }
 
 function mapear_paginas($uri) {
+    $uri = str_replace('-', '_', $uri);
     $slug = somente_slug($uri);
     if (!empty($slug)) {
         if (isset($slug[1]) && !empty($slug[1])) {
