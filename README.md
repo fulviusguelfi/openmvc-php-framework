@@ -372,6 +372,28 @@ $query = "SELECT * FROM tabela_exemplo WHERE id=10";
 $objeto = $this->row($query);
 ______________________________________________________________________________________________________________
   
+  
+  
+  
+
+- 9: Função updateWhere() do Model 
+
+    - Gera um UPDATE em uma tabela com base em um array WHERE.
+
+   /**
+     * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+     * @param array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+     * @param string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+     * @param string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
+     */
+Exemplo:
+
+$query = "SELECT * FROM tabela_exemplo WHERE id=10";
+
+$objeto = $this->row($query);
+______________________________________________________________________________________________________________
+  
 
 
 Views:
