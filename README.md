@@ -383,9 +383,13 @@ ________________________________________________________________________________
     PARÂMETROS:
 
      (array) $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+
      (array) $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+
      (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+
      (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+
      (string) $table Nome da tabela (opcional) ----- Padrão $this->name
 
     RETORNO:
@@ -395,6 +399,7 @@ ________________________________________________________________________________
 Exemplo:
 
 $data = array('coluna' => 'valor');
+
 $where = array('coluna' => 'valor');
 
 $retorno = $this->updateWhere($data, $where);
