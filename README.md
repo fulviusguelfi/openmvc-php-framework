@@ -14,11 +14,11 @@ Instalação:
  - Passo 1: Clonar o OpenMvc e iniciar um projeto
  
 
-<code> 
+ 
 git clone https://thiago-bsws@bitbucket.org/thiago-bsws/openmvc.git
 
 git remote set-url origin https://github.com/user/$NOVO_REPOSITORIO.git
-</code>
+
 ____________________________________________________________________________________________________________________
 
 
@@ -27,25 +27,25 @@ ________________________________________________________________________________
 Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as constantes de Banco de Dados como abaixo:
 
 
-<code>
+
 /* Nome do host do MySQL */
 define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
-</code>
 
-<code>
+
+
 /* Usuário do banco de dados MySQL */
 define('DB_USER', '$USUARIO_DO_BANCO_DE_DADOS');
-</code>
 
-<code>
+
+
 /* Senha do banco de dados MySQL */
 define('DB_PASSWORD', '$SENHA_DO_BANCO_DE_DADOS');
-</code>
 
-<code>
+
+
 /* IP do host do MySQL */
 define('DB_HOST', '$ENDEREÇO_DO_BANCO_DE_DADOS');
-</code>
+
 ______________________________________________________________________________________________________________________
 
 
@@ -54,21 +54,21 @@ ________________________________________________________________________________
 
 Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc como abaixo:
 
-<code>
+
 < VirtualHost openmvc.exemplo:80>
-</code>
 
-<code>
+
+
 	ServerName openmvc.exemplo
-</code>
 
-<code>
+
+
 	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
-</code>
 
-<code>
+
+
 < /VirtualHost>
-</code>
+
 ________________________________________________________________________________________________________________________
 
 
@@ -91,14 +91,14 @@ No endereço http://openmvc.exemplo.com/home/teste/param1/param2 a rota traçada
 
 Nesse caso dentro da action 'teste($param)' a variável $param assume o tipo Array sendo de que a mesma obteria o formato abaixo:
 
-<code>
+
 array(
 0 => 'home',
 1 => 'teste',
 2 => 'param1',
 3 => 'param2'
 )
-</code>
+
 __________________________________________________________________________________________________________________________________
  
  
@@ -120,11 +120,11 @@ Controllers:
 
 Exemplo:
 
-<code>class Meu_controller extends Controller {</code>
+class Meu_controller extends Controller {
 
     public function index() {}
 
-<code>}</code>
+}
 _____________________________________________________________________________________________________
 
 
@@ -151,12 +151,12 @@ ________________________________________________________________________________
   
 -No caso abaixo carregaremos dentro da variável $this o aqruivo /models/exemploModel.php, e a mesma terá toda a Classe ExemploModel carregada no objeto $this->exemploModel
 
-<code>$this->load('models','exemploModel');</code>
+$this->load('models','exemploModel');
 
 
 - No caso abaixo carregaremos dentro da variável $this o aqruivo /controllers/meu_controller2.php, e a mesma terá toda a Classe Meu_controller2 carregada no objeto $this->meu_controller2
 
-<code>$this->load('controllers','meu_controller2');</code>
+$this->load('controllers','meu_controller2');
 ___________________________________________________________________________________________________________________
 
 
@@ -167,7 +167,7 @@ ________________________________________________________________________________
 
 Nesse caso redirecionamos para o arquivo /controllers/meu_controller.php na action 'exemplo()'.
 
-<code>$this->redirect('/meu_controller/exemplo');</code>
+$this->redirect('/meu_controller/exemplo');
 ____________________________________________________________________________________________________________________
 
 
@@ -179,7 +179,7 @@ ________________________________________________________________________________
 
 Nesse caso carregaremos o arquivo /views/home/index.php e passaremos a variável $var_exemplo para a ele.
 
- <code>$this->view("home/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));</code>
+ $this->view("home/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));
 ____________________________________________________________________________________________________________________
 
 
@@ -195,11 +195,11 @@ Models:
 
 Exemplo:
 
-<code>class MinhaTabelaModel extends Model {</code>  
+class MinhaTabelaModel extends Model {  
 
-<code>var $name = "$NOME_DA_TABELA_NO_DB";</code>  
+var $name = "$NOME_DA_TABELA_NO_DB";  
 
-<code>}</code>
+}
 _____________________________________________________________________________________________________________
 
 - 2: Variável $this do seu Model
@@ -222,7 +222,7 @@ ________________________________________________________________________________
 
 Exemplo:
 
-<code>return $this->deletar($id);</code>
+return $this->deletar($id);
 ______________________________________________________________________________________________________________
   
 - 4: Função salvar() do Model 
@@ -249,17 +249,17 @@ Exemplo:
 
 Neste caso faremos o UPDATE da linha com id=1 e trocaremos o email 'exemplo@abcd.com' pelo 'aaaa@xpto.com'.
 
-<code>$dados = (object) array("id"=> 1, "email"=>"aaaa@xpto.com" );</code>
+$dados = (object) array("id"=> 1, "email"=>"aaaa@xpto.com" );
 
-<code>return $this->salvar($dados);</code>
+return $this->salvar($dados);
 
 
 
 Neste caso faremos o INSERT de uma nova linha da tabela default.
 
-<code>$dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );</code>
+$dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );
 
-<code>return $this->salvar($dados);</code>
+return $this->salvar($dados);
 ______________________________________________________________________________________________________________
 
   
@@ -284,31 +284,31 @@ Exemplo:
 
 Neste caso listaremos todas as linhas da tabela default do model
 
-<code>$lista = $this->listar();</code>
+$lista = $this->listar();
 
 
 
 Neste caso listaremos as 10 primeiras linhas para a pagina 1 da paginaçao da tabela default do model
 
-<code>$lista = $this->listar(1,10);</code>
+$lista = $this->listar(1,10);
 
 
 
 Neste caso listaremos as 10 proximas linhas para a pagina 2 da paginaçao da tabela default do model
 
-<code>$lista = $this->listar(2,10);</code>
+$lista = $this->listar(2,10);
 
 
 
 Neste caso listaremos as 10 primeiras linhas para a pagina 1 da paginaçao onde a coluna 'status' seja igual 123 da tabela default do model
 
-<code>$lista = $this->listar(1,10,123);</code>
+$lista = $this->listar(1,10,123);
 
 
 
 Neste caso listaremos todas as linhas onde a coluna 'status' seja igual 123 da tabela default do model
 
-<code>$lista = $this->listar('','',123);</code>
+$lista = $this->listar('','',123);
 ______________________________________________________________________________________________________________
   
 
@@ -326,7 +326,7 @@ ________________________________________________________________________________
 
 Exemplo:
 
-<code>$linha = $this->get($id);</code>
+$linha = $this->get($id);
 ______________________________________________________________________________________________________________
   
   
@@ -345,9 +345,9 @@ ________________________________________________________________________________
 
 Exemplo:
 
-<code>$query = "SELECT * FROM tabela_exemplo";</code>
+$query = "SELECT * FROM tabela_exemplo";
 
-<code>$objeto = $this->query($query);</code>
+$objeto = $this->query($query);
 ______________________________________________________________________________________________________________
   
   
@@ -367,9 +367,9 @@ ________________________________________________________________________________
 
 Exemplo:
 
-<code>$query = "SELECT * FROM tabela_exemplo WHERE id=10";</code>
+$query = "SELECT * FROM tabela_exemplo WHERE id=10";
 
-<code>$objeto = $this->row($query);</code>
+$objeto = $this->row($query);
 ______________________________________________________________________________________________________________
   
 
@@ -394,13 +394,13 @@ Exemplo:
 
 Nesse caso iremos fazer uma requisição por post no controller 'home' na action 'teste()'
 
-<code>
+
 jQuery.ajax({
                 url: "/ajax.php",
                 type: "post",
                 data: {c:'home', a:'teste'}
             })
-</code>
+
 ______________________________________________________________________________________________________________
 
 
