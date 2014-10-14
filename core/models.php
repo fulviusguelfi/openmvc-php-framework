@@ -173,7 +173,7 @@ class Model extends Loader {
         $header = substr($obj->$fieldFile, 0, (strpos($obj->$fieldFile, ';') + 1));
         $mimeType = str_replace('data:', '', $header);
         $code_binary = str_replace($header, '', $obj->$fieldFile);
-//        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
         header('Content-type: ' . $mimeType);
         echo $code_binary;
     }

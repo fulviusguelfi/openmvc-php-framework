@@ -19,6 +19,7 @@
  */
 ?>
 <?php
+
 /**
  * Main WordPress API
  *
