@@ -170,9 +170,9 @@ class Model extends Loader {
         $fieldFile = $params[2];
         $fileId = $params[3];
         $obj = $this->row("SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}");
-        $header = substr($obj->$fieldFile, 0, (strpos($obj->$fieldFile, ';') + 1));
+        $header = substr($obj->$fieldFile, 0, strpos($obj->$fieldFile, ';'));
         $mimeType = str_replace('data:', '', $header);
-        $code_binary = str_replace($header, '', $obj->$fieldFile);
+        $code_binary = str_replace("$header;", '', $obj->$fieldFile);
         header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
         header('Content-type: ' . $mimeType);
         echo $code_binary;
