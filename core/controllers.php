@@ -182,7 +182,7 @@ class Controller extends Loader {
      * @param Array $params
      */
     public function redirect($url, $params = array()) {
-        $wp_url = get_option('siteurl');
+        $wp_url = '/';
         if (is_array($url)) {
             if (isset($url["controller"]))
                 Mvc::add_controller($url["controller"]);

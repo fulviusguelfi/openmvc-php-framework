@@ -169,14 +169,13 @@ class Model extends Loader {
         $tableName = $params[0];
         $fieldFile = $params[2];
         $fileId = $params[3];
-        $sql = "SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}";
-        $obj = $this->row($sql);
-        $indexHeader = strpos($obj->$fieldFile, ';');
-        $header = substr($obj->$fieldFile, 0, $indexHeader);
+        $obj = $this->row("SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}");
+        $header = substr($obj->$fieldFile, 0, (strpos($obj->$fieldFile, ';') + 1));
         $mimeType = str_replace('data:', '', $header);
-        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+        $code_binary = str_replace($header, '', $obj->$fieldFile);
+//        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
         header('Content-type: ' . $mimeType);
-        print $fileContent = substr($obj->$fieldFile, $indexHeader + 1);
+        echo $code_binary;
     }
 
     public function get_filename_ext($filename) {
