@@ -179,8 +179,8 @@ class Model extends Loader {
 //        echo $obj->$fieldFile;
             //
             $cobe64 = base64_encode($code_binary);
-//            echo "<img src='data:image/jpeg;base64,{$cobe64}' >";
-            echo "data:image/jpeg;base64,{$cobe64}";
+            echo "<img src='data:{$mimeType};base64,{$cobe64}' >";
+//            echo "data:{$mimeType};base64,{$cobe64}";
         } else {
             header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
             header('Content-Type: ' . $mimeType . ';');
