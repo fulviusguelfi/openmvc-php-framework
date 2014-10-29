@@ -173,9 +173,19 @@ class Model extends Loader {
         $header = substr($obj->$fieldFile, 0, strpos($obj->$fieldFile, ';'));
         $mimeType = str_replace('data:', '', $header);
         $code_binary = str_replace("$header;", '', $obj->$fieldFile);
-        header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
-        header('Content-type: ' . $mimeType);
-        echo $code_binary;
+
+        if (strstr($mimeType, "image")) {
+//        header("Content-Type: image/jpeg");
+//        echo $obj->$fieldFile;
+            //
+            $cobe64 = base64_encode($code_binary);
+//            echo "<img src='data:image/jpeg;base64,{$cobe64}' >";
+            echo "data:image/jpeg;base64,{$cobe64}";
+        } else {
+            header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+            header('Content-Type: ' . $mimeType . ';');
+            echo $code_binary;
+        }
     }
 
     public function get_filename_ext($filename) {
