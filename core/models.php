@@ -1,0 +1,465 @@
+
+<?php
+
+/*
+  Este arquivo é parte do OpenMvc PHP Framework
+
+  OpenMvc PHP Framework é um software livre; você pode redistribuí-lo e/ou
+  modificá-lo dentro dos termos da Licença Pública Geral GNU como
+  publicada pela Fundação do Software Livre (FSF); na versão 2 da
+  Licença, ou (na sua opinião) qualquer versão.
+
+  Este programa é distribuído na esperança de que possa ser  útil,
+  mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+  MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+  Licença Pública Geral GNU para maiores detalhes.
+
+  Você deve ter recebido uma cópia da Licença Pública Geral GNU
+  junto com este programa, se não, escreva para a Fundação do Software
+  Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+?>
+<?php
+
+class Model extends Loader {
+
+    /**
+     *
+     * @var $db
+     */
+    var $db;
+    var $name; //ex. posts, terms, etc
+    var $order;
+
+    public function __construct($db = null) {
+        parent::__construct();
+        if ($db == null) {
+            global $db;
+            $db = $db;
+        }
+        $this->db = $db;
+        $this->init();
+    }
+
+    public function __destruct() {
+        @mysql_close();
+    }
+
+    protected function init() {
+        $this->order = "data";
+    }
+
+    public function query($sql) {
+        return $this->db->get_results($sql);
+    }
+
+    public function row($sql) {
+        return $this->db->get_row($sql);
+    }
+
+    public function prepare($sql, $dados = array()) {
+        return $this->db->prepare($sql, $dados);
+    }
+
+    public function get_row($sql) {
+        return $this->db->get_row($sql);
+    }
+
+    public function get_results($sql) {
+        return $this->db->get_results($sql);
+    }
+
+    public function get_var($sql) {
+        return $this->db->get_var($sql);
+    }
+
+    /**
+     * Retorna o nome da Tabela do WordPress
+     * Precisa sobrescrever a campo $name na subclasse da Model
+     */
+    public function getTableName($name = null) {
+        if (empty($name))
+            $name = $this->name;
+        if (isset($this->db->$name))
+            return $this->db->$name;
+        else
+            return $this->name;
+    }
+
+    public function printError() {
+        echo $this->db->print_error();
+    }
+
+    protected function generateInsert($table, $data) {
+        $fieldlist = array_keys($data);
+        $fields = implode(",", $fieldlist);
+        $valuelist = array();
+        foreach ($data as $key => $value) {
+            if ($value != NULL || $value === 0)
+                $valuelist[] = (is_string($value)) ? "%s" : "%d";
+            else {
+                $valuelist[] = "NULL";
+                unset($data[$key]);
+            }
+        }
+        $values = implode(",", $valuelist);
+        return $this->query(
+                        $this->prepare("INSERT INTO {$table} ({$fields}) values ($values)", array_values($data))
+        );
+    }
+
+    /**
+     * Gera um UPDATE em uma tabela com base em um array WHERE.
+     * 
+     * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+     * @param array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+     * @param string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+     * @param string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
+     */
+    public function updateWhere($data, $where, $join = 'AND', $operator = '=', $table = null) {
+        $fields = array();
+        $values = array();
+        if (empty($table))
+            $table = $this->name;
+        if (empty($where))
+            $myWhere = $this->buildWhere($where, $join, true, $operator);
+
+
+        foreach ($data as $key => $value) {
+            if ($key == "id" || $key == "ID")
+                continue;
+
+            if ($value === NULL || strtoupper($value) === 'NULL') {
+                $fields[] = "{$key} = NULL";
+            } else {
+                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $values[] = $value;
+            }
+        }
+        $field_and_value = implode(",", $fields);
+
+        $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} {$myWhere}", $values);
+        return $this->query($sql);
+    }
+
+    protected function generateUpdate($table, $data, $id) {
+        $fields = array();
+        $values = array();
+        foreach ($data as $key => $value) {
+            if ($key == "id" || $key == "ID")
+                continue;
+
+            if ($value === NULL || strtoupper($value) === 'NULL') {
+                $fields[] = "{$key} = NULL";
+            } else {
+                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $values[] = $value;
+            }
+        }
+        $field_and_value = implode(",", $fields);
+        $values[] = $id;
+
+        $id_field = isset($data['ID']) ? 'ID' : 'id';
+        $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} WHERE {$id_field} = %d", $values);
+        return $this->query($sql);
+    }
+
+    public function download($params) {
+        $tableName = $params[0];
+        $fieldFile = $params[2];
+        $fileId = $params[3];
+        $obj = $this->row("SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}");
+        $header = substr($obj->$fieldFile, 0, strpos($obj->$fieldFile, ';'));
+        $mimeType = str_replace('data:', '', $header);
+        $code_binary = str_replace("$header;", '', $obj->$fieldFile);
+
+        if (strstr($mimeType, "image")) {
+//        header("Content-Type: image/jpeg");
+//        echo $obj->$fieldFile;
+            //
+            $cobe64 = base64_encode($code_binary);
+            echo "<img src='data:{$mimeType};base64,{$cobe64}' >";
+//            echo "data:{$mimeType};base64,{$cobe64}";
+        } else {
+            header('Content-Disposition: attachment; filename="' . $tableName . $fieldFile . $fileId . '.' . $this->mime_types_map(null, $mimeType) . '"');
+            header('Content-Type: ' . $mimeType . ';');
+            echo $code_binary;
+        }
+    }
+
+    public function get_filename_ext($filename) {
+        return strrev(substr(strrev($filename), 0, stripos(strrev($filename), '.')));
+    }
+
+    public function mime_types_map($ext = null, $mimeType = null) {
+        $mime_types_map = array(
+            'txt' => 'text/plain',
+            'htm' => 'text/html',
+            'html' => 'text/html',
+            'php' => 'text/html',
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            'sql' => 'application/sql',
+            'swf' => 'application/x-shockwave-flash',
+            'flv' => 'video/x-flv',
+            // images
+            'png' => 'image/png',
+            'jpeg' => 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'jpe' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'ico' => 'image/vnd.microsoft.icon',
+            'tiff' => 'image/tiff',
+            'tif' => 'image/tiff',
+            'svg' => 'image/svg+xml',
+            'svgz' => 'image/svg+xml',
+            // archives
+            'zip' => 'application/zip',
+            'rar' => 'application/x-rar-compressed',
+            'exe' => 'application/x-msdownload',
+            'msi' => 'application/x-msdownload',
+            'cab' => 'application/vnd.ms-cab-compressed',
+            // audio/video
+            'mp3' => 'audio/mpeg',
+            'mp3' => 'audio/mp3',
+            'qt' => 'video/quicktime',
+            'mov' => 'video/quicktime',
+            // adobe
+            'pdf' => 'application/pdf',
+            'psd' => 'image/vnd.adobe.photoshop',
+            'ai' => 'application/postscript',
+            'eps' => 'application/postscript',
+            'ps' => 'application/postscript',
+            // ms office
+            'doc' => 'application/msword',
+            'rtf' => 'application/rtf',
+            'xls' => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ppt' => 'application/vnd.ms-powerpoint',
+            // open office
+            'odt' => 'application/vnd.oasis.opendocument.text',
+            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        );
+        if (!empty($ext)) {
+            return $mime_types_map[$ext];
+        } else if (!empty($mimeType)) {
+            $encontrou = false;
+            foreach ($mime_types_map as $key => $value) {
+                if ($value == $mimeType) {
+                    if (!$encontrou)
+                        return $key;
+                    $encontrou = true;
+                }
+            }
+        } else {
+            return $mime_types_map;
+        }
+    }
+
+    public function listar($pagina = null, $max_per_page = null, $status = null, $select_Fields = "*") {
+        $where = '';
+        $limit = '';
+
+        if (!empty($max_per_page)) {
+            $pagina = (int) $pagina >= 1 ? (int) $pagina : 1;
+            $offset = ($pagina - 1) * $max_per_page;
+
+            $limit = "LIMIT {$max_per_page} OFFSET {$offset}";
+        }
+
+        if (!empty($status)) {
+            $status = (int) $status;
+            $where .= "WHERE status = {$status}";
+        }
+
+        $sql = "SELECT {$select_Fields} FROM {$this->name} {$where} ORDER BY id DESC {$limit}";
+
+        return $this->query($sql);
+    }
+
+    public function get($id) {
+        return $this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id)));
+    }
+
+    public function salvar($dados) {
+        $id = null;
+        if (is_object($dados))
+            $dados = (Array) $dados;
+
+        if (isset($dados['id'])) {
+            $id = !empty($dados['id']) ? $dados['id'] : null;
+            unset($dados['id']);
+        }
+
+        if (isset($dados['ID'])) {
+            $id = !empty($dados['ID']) ? $dados['ID'] : null;
+            unset($dados['ID']);
+        }
+
+        if (null !== $id) {
+            $this->generateUpdate($this->name, $dados, $id);
+        } else {
+            $this->generateInsert($this->name, $dados);
+        }
+
+        if (!empty($this->db->last_error)) {
+            return false;
+        } else {
+            $id = !$this->db->insert_id ? $id : $this->db->insert_id;
+            return $id;
+        }
+    }
+
+    public function count($params = array()) {
+        $where = $this->buildWhere($params, 'AND', true);
+        $sql = "SELECT count(0) as quantidade FROM {$this->name} t {$where}";
+        return $this->row($sql)->quantidade;
+    }
+
+    public function last() {
+        return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
+    }
+
+    public function deletar($id) {
+        $sql = $this->prepare("DELETE FROM  {$this->name} where id = %d", array($id));
+        return $this->db->query($sql);
+    }
+
+    public function busca_palavra($field, $word) {
+        return " lower({$field}) like \"%%{$word}%%\" ";
+    }
+
+    /**
+     * Constroi uma clausua WHERE baseado nos parâmetros passados e na clausula de junção (AND ou OR).
+     * 
+     * @param array $params
+     * @param boolean $whereKeyword
+     * @param string $join 
+     */
+    public function buildWhere($params = array(), $join = 'AND', $whereKeyword = true, $operator = '=') {
+        $where = '';
+        if (!empty($params)) {
+            if (is_array($params)) {
+                $_conditions = array();
+                foreach ($params as $key => $val) {
+                    if (strtoupper($operator) == "LIKE") {
+                        $_conditions[] = "{$key} LIKE '%{$val}%'";
+                    } else if (is_array($val) && !empty($val)) {
+                        $joined_values = array();
+
+                        foreach ($val as $in_val) {
+                            $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
+                        }
+
+                        $joined_values = join(',', $joined_values);
+
+                        $_conditions[] = "{$key} IN ({$joined_values})";
+                    } else {
+                        $_conditions[] = "{$key} {$operator} {$val}";
+                    }
+                }
+                $join = strtoupper($join);
+                $join = 'AND' == $join || 'OR' == $join ? " {$join} " : null;
+
+                $prefix = $whereKeyword ? 'WHERE ' : '';
+
+                $where = null !== $join ? $prefix . join($join, $_conditions) : '';
+            } else {
+                $where = (string) $params;
+            }
+        }
+
+        return $where;
+    }
+
+    public function buildLimit($pagina, $max_per_page) {
+        $limit = '';
+        if (!empty($max_per_page)) {
+            $max_per_page = (int) $max_per_page;
+            $pagina = (int) $pagina >= 1 ? (int) $pagina : 1;
+            $offset = ($pagina - 1) * $max_per_page;
+
+            $limit = "LIMIT {$max_per_page} OFFSET {$offset}";
+        }
+        return $limit;
+    }
+
+}
+
+/**
+ * Implementaçã do padrão <em>Data Transfer Object</em> para fornecer, além de um valor absoluto 
+ * para uma operação com a camada de modelagem, mensagens inteligíveis sobre a representação deste valor. 
+ */
+class ModelResult {
+
+    private $value;
+    private $messages = array();
+
+    public function __construct() {
+        $this->setValue(false);
+    }
+
+    /**
+     * Define o valor da operação
+     */
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
+    /**
+     * Obtém  valor da operação
+     */
+    public function getValue() {
+        return $this->value;
+    }
+
+    /**
+     * Adiciona uma mensagem inteligível ao objeto de resultado
+     * @param string $message 
+     */
+    public function addMessage($message) {
+        $this->messages[] = $message;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getMessages() {
+        return $this->messages;
+    }
+
+    /**
+     * @param string $glue Separador utilizado entre cas mensagens
+     * @return string
+     */
+    public function getMessagesAsString($glue = '<br />') {
+        return join($glue, $this->getMessages());
+    }
+
+    /**
+     * Obtém a representação do objeto em formato array
+     * @return array
+     */
+    public function toArray() {
+        $result = array(
+            'value' => $this->getValue(),
+            'messages' => $this->getMessages()
+        );
+
+        return $result;
+    }
+
+    /**
+     * Obtém a representação JSON do objeto de resultado
+     * @return string
+     */
+    public function toJson() {
+        return json_encode($this->toArray());
+    }
+
+}
