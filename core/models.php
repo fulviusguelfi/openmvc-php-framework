@@ -337,6 +337,11 @@ class Model extends Loader {
         return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
     }
 
+      /**
+     * Deleta da tabela de acordo com o ID.
+     * 
+     * @param int $id
+     */
     public function deletar($id) {
         $sql = $this->prepare("DELETE FROM  {$this->name} where id = %d", array($id));
         return $this->db->query($sql);
