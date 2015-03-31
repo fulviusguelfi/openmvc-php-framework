@@ -424,6 +424,8 @@ ________________________________________________________________________________
 
      (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
 
+     (array) $fieĺds Campos para trazer na pesquisa caso vazio será *  ------- Ex: array('coluna1', 'coluna2')
+
     RETORNO:
 
     (array)//* Retorna array de objetos encontrados  */
