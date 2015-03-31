@@ -320,6 +320,19 @@ class Model extends Loader {
         return $this->row($sql)->quantidade;
     }
 
+    /**
+     * Pesquisa da tabela de acordo com os parametros recebidos.
+     * 
+     * @param array $params
+     * @param string $operator
+     * @param string $join 
+     */
+    public function find($params = array(), $operator = '=', $join = 'AND') {
+        $where = $this->buildWhere($params, $join, true, $operator);
+        $sql = "SELECT * FROM {$this->name} {$where}";
+        return $this->query($sql);
+    }
+
     public function last() {
         return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
     }
@@ -337,8 +350,9 @@ class Model extends Loader {
      * Constroi uma clausua WHERE baseado nos parâmetros passados e na clausula de junção (AND ou OR).
      * 
      * @param array $params
-     * @param boolean $whereKeyword
      * @param string $join 
+     * @param boolean $whereKeyword
+     * @param string $operator
      */
     public function buildWhere($params = array(), $join = 'AND', $whereKeyword = true, $operator = '=') {
         $where = '';
@@ -359,7 +373,7 @@ class Model extends Loader {
 
                         $_conditions[] = "{$key} IN ({$joined_values})";
                     } else {
-                        $_conditions[] = "{$key} {$operator} {$val}";
+                        $_conditions[] = "{$key} " . (strstr($key, " ") ? "" : $operator) . (is_string($val) ? ($val == "NULL" ? $val : "'" . str_replace('"', "'", $val) . "'" ) : $val);
                     }
                 }
                 $join = strtoupper($join);
@@ -372,7 +386,6 @@ class Model extends Loader {
                 $where = (string) $params;
             }
         }
-
         return $where;
     }
 
