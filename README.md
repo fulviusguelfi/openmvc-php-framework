@@ -420,11 +420,11 @@ ________________________________________________________________________________
 
      (array) $params Dados para fazer pesquisa  ------- Ex: array('coluna' => 'valor') *OBRIGATORIO
 
-     (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     (array) $fieĺds Campos para trazer na pesquisa caso vazio será *  ------- Ex: array('coluna1', 'coluna2')
 
      (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
 
-     (array) $fieĺds Campos para trazer na pesquisa caso vazio será *  ------- Ex: array('coluna1', 'coluna2')
+     (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
 
     RETORNO:
 
@@ -448,18 +448,12 @@ SELECT * FROM [tabela_do_model] WHERE colunaA <= 123 AND colunaB IS NOT NULL AND
 
  --------------------------------------------------------------------
 
- $conditions = array("colunaA" => "c");
- $this->find($conditions, "!=");
-  
-O exemplo acima retornará o resultado da Query:
-SELECT * FROM [tabela_do_model] WHERE colunaA != "c";
- --------------------------------------------------------------------
-
  $conditions = array("colunaA" => "c", "colunaB" => "d");
- $this->find($conditions, "!=", "OR");
+ $this->find($conditions, "*", "OR", "!=");
   
 O exemplo acima retornará o resultado da Query:
 SELECT * FROM [tabela_do_model] WHERE colunaA != "c" OR colunaB != "d";
+ --------------------------------------------------------------------
 
 ______________________________________________________________________________________________________________
   
