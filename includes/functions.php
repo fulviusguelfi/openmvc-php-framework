@@ -19,7 +19,6 @@
  */
 ?>
 <?php
-
 /**
  * Main WordPress API
  *
@@ -1793,6 +1792,10 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2901,6 +2904,22 @@ function execute_action($controller, $action, $params = null) {
     } else {
         echo_error("O Arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.", 404);
     }
+}
+
+/**
+ * Imprime uma variável da tela, seja em print_r() ou var_dump().
+ *
+ * @param (string/array/object) $var
+ * @param (boolean) $var_dump
+ */
+function pr($var, $var_dump = false) {
+    echo "<pre>";
+    if ($var_dump) {
+        var_dump($var);
+    } else {
+        print_r($var);
+    }
+    echo "</pre>";
 }
 
 function echo_error($error_message, $num_error = null) {
