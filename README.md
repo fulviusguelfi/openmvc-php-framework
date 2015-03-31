@@ -418,7 +418,7 @@ ________________________________________________________________________________
 
     PARÂMETROS:
 
-     (array) $params Dados para fazer pesquisa  ------- Ex: array('coluna' => 'valor') *OBRIGATORIO
+     (array) $params Dados para fazer pesquisa  ------- Ex: array('coluna' => 'valor')
 
      (array) $fieĺds Campos para trazer na pesquisa caso vazio será *  ------- Ex: array('coluna1', 'coluna2')
 
