@@ -326,10 +326,11 @@ class Model extends Loader {
      * @param array $params
      * @param string $operator
      * @param string $join 
+     * @param array $fieĺds
      */
-    public function find($params = array(), $operator = '=', $join = 'AND') {
+    public function find($params = array(), $operator = '=', $join = 'AND', $fields = "*") {
         $where = $this->buildWhere($params, $join, true, $operator);
-        $sql = "SELECT * FROM {$this->name} {$where}";
+        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
         return $this->query($sql);
     }
 
@@ -337,7 +338,7 @@ class Model extends Loader {
         return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
     }
 
-      /**
+    /**
      * Deleta da tabela de acordo com o ID.
      * 
      * @param int $id
