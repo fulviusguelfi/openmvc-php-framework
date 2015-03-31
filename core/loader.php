@@ -55,8 +55,10 @@ class Loader {
         else
             $file = "{$item}/{$name}.php";
 
-        if (empty($file) || !file_exists($file))
-            return; // TODO: Lançar erro como exception???
+        if (empty($file) || !file_exists($file)) {
+                echo_error("O arquivo<b>{$_SERVER['DOCUMENT_ROOT']}/{$file}</b> do tipo \"{$item}\" n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es. ");
+                return; // TODO: Lançar erro como exception???
+        }
 
         require_once $file;
 
