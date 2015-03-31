@@ -408,6 +408,58 @@ $retorno = $this->updateWhere($data, $where);
 
 $retorno = $this->updateWhere($data, $where, 'AND', '=', $nome_da_tabela);
 ______________________________________________________________________________________________________________
+
+
+
+
+- 10: Função find() do Model 
+
+    -  Pesquisa da tabela de acordo com os parametros recebidos.
+
+    PARÂMETROS:
+
+     (array) $params Dados para fazer pesquisa  ------- Ex: array('coluna' => 'valor') *OBRIGATORIO
+
+     (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+
+     (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+
+    RETORNO:
+
+    (array)//* Retorna array de objetos encontrados  */
+
+Exemplo:
+
+ $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => "AB");
+ $this->find($conditions);
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB";
+
+ --------------------------------------------------------------------
+
+ $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => array("a", "b", "c"));
+ $this->find($conditions);
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC in("a","b","c");
+
+ --------------------------------------------------------------------
+
+ $conditions = array("colunaA" => "c");
+ $this->find($conditions, "!=");
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] WHERE colunaA != "c";
+ --------------------------------------------------------------------
+
+ $conditions = array("colunaA" => "c", "colunaB" => "d");
+ $this->find($conditions, "!=", "OR");
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] WHERE colunaA != "c" OR colunaB != "d";
+
+______________________________________________________________________________________________________________
   
 
 
