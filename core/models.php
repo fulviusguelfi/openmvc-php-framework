@@ -324,11 +324,11 @@ class Model extends Loader {
      * Pesquisa da tabela de acordo com os parametros recebidos.
      * 
      * @param array $params
-     * @param string $operator
-     * @param string $join 
      * @param array $fieĺds
+     * @param string $join 
+     * @param string $operator
      */
-    public function find($params = array(), $operator = '=', $join = 'AND', $fields = "*") {
+    public function find($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
         $where = $this->buildWhere($params, $join, true, $operator);
         $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
         return $this->query($sql);
