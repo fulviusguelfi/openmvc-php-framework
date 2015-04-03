@@ -456,6 +456,40 @@ SELECT * FROM [tabela_do_model] WHERE colunaA != "c" OR colunaB != "d";
  --------------------------------------------------------------------
 
 ______________________________________________________________________________________________________________
+
+
+
+
+
+- 11: Função findAll() do Model 
+
+    -  Pesquisa recursivamente da tabela e seus relacionamentos de acordo com os parametros recebidos.
+
+    PARÂMETROS:
+
+     (array) $params Dados para fazer pesquisa  ------- Ex: array('coluna' => 'valor')
+
+     (array) $fieĺds Campos para trazer na pesquisa caso vazio será *  ------- Ex: array('coluna1', 'coluna2')
+
+     (string) $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+
+     (string) $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+
+    RETORNO:
+
+    (array)//* Retorna array de objetos encontrados  */
+
+Exemplo:
+
+ $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => "AB");
+ $this->findAll($conditions);
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB" + [RELACIONAMENTOS ENCONTRADOS NA TABELA];
+
+
+
+______________________________________________________________________________________________________________
   
 
 
