@@ -368,6 +368,8 @@ class Model extends Loader {
                 foreach ($params as $key => $val) {
                     if (strtoupper($operator) == "LIKE") {
                         $_conditions[] = "{$key} LIKE '%{$val}%'";
+                    } else if (strstr($key, " LIKE%%")) {
+                        $_conditions[] = str_replace("LIKE%%", "", $key) . " LIKE '%{$val}%'";
                     } else if (is_array($val) && !empty($val)) {
                         $joined_values = array();
 
