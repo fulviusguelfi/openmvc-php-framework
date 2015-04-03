@@ -335,7 +335,7 @@ class Model extends Loader {
     }
 
     /**
-     * Pesquisa da tabela e seus relacionamentos de acordo com os parametros recebidos.
+     * Pesquisa recursivamente da tabela e seus relacionamentos de acordo com os parametros recebidos.
      * 
      * @param array $params
      * @param array $fieĺds
