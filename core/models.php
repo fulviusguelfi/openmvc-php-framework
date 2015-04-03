@@ -355,7 +355,8 @@ class Model extends Loader {
                         $this->load("models", "{$modelName}");
                         if ($this->$modelName->name == $tableName) {
                             $var = $this->$modelName->findAll(array("id" => $colObj));
-                            $resultQuery[$lineKey]->$tableName = $var[0];
+                            $objectName = "{$this->name}.{$colKey}";
+                            $resultQuery[$lineKey]->$objectName = $var[0];
                         }
                     }
                 }
