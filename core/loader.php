@@ -56,8 +56,11 @@ class Loader {
             $file = "{$item}/{$name}.php";
 
         if (empty($file) || !file_exists($file)) {
-                echo_error("O arquivo<b>{$_SERVER['DOCUMENT_ROOT']}/{$file}</b> do tipo \"{$item}\" n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es. ");
-                return; // TODO: Lançar erro como exception???
+            $backtrace = debug_backtrace();
+//            pr($backtrace[0][line]);
+
+            echo_error("O arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/{$file}</b> n&atilde;o pode ser carregado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p> <b>\$this->load(\"{$item}\",\"{$name}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+            return false; // TODO: Lançar erro como exception???
         }
 
         require_once $file;
