@@ -1796,6 +1796,8 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2899,12 +2901,13 @@ function execute_action($controller, $action, $params = null) {
             else
                 return $instance->$action($params);
         }else {
-              $backtrace = debug_backtrace();
+            $backtrace = debug_backtrace();
 //            pr($backtrace[0][line]);
-            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>\execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
         }
     } else {
-        echo_error("O Arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>\execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
+        $backtrace = debug_backtrace();
+        echo_error("O Arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
     }
 }
 
@@ -2938,4 +2941,5 @@ function echo_error($error_message, $num_error = null) {
     echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
     echo "<div id='openmvc-error'>{$error_message}</div>";
     echo "</center>";
+    die();
 }
