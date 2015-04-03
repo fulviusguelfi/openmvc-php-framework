@@ -350,11 +350,13 @@ class Model extends Loader {
             foreach ($lineObj as $colKey => $colObj) {
                 if (strstr($colKey, "_id") || strstr($colKey, "id_")) {
                     $modelName = str_replace("_id", "", str_replace("id_", "", $colKey)) . "Model";
-                    $mName = str_replace("_id", "", str_replace("id_", "", $colKey));
+                    $tableName = str_replace("_id", "", str_replace("id_", "", $colKey));
                     if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
                         $this->load("models", "{$modelName}");
-                        $var = $this->$modelName->findAll(array("id" => $colObj));
-                        $resultQuery[$lineKey]->$mName = $var[0];
+                        if ($this->$modelName->name == $tableName) {
+                            $var = $this->$modelName->findAll(array("id" => $colObj));
+                            $resultQuery[$lineKey]->$tableName = $var[0];
+                        }
                     }
                 }
             }
