@@ -334,6 +334,34 @@ class Model extends Loader {
         return $this->query($sql);
     }
 
+    /**
+     * Pesquisa da tabela e seus relacionamentos de acordo com os parametros recebidos.
+     * 
+     * @param array $params
+     * @param array $fieĺds
+     * @param string $join 
+     * @param string $operator
+     */
+    public function findAll($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
+        $where = $this->buildWhere($params, $join, true, $operator);
+        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
+        $resultQuery = $this->query($sql);
+        foreach ($resultQuery as $lineKey => $lineObj) {
+            foreach ($lineObj as $colKey => $colObj) {
+                if (strstr($colKey, "_id") || strstr($colKey, "id_")) {
+                    $modelName = str_replace("_id", "", str_replace("id_", "", $colKey)) . "Model";
+                    $mName = str_replace("_id", "", str_replace("id_", "", $colKey));
+                    if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
+                        $this->load("models", "{$modelName}");
+                        $var = $this->$modelName->findAll(array("id" => $colObj));
+                        $resultQuery[$lineKey]->$mName = $var[0];
+                    }
+                }
+            }
+        }
+        return $resultQuery;
+    }
+
     public function last() {
         return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
     }
