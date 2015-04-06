@@ -370,7 +370,7 @@ class Model extends Loader {
             $fields = $this->make_join_fields($this->name, $fields);
             $relation_join = $this->make_join($this->name);
             $where = $this->buildWhere($params, $join, true, $operator);
-            echo $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
+            $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
             $resultQuery = $this->query($sql);
         }
         return $resultQuery;
