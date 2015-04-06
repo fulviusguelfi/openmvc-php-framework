@@ -370,13 +370,13 @@ class Model extends Loader {
             $fields = $this->make_join_fields($this->name, $fields);
             $relation_join = $this->make_join($this->name);
             $where = $this->buildWhere($params, $join, true, $operator);
-            $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
+            echo $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
             $resultQuery = $this->query($sql);
         }
         return $resultQuery;
     }
 
-    private function make_join_fields($table_name, $fields = array()) {
+    private function make_join_fields($table_name, $fields = array(), $have_relation_join = false) {
         if ($fields == "*")
             $fields = array();
         $describe = $this->query("DESCRIBE {$table_name}");
@@ -385,11 +385,19 @@ class Model extends Loader {
             if (in_array("{$table_name}.{$colObj->Field}", $fields) || empty($fields))
                 $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}_{$colObj->Field}, ";
             $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
+            $modelName = $tableName . "Model";
             if (strstr($colObj->Field, "_id") || strstr($colObj->Field, "id_")) {
-                $relation_join .=substr($this->make_join_fields($tableName, $fields), 0, -1);
+                if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
+                    $have_relation_join = true;
+                    $relation_join .=substr($this->make_join_fields($tableName, $fields, $have_relation_join), 0, -1);
+                }
             }
         }
-        return $relation_join;
+        if ($have_relation_join) {
+            return $relation_join;
+        } else {
+            return substr($relation_join, 0, -2);
+        }
     }
 
     private function make_join($table_name) {
