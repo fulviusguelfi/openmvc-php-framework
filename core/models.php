@@ -341,28 +341,68 @@ class Model extends Loader {
      * @param array $fieĺds
      * @param string $join 
      * @param string $operator
+     * @param boolean $recursive
      */
-    public function findAll($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
-        $where = $this->buildWhere($params, $join, true, $operator);
-        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
-        $resultQuery = $this->query($sql);
-        foreach ($resultQuery as $lineKey => $lineObj) {
-            foreach ($lineObj as $colKey => $colObj) {
-                if (strstr($colKey, "_id") || strstr($colKey, "id_")) {
-                    $modelName = str_replace("_id", "", str_replace("id_", "", $colKey)) . "Model";
-                    $tableName = str_replace("_id", "", str_replace("id_", "", $colKey));
-                    if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
-                        $this->load("models", "{$modelName}");
-                        if ($this->$modelName->name == $tableName) {
-                            $var = $this->$modelName->findAll(array("id" => $colObj));
-                            $objectName = "{$this->name}.{$colKey}";
-                            $resultQuery[$lineKey]->$objectName = $var[0];
+    public function findAll($params = array(), $fields = "*", $join = 'AND', $operator = '=', $recursive = false) {
+        if ($recursive) {
+            $where = $this->buildWhere($params, $join, true, $operator);
+            $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
+            $resultQuery = $this->query($sql);
+            foreach ($resultQuery as $lineKey => $lineObj) {
+                foreach ($lineObj as $colKey => $colObj) {
+                    if (strstr($colKey, "_id") || strstr($colKey, "id_")) {
+                        $tableName = str_replace("_id", "", str_replace("id_", "", $colKey));
+                        $modelName = $tableName . "Model";
+                        if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
+                            $this->load("models", "{$modelName}");
+                            if ($this->$modelName->name == $tableName) {
+                                $var = $this->$modelName->findAll(array("id" => $colObj));
+                                $objectName = "{$this->name}.{$colKey}";
+                                $resultQuery[$lineKey]->$objectName = $var[0];
+                            }
                         }
                     }
                 }
             }
+        } else {
+            if ($fields == "*")
+                $fields = $this->make_join_fields($this->name);
+            $relation_join = $this->make_join($this->name);
+            $where = $this->buildWhere($params, $join, true, $operator);
+            $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
+            $resultQuery = $this->query($sql);
         }
         return $resultQuery;
+    }
+
+    private function make_join_fields($table_name) {
+        $describe = $this->query("DESCRIBE {$table_name}");
+        $relation_join = "";
+        foreach ($describe as $colKey => $colObj) {
+            $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
+            $modelName = $tableName . "Model";
+            $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}_{$colObj->Field}, ";
+            if (strstr($colObj->Field, "_id") || strstr($colObj->Field, "id_")) {
+                $relation_join .=substr($this->make_join_fields($tableName), 0, -1);
+            }
+        }
+        return $relation_join;
+    }
+
+    private function make_join($table_name) {
+        $describe = $this->query("DESCRIBE {$table_name}");
+        $relation_join = "";
+        foreach ($describe as $colKey => $colObj) {
+            if (strstr($colObj->Field, "_id") || strstr($colObj->Field, "id_")) {
+                $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
+                $modelName = $tableName . "Model";
+                if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
+                    $relation_join .= " JOIN {$tableName} ON ($tableName.id = {$table_name}.{$colObj->Field}) ";
+                    $relation_join .=$this->make_join($tableName);
+                }
+            }
+        }
+        return $relation_join;
     }
 
     public function last() {
