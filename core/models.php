@@ -392,7 +392,7 @@ class Model extends Loader {
         $describe = $this->query("DESCRIBE {$table_name}");
         $relation_join = "";
         foreach ($describe as $colKey => $colObj) {
-            if (in_array("{$table_name}.{$colObj->Field}", $fields) || empty($fields))
+            if ((in_array("{$table_name}.{$colObj->Field}", $fields) || empty($fields)) || (in_array("{$table_name}.*", $fields)))
                 $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}__OPENMVC__{$colObj->Field}, ";
             $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
             $modelName = $tableName . "Model";
