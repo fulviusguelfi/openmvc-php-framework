@@ -345,6 +345,8 @@ class Model extends Loader {
      */
     public function findAll($params = array(), $fields = "*", $join = 'AND', $operator = '=', $recursive = false) {
         if ($recursive) {
+            if (empty($fields))
+                $fields = "*";
             $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
             $resultQuery = $this->query($sql);
@@ -356,7 +358,7 @@ class Model extends Loader {
                         if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/models/{$modelName}.php")) {
                             $this->load("models", "{$modelName}");
                             if ($this->$modelName->name == $tableName) {
-                                $var = $this->$modelName->findAll(array("id" => $colObj));
+                                $var = $this->$modelName->findAll(array("id" => $colObj), $fields, $join, $operator, $recursive);
                                 $objectName = "{$this->name}.{$colKey}";
                                 $resultQuery[$lineKey]->$objectName = $var[0];
                             }
