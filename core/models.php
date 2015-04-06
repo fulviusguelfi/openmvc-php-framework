@@ -377,13 +377,13 @@ class Model extends Loader {
             foreach ($resultQuery as $key => $value) {
                 foreach ($value as $key2 => $value2) {
                     $explode = explode("__OPENMVC__", $key2);
-                    $return[$key][$explode[0]][$explode[1]] = $value2;
+                    $return[$key]->$explode[0]->$explode[1] = $value2;
                 }
             }
         } else {
             $return = $resultQuery;
         }
-        return $return;
+        return  $return;
     }
 
     private function make_join_fields($table_name, $fields = array(), $have_relation_join = false) {
