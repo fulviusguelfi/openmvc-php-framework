@@ -177,7 +177,7 @@ class Model extends Loader {
         if (strstr($mimeType, "image")) {
 //        header("Content-Type: image/jpeg");
 //        echo $obj->$fieldFile;
-            //
+//
             $cobe64 = base64_encode($code_binary);
             echo "<img src='data:{$mimeType};base64,{$cobe64}' >";
 //            echo "data:{$mimeType};base64,{$cobe64}";
@@ -373,7 +373,17 @@ class Model extends Loader {
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
             $resultQuery = $this->query($sql);
         }
-        return $resultQuery;
+        if (!$recursive) {
+            foreach ($resultQuery as $key => $value) {
+                foreach ($value as $key2 => $value2) {
+                    $explode = explode("__OPENMVC__", $key2);
+                    $return[$key][$explode[0]][$explode[1]] = $value2;
+                }
+            }
+        } else {
+            $return = $resultQuery;
+        }
+        return $return;
     }
 
     private function make_join_fields($table_name, $fields = array(), $have_relation_join = false) {
@@ -383,7 +393,7 @@ class Model extends Loader {
         $relation_join = "";
         foreach ($describe as $colKey => $colObj) {
             if (in_array("{$table_name}.{$colObj->Field}", $fields) || empty($fields))
-                $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}_{$colObj->Field}, ";
+                $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}__OPENMVC__{$colObj->Field}, ";
             $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
             $modelName = $tableName . "Model";
             if (strstr($colObj->Field, "_id") || strstr($colObj->Field, "id_")) {
@@ -394,7 +404,12 @@ class Model extends Loader {
             }
         }
         if ($have_relation_join) {
-            return $relation_join;
+            $relation_joinTMP = substr(strrev($relation_join), 0, -strlen($relation_join) + 1);
+            if ($relation_joinTMP == ",") {
+                return substr($relation_join, 0, -1);
+            } else {
+                return $relation_join;
+            }
         } else {
             return substr($relation_join, 0, -2);
         }
