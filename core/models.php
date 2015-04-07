@@ -475,7 +475,11 @@ class Model extends Loader {
                             }
                             if (is_string($in_key)) {
                                 $joined = false;
-                                $_conditions[] = " ({$in_key} = '{$in_val}') ";
+                                if (strstr($in_key, " LIKE%%")) {
+                                    $_conditions[] = " (" . str_replace("LIKE%%", "", $in_key) . " LIKE  '%{$in_val}%') ";
+                                } else {
+                                    $_conditions[] = " ({$in_key}" . (strstr($in_key, " ") ? "" : $operator) . " '{$in_val}') ";
+                                }
                             }
                         }
                         if ($joined) {
