@@ -329,6 +329,9 @@ class Model extends Loader {
      * @param string $operator
      */
     public function find($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
+        if (is_array(end($params))) {
+            $join = "OR";
+        }
         $where = $this->buildWhere($params, $join, true, $operator);
         $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
         return $this->get_results($sql);
@@ -347,7 +350,7 @@ class Model extends Loader {
         if ($recursive) {
             if (empty($fields))
                 $fields = "*";
-            echo $where = $this->buildWhere($params, $join, true, $operator);
+            $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
             $resultQuery = $this->get_results($sql);
             foreach ($resultQuery as $lineKey => $lineObj) {
@@ -369,6 +372,9 @@ class Model extends Loader {
         } else {
             $fields = $this->make_join_fields($this->name, $fields);
             $relation_join = $this->make_join($this->name);
+            if (is_array(end($params))) {
+                $join = "OR";
+            }
             $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
             $resultQuery = $this->get_results($sql);
@@ -459,6 +465,7 @@ class Model extends Loader {
         if (!empty($params)) {
             if (is_array($params)) {
                 $_conditions = array();
+                $lastKey = -1;
                 foreach ($params as $key => $val) {
                     if (strtoupper($operator) == "LIKE") {
                         $_conditions[] = "{$key} LIKE '%{$val}%'";
@@ -470,26 +477,43 @@ class Model extends Loader {
 
                         foreach ($val as $in_key => $in_val) {
                             if (is_numeric($in_val)) {
-                                $joined = true;
                                 $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
+                                $joined = true;
                             }
+
                             if (is_string($in_key)) {
-                                $joined = false;
-                                if (strstr($in_key, " LIKE%%")) {
-                                    $_conditions[] = " (" . str_replace("LIKE%%", "", $in_key) . " LIKE  '%{$in_val}%') ";
-                                } else {
-                                    $_conditions[] = " ({$in_key}" . (strstr($in_key, " ") ? "" : $operator) . " '{$in_val}') ";
+                                if (!strstr($in_key, " LIKE%%")) {
+                                    $joined2 = false;
+                                    if (is_array($in_val)) {
+                                        foreach ($in_val as $in_key2 => $in_val2) {
+                                            if (is_numeric($in_val2)) {
+                                                $joined_values_in[] = is_numeric($in_val2) ? $in_val2 : "'{$in_val2}'";
+                                                $joined2 = true;
+                                            }
+                                        }
+                                    } else {
+                                        $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
+                                    }
+                                }
+                                if (!$joined) {
+                                    if ($joined2) {
+                                        if (is_string($in_key)) {
+                                            $joined_values_in = join(',', $joined_values_in);
+                                            $_conditions[] = "{$in_key} IN ({$joined_values_in})";
+                                        }
+                                    }
                                 }
                             }
                         }
                         if ($joined) {
-                            $joined_values = join(',', $joined_values);
-                            $_conditions[] = "{$key} IN ({$joined_values})";
-                        } else {
-                            $_conditions[] = "OR";
+                            if (is_string($key)) {
+                                $joined_values = join(',', $joined_values);
+                                $_conditions[] = "{$key} IN ({$joined_values})";
+                            }
                         }
                     } else {
-                        $_conditions[] = "{$key} " . (strstr($key, " ") ? "" : $operator) . (is_string($val) ? ($val == "NULL" ? $val : "'" . str_replace('"', "'", $val) . "'" ) : $val);
+//                        $_conditions[] = "(" . $this->buildWhere($params, "OR", false, $operator) . ")";
+                        $_conditions[$key] = "{$key} " . (strstr($key, " ") ? "" : $operator) . (is_string($val) ? ($val == "NULL" ? $val : "'" . str_replace('"', "'", $val) . "'" ) : $val);
                     }
                 }
                 $join = strtoupper($join);
@@ -502,9 +526,11 @@ class Model extends Loader {
                 $where = (string) $params;
             }
         }
-        $where = str_replace(")  AND  (", " AND ", $where);
-        $where = str_replace("  AND OR AND  ", " OR ", $where);
-        $where = str_replace(")  AND OR", ")", $where);
+//        $where = str_replace("  AND OR AND OR", "", $where);
+//        $where = str_replace(")  AND  (", " AND ", $where);
+//        $where = str_replace("  AND OR AND  ", " OR ", $where);
+//        $where = str_replace("  AND OR", "", $where);
+        $where = str_replace(" AND OR AND ", " OR ", $where);
         return $where;
     }
 
