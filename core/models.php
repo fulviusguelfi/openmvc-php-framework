@@ -487,7 +487,8 @@ class Model extends Loader {
                                         $joined_values_in = array();
                                         foreach ($in_val as $in_key2 => $in_val2) {
                                             if (is_numeric($in_val2)) {
-                                                $joined_values_in[] = is_numeric($in_val2) ? $in_val2 : "'{$in_val2}'";
+//                                                $joined_values_in[] = is_numeric($in_val2) ? $in_val2 : "'{$in_val2}'";
+                                        $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
                                                 $joined2 = true;
                                             }
                                         }
@@ -497,14 +498,14 @@ class Model extends Loader {
                                 } else {
                                     $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
                                 }
-                                if (!$joined) {
-                                    if ($joined2) {
-                                        if (is_string($in_key)) {
-                                            $joined_values_inSTR = join(',', $joined_values_in);
-                                            $_conditions[] = "{$in_key} IN ({$joined_values_inSTR})";
-                                        }
-                                    }
-                                }
+//                                if (!$joined) {
+//                                    if ($joined2) {
+//                                        if (is_string($in_key)) {
+//                                            $joined_values_inSTR = join(',', $joined_values_in);
+//                                            $_conditions[] = "{$in_key} IN ({$joined_values_inSTR})";
+//                                        }
+//                                    }
+//                                }
                             }
                         }
                         if ($joined) {
