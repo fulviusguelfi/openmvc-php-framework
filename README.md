@@ -205,6 +205,7 @@ ________________________________________________________________________________
 - 2: Variável $this do seu Model
   
   - A variável $this contém todo o seu model mais a classe Model que foi extendida anteriormente, essa classe contém funções padrão tais como: deletar(), salvar(), listar(), get() e query().
+  - Na variável $this->db->show_errors você pode mudar o seu valor para TRUE ou FALSE para exibir ou não os erros de queries executadas por este Model.
 
 _____________________________________________________________________________________________________________
   
