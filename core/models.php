@@ -331,7 +331,7 @@ class Model extends Loader {
     public function find($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
         $where = $this->buildWhere($params, $join, true, $operator);
         $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
-        return $this->query($sql);
+        return $this->get_results($sql);
     }
 
     /**
@@ -349,7 +349,7 @@ class Model extends Loader {
                 $fields = "*";
             $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
-            $resultQuery = $this->query($sql);
+            $resultQuery = $this->get_results($sql);
             foreach ($resultQuery as $lineKey => $lineObj) {
                 foreach ($lineObj as $colKey => $colObj) {
                     if (strstr($colKey, "_id") || strstr($colKey, "id_")) {
@@ -371,7 +371,7 @@ class Model extends Loader {
             $relation_join = $this->make_join($this->name);
             $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$relation_join} {$where}";
-            $resultQuery = $this->query($sql);
+            $resultQuery = $this->get_results($sql);
         }
         if (!$recursive) {
             foreach ($resultQuery as $key => $value) {
