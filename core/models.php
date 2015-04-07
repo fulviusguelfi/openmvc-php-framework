@@ -474,7 +474,6 @@ class Model extends Loader {
                     } else if (is_array($val) && !empty($val)) {
                         $joined_values = array();
                         $joined = false;
-
                         foreach ($val as $in_key => $in_val) {
                             if (is_numeric($in_val)) {
                                 $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
@@ -494,6 +493,8 @@ class Model extends Loader {
                                     } else {
                                         $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
                                     }
+                                } else {
+                                    $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
                                 }
                                 if (!$joined) {
                                     if ($joined2) {
