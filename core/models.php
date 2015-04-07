@@ -405,7 +405,7 @@ class Model extends Loader {
             }
         }
         if ($have_relation_join) {
-            $relation_joinTMP = substr(strrev($relation_join), 0, -strlen($relation_join) + 1);
+            $relation_joinTMP = substr(strrev($relation_join), 0, -strlen($relation_join));
             if ($relation_joinTMP === ",") {
                 return substr($relation_join, 0, -1);
             }
