@@ -25,6 +25,10 @@ class CLASS_NAME_TABLE_Model extends Model {
 
     var $name = "TABLE_";
 
+    public function init() {
+        $this->db->show_errors = FALSE;
+    }
+
     public function delete_($id) {
         return $this->deletar($id);
     }
