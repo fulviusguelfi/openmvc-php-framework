@@ -393,27 +393,19 @@ class Model extends Loader {
         $relation_join = "";
         foreach ($describe as $colKey => $colObj) {
             if ((in_array("{$table_name}.{$colObj->Field}", $fields) || empty($fields)) || (in_array("{$table_name}.*", $fields)))
-                $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}__OPENMVC__{$colObj->Field}, ";
+                $relation_join .= " {$table_name}.{$colObj->Field} as {$table_name}__OPENMVC__{$colObj->Field},";
             $tableName = str_replace("_id", "", str_replace("id_", "", $colObj->Field));
             if (strstr($colObj->Field, "_id") || strstr($colObj->Field, "id_")) {
                 $modelNameA = "{$_SERVER['DOCUMENT_ROOT']}/models/{$tableName}Model.php";
                 $modelNameB = "{$_SERVER['DOCUMENT_ROOT']}/models/{$table_name}Model.php";
                 if (file_exists($modelNameA) && file_exists($modelNameB)) {
                     $have_relation_join = true;
-                    $relation_join .=substr($this->make_join_fields($tableName, $fields, $have_relation_join), 0, -1);
+                    $relation_join .=$this->make_join_fields($tableName, $fields, $have_relation_join) . "%virgula%";
                 }
             }
         }
         if ($have_relation_join) {
-            $relation_joinTMP = substr(strrev($relation_join), 0, -strlen($relation_join));
-            if ($relation_joinTMP === ",") {
-                return substr($relation_join, 0, -1);
-            }
-            if ($relation_joinTMP === ", " || $relation_joinTMP === " ,") {
-                return substr($relation_join, 0, -2);
-            } else {
-                return $relation_join;
-            }
+            return str_replace("%virgula%", "", str_replace(",%virgula%", "", $relation_join));
         } else {
             return substr($relation_join, 0, -2);
         }
