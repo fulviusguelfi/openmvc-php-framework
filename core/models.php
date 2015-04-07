@@ -407,7 +407,7 @@ class Model extends Loader {
         if ($have_relation_join) {
             return str_replace("%virgula%", "", str_replace(",%virgula%", "", $relation_join));
         } else {
-            return substr($relation_join, 0, -2);
+            return substr($relation_join, 0, -1);
         }
     }
 
