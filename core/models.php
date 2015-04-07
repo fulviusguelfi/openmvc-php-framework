@@ -341,7 +341,7 @@ class Model extends Loader {
      * @param array $fieĺds
      * @param string $join 
      * @param string $operator
-     * @param boolean $recursive
+     * @param boolean $recursiveLoop
      */
     public function findAll($params = array(), $fields = "*", $join = 'AND', $operator = '=', $recursive = false) {
         if ($recursive) {
