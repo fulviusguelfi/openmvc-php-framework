@@ -268,8 +268,7 @@ class wpdb {
      * @access private
      * @var array
      */
-    var $tables = array('users', 'usermeta', 'posts', 'categories', 'post2cat', 'comments', 'links', 'link2cat', 'options',
-        'postmeta', 'terms', 'term_taxonomy', 'term_relationships');
+    var $tables = array();
 
     /**
      * Format specifiers for DB columns. Columns not listed here default to %s.  Initialized in wp-settings.php.
