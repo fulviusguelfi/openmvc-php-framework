@@ -526,11 +526,6 @@ class Model extends Loader {
                 $where = (string) $params;
             }
         }
-//        $where = str_replace("  AND OR AND OR", "", $where);
-//        $where = str_replace(")  AND  (", " AND ", $where);
-//        $where = str_replace("  AND OR AND  ", " OR ", $where);
-//        $where = str_replace("  AND OR", "", $where);
-//        $where = str_replace(" AND OR AND ", " OR ", $where);
         return $where;
     }
 
