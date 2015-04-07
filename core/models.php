@@ -484,6 +484,7 @@ class Model extends Loader {
                                 if (!strstr($in_key, " LIKE%%")) {
                                     $joined2 = false;
                                     if (is_array($in_val)) {
+                                        $joined_values_in = array();
                                         foreach ($in_val as $in_key2 => $in_val2) {
                                             if (is_numeric($in_val2)) {
                                                 $joined_values_in[] = is_numeric($in_val2) ? $in_val2 : "'{$in_val2}'";
@@ -499,8 +500,8 @@ class Model extends Loader {
                                 if (!$joined) {
                                     if ($joined2) {
                                         if (is_string($in_key)) {
-                                            $joined_values_in = join(',', $joined_values_in);
-                                            $_conditions[] = "{$in_key} IN ({$joined_values_in})";
+                                            $joined_values_inSTR = join(',', $joined_values_in);
+                                            $_conditions[] = "{$in_key} IN ({$joined_values_inSTR})";
                                         }
                                     }
                                 }
@@ -508,8 +509,8 @@ class Model extends Loader {
                         }
                         if ($joined) {
                             if (is_string($key)) {
-                                $joined_values = join(',', $joined_values);
-                                $_conditions[] = "{$key} IN ({$joined_values})";
+                                $joined_valuesSTR = join(',', $joined_values);
+                                $_conditions[] = "{$key} IN ({$joined_valuesSTR})";
                             }
                         }
                     } else {
