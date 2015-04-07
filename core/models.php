@@ -347,7 +347,7 @@ class Model extends Loader {
         if ($recursive) {
             if (empty($fields))
                 $fields = "*";
-            $where = $this->buildWhere($params, $join, true, $operator);
+            echo $where = $this->buildWhere($params, $join, true, $operator);
             $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
             $resultQuery = $this->get_results($sql);
             foreach ($resultQuery as $lineKey => $lineObj) {
@@ -466,14 +466,24 @@ class Model extends Loader {
                         $_conditions[] = str_replace("LIKE%%", "", $key) . " LIKE '%{$val}%'";
                     } else if (is_array($val) && !empty($val)) {
                         $joined_values = array();
+                        $joined = false;
 
-                        foreach ($val as $in_val) {
-                            $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
+                        foreach ($val as $in_key => $in_val) {
+                            if (is_numeric($in_val)) {
+                                $joined = true;
+                                $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
+                            }
+                            if (is_string($in_key)) {
+                                $joined = false;
+                                $_conditions[] = " ({$in_key} = '{$in_val}') ";
+                            }
                         }
-
-                        $joined_values = join(',', $joined_values);
-
-                        $_conditions[] = "{$key} IN ({$joined_values})";
+                        if ($joined) {
+                            $joined_values = join(',', $joined_values);
+                            $_conditions[] = "{$key} IN ({$joined_values})";
+                        } else {
+                            $_conditions[] = "OR";
+                        }
                     } else {
                         $_conditions[] = "{$key} " . (strstr($key, " ") ? "" : $operator) . (is_string($val) ? ($val == "NULL" ? $val : "'" . str_replace('"', "'", $val) . "'" ) : $val);
                     }
@@ -488,6 +498,9 @@ class Model extends Loader {
                 $where = (string) $params;
             }
         }
+        $where = str_replace(")  AND  (", " AND ", $where);
+        $where = str_replace("  AND OR AND  ", " OR ", $where);
+        $where = str_replace(")  AND OR", ")", $where);
         return $where;
     }
 
