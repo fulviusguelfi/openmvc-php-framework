@@ -260,7 +260,7 @@ class Model extends Loader {
         }
     }
 
-    public function listar($pagina = null, $max_per_page = null, $status = null, $select_Fields = "*") {
+    public function listar($pagina = null, $max_per_page = null, $status = null, $select_Fields = "*", $ORDER = "id") {
         $where = '';
         $limit = '';
 
@@ -276,7 +276,7 @@ class Model extends Loader {
             $where .= "WHERE status = {$status}";
         }
 
-        $sql = "SELECT {$select_Fields} FROM {$this->name} {$where} ORDER BY id DESC {$limit}";
+        $sql = "SELECT {$select_Fields} FROM {$this->name} {$where} ORDER BY {$ORDER} DESC {$limit}";
 
         return $this->query($sql);
     }
