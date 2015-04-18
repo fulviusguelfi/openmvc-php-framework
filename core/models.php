@@ -406,7 +406,7 @@ class Model extends Loader {
                 $modelNameB = "{$_SERVER['DOCUMENT_ROOT']}/models/{$table_name}Model.php";
                 if (file_exists($modelNameA) && file_exists($modelNameB)) {
                     $have_relation_join = true;
-                    $relation_join .=$this->make_join_fields($tableName, $fields, $have_relation_join) . "%virgula%";
+                    $relation_join .=$this->make_join_fields($tableName, $fields, $have_relation_join) . ",%virgula%";
                 }
             }
         }
