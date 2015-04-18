@@ -370,7 +370,7 @@ class Model extends Loader {
                 }
             }
         } else {
-            $fields = $this->make_join_fields($this->name, $fields);
+            $fields = substr($this->make_join_fields($this->name, $fields), 0, -1);
             $relation_join = $this->make_join($this->name);
             if (is_array(end($params))) {
                 $join = "OR";
