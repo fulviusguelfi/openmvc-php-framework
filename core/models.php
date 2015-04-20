@@ -427,7 +427,8 @@ class Model extends Loader {
                 $modelNameB = "{$_SERVER['DOCUMENT_ROOT']}/models/{$table_name}Model.php";
                 if (file_exists($modelNameA) && file_exists($modelNameB)) {
                     $relation_join .= " LEFT JOIN {$tableName} ON ($tableName.id = {$table_name}.{$colObj->Field}) ";
-                    $relation_join .=$this->make_join($tableName);
+                    if (!strstr($relation_join, "LEFT JOIN {$tableName} ON"))
+                        $relation_join .=$this->make_join($tableName);
                 }
             }
         }
