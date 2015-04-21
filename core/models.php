@@ -328,12 +328,12 @@ class Model extends Loader {
      * @param string $join 
      * @param string $operator
      */
-    public function find($params = array(), $fields = "*", $join = 'AND', $operator = '=') {
+    public function find($params = array(), $fields = "*", $join = 'AND', $operator = '=', $order = "") {
         if (is_array(end($params))) {
             $join = "OR";
         }
         $where = $this->buildWhere($params, $join, true, $operator);
-        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where}";
+        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where} {$order}";
         return $this->get_results($sql);
     }
 
