@@ -472,6 +472,8 @@ class Model extends Loader {
                         $_conditions[] = "{$key} LIKE '%{$val}%'";
                     } else if (strstr($key, " LIKE%%")) {
                         $_conditions[] = str_replace("LIKE%%", "", $key) . " LIKE '%{$val}%'";
+                    } else if ($val == NULL) {
+                        $_conditions[] = " $key IS NULL";
                     } else if (is_array($val) && !empty($val)) {
                         $joined_values = array();
                         $joined = false;
