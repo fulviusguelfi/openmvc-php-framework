@@ -30,7 +30,7 @@ class Home extends Controller {
     public function loadCrudGenerator() {
         $this->load("models", "binModel");
         $tables = $this->binModel->getTables();
-        $this->view("home/index", array("tables" => $tables));
+        $this->view("home/CrudGenerator", array("tables" => $tables));
     }
 
 }
