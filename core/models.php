@@ -322,7 +322,7 @@ class Model extends Loader {
     }
 
     /**
-     * Pesquisa da tabela de acordo com os parametros recebidos.
+     * Cria join na tabela de acordo com os parametros recebidos.
      * 
      * @param array $params
      * @param string $table
@@ -331,8 +331,9 @@ class Model extends Loader {
      * @param string $operator - default =
      */
     public function join($params = array(), $table, $joinType = 'LEFT', $join = 'AND', $operator = '=') {
-        $join = str_replace("'", " ", $this->buildWhere($params, $join, FALSE, $operator));
-        $this->joins[] = "{$joinType} JOIN {$table} ON ({$join})";
+        $joins = $this->buildWhere($params, $join, FALSE, $operator);
+        $joins = str_replace("'", " ", $joins);
+        $this->joins[] = "{$joinType} JOIN {$table} ON ({$joins})";
         return $this;
     }
 
