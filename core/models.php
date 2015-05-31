@@ -30,6 +30,7 @@ class Model extends Loader {
     var $db;
     var $name; //ex. posts, terms, etc
     var $order;
+    var $joins;
 
     public function __construct($db = null) {
         parent::__construct();
@@ -324,6 +325,21 @@ class Model extends Loader {
      * Pesquisa da tabela de acordo com os parametros recebidos.
      * 
      * @param array $params
+     * @param string $table
+     * @param string $joinType - default LEFT
+     * @param string $join - default AND
+     * @param string $operator - default =
+     */
+    public function join($params = array(), $table, $joinType = 'LEFT', $join = 'AND', $operator = '=') {
+        $join = str_replace("'", " ", $this->buildWhere($params, $join, FALSE, $operator));
+        $this->joins[] = "{$joinType} JOIN {$table} ON ({$join})";
+        return $this;
+    }
+
+    /**
+     * Pesquisa da tabela de acordo com os parametros recebidos.
+     * 
+     * @param array $params
      * @param array $fieĺds
      * @param string $join 
      * @param string $operator
@@ -333,7 +349,7 @@ class Model extends Loader {
             $join = "OR";
         }
         $where = $this->buildWhere($params, $join, true, $operator);
-        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} {$where} {$order}";
+        $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} " . (!empty($this->joins) ? implode(" ", $this->joins) : "") . " {$where} {$order}";
         return $this->get_results($sql);
     }
 
