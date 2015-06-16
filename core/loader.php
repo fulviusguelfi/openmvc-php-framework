@@ -68,7 +68,7 @@ class Loader {
         $name = str_replace('/', '_', $name);
         $klass = ucfirst($name);
 
-        if ($item == "models")
+        if ($item == "models" || strpos($item, "/models") > 0)
             $instance = new $klass();
         else
             $instance = new $klass($name);

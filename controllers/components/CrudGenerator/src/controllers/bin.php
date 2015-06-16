@@ -24,11 +24,12 @@
 class Bin extends Controller {
 
     public function init() {
-        $this->load("models", "binModel");
+        $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
     public function crud($params) {
-        $table_name = $params[2];
+//        $table_name = $params[2];
+        $table_name = $params;
         $this->gerarCrud($table_name);
         if (file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php")) {
             echo "<center>";
@@ -102,7 +103,7 @@ class Bin extends Controller {
             }
 
             $fp = fopen($_SERVER[DOCUMENT_ROOT] . "/models/{$table_name}Model.php", "wa");
-            $php = file_get_contents($_SERVER[DOCUMENT_ROOT] . "/bin/files/TABLE_Model.php");
+            $php = file_get_contents($_SERVER[DOCUMENT_ROOT] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_Model.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
             $php = str_replace("/* RETURN_LISTAR */", $RETURN_LISTAR, $php);
@@ -119,7 +120,7 @@ class Bin extends Controller {
         }
         if (!file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php")) {
             $fp = fopen($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php", "wa");
-            $php = file_get_contents($_SERVER[DOCUMENT_ROOT] . "/bin/files/TABLE_.php");
+            $php = file_get_contents($_SERVER[DOCUMENT_ROOT] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
 
@@ -163,7 +164,7 @@ class Bin extends Controller {
 //                    $OBJECTS .= '                $' . $structure->Field . 'ext = $this->' . $table_name . 'Model->get_filename_ext($_FILES["' . $structure->Field . '"]["name"]);' . $quebra;
 //                    $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$' . $structure->Field . 'ext.";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
                     $OBJECTS .= '                $obj->' . $structure->Field . ' = "data:".$_FILES["' . $structure->Field . '"]["type"].";".file_get_contents($_FILES["' . $structure->Field . '"]["tmp_name"]);' . $quebra;
-                    $OBJECTS .= '            }' . $quebra.'            ';
+                    $OBJECTS .= '            }' . $quebra . '            ';
                 }
             }
             IF ($HAVEFILEFIELD) {

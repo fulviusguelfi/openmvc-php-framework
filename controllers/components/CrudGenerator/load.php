@@ -1,4 +1,3 @@
-
 <?php
 
 /*
@@ -18,20 +17,21 @@
   junto com este programa, se não, escreva para a Fundação do Software
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-?>
-<?php
 
-class Home extends Controller {
+class CrudGenerator extends Controller {
 
-    public function index() {
-        $this->loadCrudGenerator();
+    public function init() {
+        $this->load("controllers/components/CrudGenerator/src/controllers", "bin");
+        $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function loadCrudGenerator() {
-        $this->load("components", "CrudGenerator");
-        $this->CrudGenerator->execute();
+    public function execute() {
+        if (!empty($_REQUEST['crud'])) {
+            $this->bin->crud($_REQUEST['crud']);
+        } else {
+            $tables = $this->binModel->getTables();
+            $this->view("../controllers/components/CrudGenerator/src/views/CrudGenerator", array("tables" => $tables));
+        }
     }
 
 }
-
-?>
