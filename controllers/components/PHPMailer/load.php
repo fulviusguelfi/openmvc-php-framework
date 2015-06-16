@@ -6,4 +6,4 @@
  * and open the template in the editor.
  */
 
-include $_SERVER['DOCUMENT_ROOT'] . "/extlibs/PHPMailer/PHPMailerAutoload.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/controllers/PHPMailer/src/PHPMailerAutoload.php";

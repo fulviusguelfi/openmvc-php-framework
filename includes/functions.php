@@ -1798,6 +1798,7 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2892,18 +2893,23 @@ function _wp_mysql_week($column) {
 function execute_action($controller, $action, $params = null) {
     require_once("core/functions.php");
     if (is_file($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$controller}.php")) {
-        require_once("controllers/{$controller}.php");
-        $klass = ucfirst($controller);
-        $instance = new $klass($controller, $action);
-        if (method_exists($instance, $action)) {
-            if (empty($params))
-                return $instance->$action();
-            else
-                return $instance->$action($params);
-        }else {
-            $backtrace = debug_backtrace();
+        try {
+            require_once("controllers/{$controller}.php");
+            $klass = ucfirst($controller);
+            $instance = new $klass($controller, $action);
+            if (method_exists($instance, $action)) {
+                if (empty($params))
+                    return $instance->$action();
+                else
+                    return $instance->$action($params);
+            }else {
+                $backtrace = debug_backtrace();
 //            pr($backtrace[0][line]);
-            echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+                echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+            }
+        } catch (Exception $e) {
+            echo_error( "Exceção capturada: {$e->getMessage()}", 'Exception');
+//            echo 'Exceção capturada: ', $e->getMessage(), "\n";
         }
     } else {
         $backtrace = debug_backtrace();
