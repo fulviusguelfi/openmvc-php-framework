@@ -21,3 +21,4 @@
 <center>
     <h2>Hello World</h2>
 </center>
+<p><?php echo $var; ?></p>
