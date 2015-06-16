@@ -51,7 +51,7 @@ class Loader {
         $file = null;
 
         if ($item == "components")
-            $file = "controllers/{$item}/{$name}.php";
+            $file = "controllers/{$item}/{$name}/load.php";
         else
             $file = "{$item}/{$name}.php";
 
