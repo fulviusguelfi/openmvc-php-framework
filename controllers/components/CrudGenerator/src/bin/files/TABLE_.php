@@ -59,6 +59,8 @@ class CLASS_NAME_TABLE_ extends Controller {
             $obj = (object) $_POST;
             /* OBJECTS */
             $salvo = $this->TABLE_Model->insert_($obj);
+            if ($salvo)
+                $this->redirect("/TABLE_/listar");
         }
         $this->view("TABLE_/edit", array("obj" => $obj /* VAR_RELATIONS */));
     }
