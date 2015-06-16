@@ -29,6 +29,7 @@ class Home extends Controller {
 
     public function loadCrudGenerator() {
         $this->load("components", "CrudGenerator");
+        $this->CrudGenerator->bootstrap = true;
         $this->CrudGenerator->execute();
     }
 

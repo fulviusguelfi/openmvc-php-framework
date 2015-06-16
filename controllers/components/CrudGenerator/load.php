@@ -20,6 +20,8 @@
 
 class CrudGenerator extends Controller {
 
+    var $bootstrap = false;
+
     public function init() {
         $this->load("controllers/components/CrudGenerator/src/controllers", "bin");
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
@@ -27,7 +29,7 @@ class CrudGenerator extends Controller {
 
     public function execute() {
         if (!empty($_REQUEST['crud'])) {
-            $this->bin->crud($_REQUEST['crud']);
+            $this->bin->crud($_REQUEST['crud'], $this->bootstrap);
         } else {
             $tables = $this->binModel->getTables();
             $this->view("../controllers/components/CrudGenerator/src/views/CrudGenerator", array("tables" => $tables));

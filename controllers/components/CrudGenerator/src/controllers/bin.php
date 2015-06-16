@@ -27,10 +27,10 @@ class Bin extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function crud($params) {
+    public function crud($params, $bootstrap = false) {
 //        $table_name = $params[2];
         $table_name = $params;
-        $this->gerarCrud($table_name);
+        $this->gerarCrud($table_name, $bootstrap);
         if (file_exists($_SERVER[DOCUMENT_ROOT] . "/controllers/{$table_name}.php")) {
             echo "<center>";
             echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2>";
@@ -51,7 +51,7 @@ class Bin extends Controller {
         }
     }
 
-    public function gerarCrud($table_name) {
+    public function gerarCrud($table_name, $bootstrap = false) {
         $table_structure = $this->binModel->getTableStructure($table_name);
         $view_dir = $_SERVER[DOCUMENT_ROOT] . "/views/{$table_name}";
         // CREATE VIEWS DIR
@@ -60,13 +60,13 @@ class Bin extends Controller {
         chmod($view_dir, 0777);
         // CREATE VIEW list.php
         if (!file_exists($view_dir . '/list.php')) {
-            $this->makeViewList($view_dir, $table_structure, $table_name);
+            $this->makeViewList($view_dir, $table_structure, $table_name, $bootstrap);
             touch($view_dir . '/list.php');
             chmod($view_dir . '/list.php', 0777);
         }
         // CREATE VIEW edit.php
         if (!file_exists($view_dir . '/edit.php')) {
-            $this->makeViewEdit($view_dir, $table_structure);
+            $this->makeViewEdit($view_dir, $table_structure, $bootstrap);
             touch($view_dir . '/edit.php');
             chmod($view_dir . '/edit.php', 0777);
         }
@@ -184,7 +184,7 @@ class Bin extends Controller {
         }
     }
 
-    public function makeViewList($view_dir, $table_structure, $table_name) {
+    public function makeViewList($view_dir, $table_structure, $table_name, $bootstrap = false) {
         if (PATH_SEPARATOR == ":") {
             $quebra = "\r\n";
         } else {
@@ -193,6 +193,16 @@ class Bin extends Controller {
         $idStyle = 'id';
         $fp = fopen($view_dir . '/list.php', 'wa');
         $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
+        if ($bootstrap) {
+            $php .= '<style>input, textarea, button {width:100%;}</style>' . $quebra;
+            $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
+            $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
+            $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
+            $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
+            $php .= '<div class="container">' . $quebra;
+        }
+        $php .='<div class="row">' . $quebra;
+        $php .='<div class="col-md-12 ">' . $quebra;
         $php .= "<table>" . $quebra
                 . "<thead>" . $quebra
                 . "<tr>" . $quebra;
@@ -228,11 +238,16 @@ class Bin extends Controller {
                 . '<?php endforeach; ?>' . $quebra;
         $php .= '</tbody>' . $quebra
                 . '</table>' . $quebra;
+        $php .= '</div>' . $quebra;
+        $php .= '</div>' . $quebra;
+        if ($bootstrap) {
+            $php .= '</div>' . $quebra;
+        }
         fwrite($fp, $php);
         fclose($fp);
     }
 
-    public function makeViewEdit($view_dir, $table_structure) {
+    public function makeViewEdit($view_dir, $table_structure, $bootstrap = false) {
         if (PATH_SEPARATOR == ":") {
             $quebra = "\r\n";
         } else {
@@ -248,6 +263,14 @@ class Bin extends Controller {
             $mytables[] = $table1->$DB_KEY . "_ID";
         }
         $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
+        if ($bootstrap) {
+            $php .= '<style>input, textarea, button {width:100%;}</style>' . $quebra;
+            $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
+            $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
+            $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
+            $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
+            $php .= '<div class="container">' . $quebra;
+        }
         $php .= "<form method='POST' enctype='multipart/form-data'>" . $quebra;
 //        print_r($table_structure);
         foreach ($table_structure as $key => $obj) {
@@ -269,7 +292,8 @@ class Bin extends Controller {
                             }
                         }
                         //CREATE SELECT RELATION TABLES
-                        $php .='<div>' . $quebra;
+                        $php .='<div class="row">' . $quebra;
+                        $php .='<div class="col-md-12 ">' . $quebra;
                         $php .='<select  name="' . $obj->Field . '" id="' . $obj->Field . '_ID">' . $quebra;
                         $php .='<?php foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '): ?>' . $quebra;
                         $php .='<option value="<?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?>" <?php echo ($obj' . $table->$DB_KEY . '->' . $idTable . '== $obj->' . $obj->Field . ' ? "selected" : "")?>><?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?></option>' . $quebra;
@@ -277,19 +301,20 @@ class Bin extends Controller {
                         $php .='</select>' . $quebra;
                         $php .='<label for="' . $obj->Field . '_ID">' . ucwords($table->$DB_KEY) . '</label>' . $quebra;
                         $php .= '</div>' . $quebra;
+                        $php .= '</div>' . $quebra;
                         $escreveu = 1;
                     } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
 //                        echo $obj->Type." <br/>";
                         $inputType = $this->binModel->formType($obj->Type);
                         if ($inputType == "checkbox") {
                             //CREATE CHECKBOX
-                            $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> ><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
+                            $php .= '<div class="row"><div class="col-md-12 "><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> ><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div></div>' . $quebra;
                         } else if ($inputType != "textarea") {
                             //CREATE DEFAULT
-                            $php .= '<div><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '"><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
+                            $php .= '<div class="row"><div class="col-md-12 "><input type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '"><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div></div>' . $quebra;
                         } else if ($inputType == "textarea") {
                             //CREATE TEXTAREA
-                            $php .= '<div><textarea id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div>' . $quebra;
+                            $php .= '<div class="row"><div class="col-md-12 "><textarea id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea><label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label></div></div>' . $quebra;
                         }
                         $escreveu = 1;
                     }
@@ -299,8 +324,11 @@ class Bin extends Controller {
                 $php .= '<input type="hidden" name="' . $obj->Field . '" value="<?php echo $obj->' . $obj->Field . ' ?>">' . $quebra;
             }
         }
-        $php .= '<div><input type="submit"></div>' . $quebra
+        $php .= '<div><input type="submit" class="btn" ></div>' . $quebra
                 . '</form>' . $quebra;
+        if ($bootstrap) {
+            $php .= '</div>' . $quebra;
+        }
         fwrite($fp, $php);
         fclose($fp);
     }
