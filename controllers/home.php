@@ -25,6 +25,7 @@ class Home extends Controller {
 
     public function index() {
         $this->loadCrudGenerator();
+//        $this->view("home/index", array("var" => "Lorem Ipsum"));
     }
 
     public function loadCrudGenerator() {
