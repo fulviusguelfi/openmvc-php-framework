@@ -494,6 +494,43 @@ O exemplo acima retornará o resultado da Query:
 SELECT * FROM [tabela_do_model] WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB" + [RELACIONAMENTOS ENCONTRADOS NA TABELA];
 
 
+______________________________________________________________________________________________________________
+
+
+
+
+
+- 12: Função join() do Model 
+
+    -  Cria join na tabela de acordo com os parametros recebidos.
+
+    PARÂMETROS:
+
+     (array)  $params Dados para fazer as condições do join   ------- Ex: array('coluna' => 'valor') (obrigatório)
+
+     (string) $table Nome da tabela onde será feito o join   ------- Ex: tb_exemplo_tabela
+
+     (string) $joinType Tipo do join ------ Ex:("", "LEFT", "RIGHT", "INNER")
+
+     (string) $join Operador lógico - default AND  ------ Ex:(AND ou OR)
+     
+     (string) $operator Operador matemático - default = ----- Ex: (=, <=, >=, LIKE)  
+
+    RETORNO:
+
+    (array)//* Retorna array de objetos encontrados  */
+
+Exemplo:
+
+ $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => "AB");
+ $conditionsJoin = array("tabelaJoin.tabela_exemplo_id" => "[tabela_do_model].id");
+ $this->join($conditionsJoin,"tabelaJoin")
+      ->find(conditions);
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] JOIN tabelaJoin ON(tabelaJoin.tabela_exemplo_id = [tabela_do_model].id) WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB";
+
+
 
 ______________________________________________________________________________________________________________
   
