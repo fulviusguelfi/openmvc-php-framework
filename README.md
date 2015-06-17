@@ -506,15 +506,15 @@ ________________________________________________________________________________
 
     PARÂMETROS:
 
-     (array)  $params Dados para fazer as condições do join   ------- Ex: array('coluna' => 'valor') (obrigatório)
+     (array)  $params Dados para fazer as condições do join ---- Ex: array('coluna' => 'valor') (obrigatório)
 
-     (string) $table Nome da tabela onde será feito o join   ------- Ex: tb_exemplo_tabela
+     (string) $table Nome da tabela onde será feito o join ---- Ex: tb_exemplo_tabela (obrigatório)
 
-     (string) $joinType Tipo do join ------ Ex:("", "LEFT", "RIGHT", "INNER")
+     (string) $joinType Tipo do join ---- Ex:("", "LEFT", "RIGHT", "INNER")
 
-     (string) $join Operador lógico - default AND  ------ Ex:(AND ou OR)
+     (string) $join Operador lógico - default AND ---- Ex:(AND ou OR)
      
-     (string) $operator Operador matemático - default = ----- Ex: (=, <=, >=, LIKE)  
+     (string) $operator Operador matemático - default = ---- Ex: (=, <=, >=, LIKE)  
 
     RETORNO:
 
@@ -524,11 +524,21 @@ Exemplo:
 
  $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => "AB");
  $conditionsJoin = array("tabelaJoin.tabela_exemplo_id" => "[tabela_do_model].id");
- $this->join($conditionsJoin,"tabelaJoin")
+ $this->join($conditionsJoin, "tabelaJoin")
       ->find(conditions);
   
 O exemplo acima retornará o resultado da Query:
 SELECT * FROM [tabela_do_model] JOIN tabelaJoin ON(tabelaJoin.tabela_exemplo_id = [tabela_do_model].id) WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB";
+
+---------------------------------------------------------
+
+ $conditions = array("colunaA <=" => 123, "colunaB IS NOT" => "NULL", "colunaC" => "AB");
+ $conditionsJoin = array("tabelaJoin.tabela_exemplo_id" => "[tabela_do_model].id");
+ $this->join($conditionsJoin, "tabelaJoin", "INNER")
+      ->find(conditions);
+  
+O exemplo acima retornará o resultado da Query:
+SELECT * FROM [tabela_do_model] INNER JOIN tabelaJoin ON(tabelaJoin.tabela_exemplo_id = [tabela_do_model].id) WHERE colunaA <= 123 AND colunaB IS NOT NULL AND colunaC = "AB";
 
 
 
