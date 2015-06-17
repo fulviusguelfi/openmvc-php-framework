@@ -326,11 +326,11 @@ class Model extends Loader {
      * 
      * @param array $params
      * @param string $table
-     * @param string $joinType - default LEFT
+     * @param string $joinType 
      * @param string $join - default AND
      * @param string $operator - default =
      */
-    public function join($params = array(), $table, $joinType = 'LEFT', $join = 'AND', $operator = '=') {
+    public function join($params = array(), $table, $joinType = '', $join = 'AND', $operator = '=') {
         $joins = $this->buildWhere($params, $join, FALSE, $operator);
         $joins = str_replace("'", " ", $joins);
         $this->joins[] = "{$joinType} JOIN {$table} ON ({$joins})";
