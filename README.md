@@ -149,12 +149,17 @@ ________________________________________________________________________________
    
   Por Exemplo:
   
--No caso abaixo carregaremos dentro da variável $this o aqruivo /models/exemploModel.php, e a mesma terá toda a Classe ExemploModel carregada no objeto $this->exemploModel
+-No caso abaixo carregaremos dentro da variável $this o component PHPMailer,  e o mesmo terá toda a Classe PHPMailer carregada no objeto $this->PHPMailer
+
+$this->load('components','PHPMailer');
+
+
+-No caso abaixo carregaremos dentro da variável $this o arquivo /models/exemploModel.php, e a mesma terá toda a Classe ExemploModel carregada no objeto $this->exemploModel
 
 $this->load('models','exemploModel');
 
 
-- No caso abaixo carregaremos dentro da variável $this o aqruivo /controllers/meu_controller2.php, e a mesma terá toda a Classe Meu_controller2 carregada no objeto $this->meu_controller2
+- No caso abaixo carregaremos dentro da variável $this o arquivo /controllers/meu_controller2.php, e a mesma terá toda a Classe Meu_controller2 carregada no objeto $this->meu_controller2
 
 $this->load('controllers','meu_controller2');
 ___________________________________________________________________________________________________________________
@@ -524,17 +529,31 @@ jQuery.ajax({
 ______________________________________________________________________________________________________________
 
 
-GERADOR DE CRUD AUTOMÁTICO (1.2)
+COMPONENTS
+=====================================
+______________________________________________________________________________________________________________
+
+
+GERADOR DE CRUD AUTOMÁTICO (1.3)
 =====================================
 CrudGenerator CRUD - Create, Read, Update, Delete
 
 - 1: O OpenMvc assim que instalado já vem com o CrudGenerator funcionando, em sua tela inicial será exibida uma mensagem "Bem Vindo ao OpenMVC"
 seguido pela lista de Tabelas encontradas no Mysql conectado.
-    - Para gerar o crud de uma tabela basta clicar no link exibido na lista ou acessar a url /bin/crud/$NOME_DA_TABELA
+    - Para gerar o crud de uma tabela basta clicar no link exibido na lista ou acessar a url /?crud=$NOME_DA_TABELA
     - Para que o CrudGenerator relacione automaticamente duas ou mais tabelas basta que na tabela em questão exista a coluna 
 com o seguinte nome 'id_$NOME_DA_TABELA_A_RELACIONAR' ou '$NOME_DA_TABELA_A_RELACIONAR_id', 
 neste caso o crud irá gerar um select com os ids dos objetos da tabela relacionada
     - Para gerar um upload de arquivo junto ao crud basta criar uma coluna do tipo BLOB na tabela
+    - O Crud pode ser gerado com o BootStrap para obter as classes e layout responsivo.
+
+__________________________________________________________________________________________________
+
+PHPMailer
+=====================================
+Classe para gerenciamento de emails
+
+https://github.com/PHPMailer/PHPMailer/wiki
 
 __________________________________________________________________________________________________
 
@@ -542,5 +561,5 @@ ________________________________________________________________________________
 Licença:
 ========
 
-- Copyright (c) 2013 Thiago Valentoni Guelfi - BSWS
+- Copyright(c) 2013 - 2015 Thiago Valentoni Guelfi - BSWS
 - Open Source - Licença Pública Geral GNU
