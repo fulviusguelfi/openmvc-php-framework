@@ -209,12 +209,12 @@ ________________________________________________________________________________
 
 - 2: Variável $this do seu Model
   
-  - A variável $this contém todo o seu model mais a classe Model que foi extendida anteriormente, essa classe contém funções padrão tais como: deletar(), salvar(), listar(), get() e query().
+  - A variável $this contém todo o seu model mais a classe Model que foi extendida anteriormente, essa classe contém funções padrão tais como: delete(), save(), listar(), get() e query().
   - Na variável $this->db->show_errors você pode mudar o seu valor para TRUE ou FALSE para exibir ou não os erros de queries executadas por este Model.
 
 _____________________________________________________________________________________________________________
   
-- 3: Função deletar() do Model 
+- 3: Função delete() do Model 
 
     - Esta função serve para apagar uma linha da tabela default do model.
     
@@ -228,10 +228,10 @@ ________________________________________________________________________________
 
 Exemplo:
 
-return $this->deletar($id);
+return $this->delete($id);
 ______________________________________________________________________________________________________________
   
-- 4: Função salvar() do Model 
+- 4: Função save() do Model 
 
     - Esta função serve para salvar uma linha na tabela default do model.
     - Caso dentro do objeto recebido a posição 'id' não esteja vazia executa UPDATE se não executa INSERT  
@@ -257,7 +257,7 @@ Neste caso faremos o UPDATE da linha com id=1 e trocaremos o email 'exemplo@abcd
 
 $dados = (object) array("id"=> 1, "email"=>"aaaa@xpto.com" );
 
-return $this->salvar($dados);
+return $this->save($dados);
 
 
 
@@ -265,7 +265,7 @@ Neste caso faremos o INSERT de uma nova linha da tabela default.
 
 $dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );
 
-return $this->salvar($dados);
+return $this->save($dados);
 ______________________________________________________________________________________________________________
 
   
@@ -543,6 +543,28 @@ SELECT * FROM [tabela_do_model] INNER JOIN tabelaJoin ON(tabelaJoin.tabela_exemp
 
 
 ______________________________________________________________________________________________________________
+
+
+
+
+
+- 12: Função deleteWhere() do Model 
+
+    -  Deleta da tabela de acordo com os parametros.
+
+    PARÂMETROS:
+
+     (array)  $params Dados para fazer as condições do delete ---- Ex: array('coluna' => 'valor') (obrigatório)
+
+
+    Exemplo:
+    Neste caso faremos o DELETE de todas as linhas onde a coluna nome for igual a "teste" e a coluna email for igual a "bbb@exemplo.com"
+
+    $dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );
+
+    return $this->deleteWhere($dados);
+
+_____________________________________________________________________________________________________________
   
 
 
