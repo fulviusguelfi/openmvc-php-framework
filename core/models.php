@@ -286,6 +286,10 @@ class Model extends Loader {
         return $this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id)));
     }
 
+    public function save($dados) {
+        return $this->salvar($dados);
+    }
+
     public function salvar($dados) {
         $id = null;
         if (is_object($dados))
@@ -454,6 +458,26 @@ class Model extends Loader {
 
     public function last() {
         return $this->row("SELECT * FROM {$this->name} ORDER BY ID DESC LIMIT 1");
+    }
+
+    /**
+     * Deleta da tabela de acordo com os parametros.
+     * 
+     * @param int $id
+     */
+    public function deleteWhere($params) {
+        $where = $this->buildWhere($params);
+        $sql = "DELETE FROM  {$this->name} {$where}";
+        return $this->db->query($sql);
+    }
+
+    /**
+     * Deleta da tabela de acordo com o ID.
+     * 
+     * @param int $id
+     */
+    public function delete($id) {
+        return $this->deletar($id);
     }
 
     /**
