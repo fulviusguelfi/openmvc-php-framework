@@ -2942,6 +2942,7 @@ function echo_error($error_message, $num_error = null) {
                         box-shadow: 1px 1px 3px #333;
                         }
          </style>";
+    echo '<meta charset="utf-8">';
     echo "<center>";
     echo "<h2>OpenMVC ERROR::</h2>";
     echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
