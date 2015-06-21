@@ -264,7 +264,7 @@ class Bin extends Controller {
         }
         $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
         if ($bootstrap) {
-            $php .= '<style>input, textarea, button {width:100%;}</style>' . $quebra;
+            $php .= '<style>input, textarea, button, select {width:100%;}</style>' . $quebra;
             $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
             $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
             $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
