@@ -56,6 +56,12 @@ function mapear_paginas($uri) {
     $uri = str_replace('-', '_', $uri);
     $slug = somente_slug($uri);
     if (!empty($slug)) {
+        if (is_dir($_SERVER['DOCUMENT_ROOT'] . "/" . $slug[0])) {
+            $slug[0] = $slug[1];
+            $slug[1] = $slug[2];
+            if (empty($slug[0]))
+                $slug[0] = "home";
+        }
         if (isset($slug[1]) && !empty($slug[1])) {
             carregar_pagina("$slug[0]", "$slug[1]", $slug);
         } else {

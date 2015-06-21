@@ -2892,9 +2892,9 @@ function _wp_mysql_week($column) {
 
 function execute_action($controller, $action, $params = null) {
     require_once("core/functions.php");
-    if (is_file($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$controller}.php")) {
+    if (is_file("controllers/{$controller}.php")) {
         try {
-            require_once("controllers/{$controller}.php");
+            include ("controllers/{$controller}.php");
             $klass = ucfirst($controller);
             $instance = new $klass($controller, $action);
             if (method_exists($instance, $action)) {
