@@ -2894,7 +2894,7 @@ function execute_action($controller, $action, $params = null) {
     require_once("core/functions.php");
     if (is_file("controllers/{$controller}.php")) {
         try {
-            include ("controllers/{$controller}.php");
+            include_once ("controllers/{$controller}.php");
             $klass = ucfirst($controller);
             $instance = new $klass($controller, $action);
             if (method_exists($instance, $action)) {
