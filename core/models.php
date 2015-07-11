@@ -355,6 +355,7 @@ class Model extends Loader {
         }
         $where = $this->buildWhere($params, $join, true, $operator);
         $sql = "SELECT " . (is_array($fields) ? implode(", ", $fields) : $fields) . " FROM {$this->name} " . (!empty($this->joins) ? implode(" ", $this->joins) : "") . " {$where} {$order}";
+        $this->joins = array();
         return $this->get_results($sql);
     }
 
