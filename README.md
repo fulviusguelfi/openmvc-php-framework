@@ -654,5 +654,5 @@ ________________________________________________________________________________
 Licença:
 ========
 
-- Copyright(c) 2013 - 2015 Thiago Valentoni Guelfi - BSWS
+- Copyright(c) 2013 - 2017 Thiago Valentoni Guelfi - BSWS
 - Open Source - Licença Pública Geral GNU
