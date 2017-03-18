@@ -37,7 +37,7 @@
                 <a href="/<?php echo $value->$DB_KEY; ?>/listar"><button>Ver Listagem</button></a>&nbsp;
                 <a href="/<?php echo $value->$DB_KEY; ?>/adicionar"><button>Ver Cadastro</button></a>&nbsp;
             <? } else { ?>
-                <a href="/?crud=<?php echo($value->$DB_KEY); ?>"> clique aqui para gerar o CRUD desta tabela</a>
+                <a href="?crud=<?php echo($value->$DB_KEY); ?>"> clique aqui para gerar o CRUD desta tabela</a>
             <? } ?>
         </div><hr/>
     <?php endforeach; ?>
