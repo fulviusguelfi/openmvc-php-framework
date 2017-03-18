@@ -312,7 +312,7 @@ class wpdb {
     var $real_escape = false;
 
     /**
-     * Connects to the database server and selects a database
+     * Connects to the database server and selects a database - UNCOMMENT IT IF YOU ARE USING PHP 4 OR LOWER
      *
      * PHP4 compatibility layer for calling the PHP5 constructor.
      *
@@ -324,9 +324,10 @@ class wpdb {
      * @param string $dbname MySQL database name
      * @param string $dbhost MySQL database host
      */
-    function wpdb($dbuser, $dbpassword, $dbname, $dbhost) {
-        return $this->__construct($dbuser, $dbpassword, $dbname, $dbhost);
-    }
+//    function wpdb($dbuser, $dbpassword, $dbname, $dbhost) {
+//        return $this->__construct($dbuser, $dbpassword, $dbname, $dbhost);
+//    }
+//    
 
     /**
      * Connects to the database server and selects a database

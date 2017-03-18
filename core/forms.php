@@ -64,7 +64,7 @@ class Field {
         $this->value = $val;
     }
 
-    public function render($attrs = array()) {
+    public function render($name, $attrs = array()) {
         $attrs = array_merge($this->attributes, $attrs);
         $attributes = $this->parseAttrs($attrs);
         return "<input {$attributes}/>";
@@ -194,7 +194,7 @@ class InputField extends Field {
      * @param boolean $disable DEPRECATED
      * @return string
      */
-    public function render($name, $attrs, $disable = false) {
+    public function render($name, $attrs = array()) {
         $attributes = array(
             'name' => $name,
             'id' => $name,
@@ -459,7 +459,7 @@ class RadioField extends MultipleField {
         return $this->isChecked($item) ? "checked=\"checked\"" : "";
     }
 
-    public function get_separator() {
+    public function get_separator($sep = null) {
         return $this->itemSeparator;
     }
 
@@ -631,7 +631,7 @@ class SelectField extends MultipleField {
         return "<select {$attributes}>";
     }
 
-    public function get_separator() {
+    public function get_separator($sep = null) {
         return "";
     }
 
