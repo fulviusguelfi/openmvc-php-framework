@@ -633,7 +633,18 @@ Multimysql
     define("MULTIMYSQL_DBNAME", $DB_NAME);
     define("MULTIMYSQL_DBHOST", $DB_HOST);
     $this->load("components", "Multimysql");
-    $xpto = $this->Multimysql->get_row("SELECT * FROM example WHERE 1");
+
+    #list row
+    $xpto = $this->Multimysql->get_row("SELECT * FROM example WHERE 1 limit 1");
+
+    #list result of query limit 10
+    $xpto = $this->Multimysql->get_results("SELECT * FROM example WHERE 1 limit 10");
+
+    #insert data
+    $xpto = $this->Multimysql->insert("example_table",array("title"=>"ABC","description"=>"xpto lorem"));
+
+    #update data
+    $xpto = $this->Multimysql->update("example_table",array("title"=>"ABC","description"=>"xpto lorem"),array("id"=>10));
 
 __________________________________________________________________________________________________
 
