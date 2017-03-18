@@ -626,6 +626,19 @@ https://github.com/PHPMailer/PHPMailer/wiki
 
 __________________________________________________________________________________________________
 
+Multimysql
+=====================================
+    define("MULTIMYSQL_DBUSER", $DB_USER);
+    define("MULTIMYSQL_DBPASS", $DB_PASSWORD);
+    define("MULTIMYSQL_DBNAME", $DB_NAME);
+    define("MULTIMYSQL_DBHOST", $DB_HOST);
+    $this->load("components", "Multimysql");
+    $xpto = $this->Multimysql->get_row("SELECT * FROM example WHERE 1");
+
+__________________________________________________________________________________________________
+
+
+
 
 Licença:
 ========
