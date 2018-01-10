@@ -43,7 +43,7 @@ class Model extends Loader {
     }
 
     public function __destruct() {
-        @mysql_close();
+        @mysqli_close($this->db);
     }
 
     protected function init() {
@@ -314,7 +314,7 @@ class Model extends Loader {
         if (!empty($this->db->last_error)) {
             return false;
         } else {
-            $id = !$this->db->insert_id ? $id : $this->db->insert_id;
+            $id = !empty($this->db->insert_id) ? $this->db->insert_id : $id;
             return $id;
         }
     }

@@ -112,13 +112,14 @@ function to_log($var, $file_path = null) {
     $out[] = "\n\n";
 
     $log_file = "logs/debug.log";
-    if (null !== $file_path && file_exists($file_path)) {
+    if (null !== $file_path) {
         $log_file = $file_path;
     }
 
     if (!file_exists($log_file)) {
+        $newLogFile = fopen($log_file, "w");
         touch($log_file);
-        chmod($log_file, 0666);
+        chmod($log_file, 0777);
     }
 
     file_put_contents($log_file, join("\n", $out), FILE_APPEND);

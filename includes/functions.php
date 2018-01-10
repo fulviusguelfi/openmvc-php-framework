@@ -1799,6 +1799,10 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -1981,7 +1985,7 @@ function wp_explain_nonce($action) {
             }
         }
 
-        return apply_filters('explain_nonce_' . $verb . '-' . $noun, __('Are you sure you want to do this?'), isset($matches[4]) ? $matches[4] : '' );
+        return apply_filters('explain_nonce_' . $verb . '-' . $noun, __('Are you sure you want to do this?'), isset($matches[4]) ? $matches[4] : '');
     } else {
         return apply_filters('explain_nonce_' . $action, __('Are you sure you want to do this?'));
     }
@@ -2704,7 +2708,7 @@ function _deprecated_argument($function, $version, $message = null) {
  * @return bool Whether the server is running lighttpd < 1.5.0
  */
 function is_lighttpd_before_150() {
-    $server_parts = explode('/', isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '' );
+    $server_parts = explode('/', isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '');
     $server_parts[1] = isset($server_parts[1]) ? $server_parts[1] : '';
     return 'lighttpd' == $server_parts[0] && -1 == version_compare($server_parts[1], '1.5.0');
 }
@@ -2892,7 +2896,7 @@ function _wp_mysql_week($column) {
 
 function execute_action($controller, $action, $params = null) {
     require_once("core/functions.php");
-    if (is_file("controllers/{$controller}.php")) {
+    if (is_file($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$controller}.php")) {
         try {
             include_once ("controllers/{$controller}.php");
             $klass = ucfirst($controller);
@@ -2908,7 +2912,7 @@ function execute_action($controller, $action, $params = null) {
                 echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
             }
         } catch (Exception $e) {
-            echo_error( "Exceção capturada: {$e->getMessage()}", 'Exception');
+            echo_error("Exceção capturada: {$e->getMessage()}", 'Exception');
 //            echo 'Exceção capturada: ', $e->getMessage(), "\n";
         }
     } else {
@@ -2949,4 +2953,55 @@ function echo_error($error_message, $num_error = null) {
     echo "<div id='openmvc-error'>{$error_message}</div>";
     echo "</center>";
     die();
+}
+
+function slugify($text) {
+    // replace non letter or digits by -
+    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+    // transliterate
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+    // remove unwanted characters
+    $text = preg_replace('~[^-\w]+~', '', $text);
+
+    // trim
+    $text = trim($text, '-');
+
+    // remove duplicate -
+    $text = preg_replace('~-+~', '-', $text);
+
+    // lowercase
+    $text = strtolower($text);
+
+    if (empty($text)) {
+        return 'n-a';
+    }
+
+    return $text;
+}
+
+function generate_file_upload_name($name) {
+    if (file_exists($name) === TRUE) {
+        $tmp_exploded = explode("/", $name);
+        end($tmp_exploded);
+        $last_key = key($tmp_exploded);
+        $index_number = strstr($tmp_exploded[$last_key], "-", TRUE);
+        if ($index_number !== FALSE &&
+                is_numeric($index_number)) {
+            $next = (int) $index_number + 1;
+            $tmp_exploded[$last_key] = str_replace($index_number . "-", $next . "-", $tmp_exploded[$last_key]);
+        }else{
+            $next = 1;
+            $tmp_exploded[$last_key] = $next . "-" . $tmp_exploded[$last_key];
+        }
+        $name = implode("/", $tmp_exploded);
+        return generate_file_upload_name($name);
+    } else {
+        $tmp1_exploded = explode("/", $name);
+        end($tmp1_exploded);
+        $last1_key = key($tmp1_exploded);
+        $retorno = array("file_path" => $name, "file_name" => $tmp1_exploded[$last1_key]);
+        return (object)$retorno;
+    }
 }

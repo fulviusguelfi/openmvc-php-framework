@@ -51,9 +51,9 @@ class Loader {
         $file = null;
 
         if ($item == "components")
-            $file = "controllers/{$item}/{$name}/load.php";
+            $file = "{$_SERVER['DOCUMENT_ROOT']}/controllers/{$item}/{$name}/load.php";
         else
-            $file = "{$item}/{$name}.php";
+            $file = "{$_SERVER['DOCUMENT_ROOT']}/{$item}/{$name}.php";
 
         if (empty($file) || !file_exists($file)) {
             $backtrace = debug_backtrace();

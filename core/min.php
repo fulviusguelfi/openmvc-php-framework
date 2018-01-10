@@ -48,7 +48,7 @@ function carregar_pagina($controller, $action, $param = NULL) {
         execute_action($controller, $action, $param);
 
     @mysqli_close();
-    @mysql_close();
+//    @mysql_close();
     exit;
 }
 
