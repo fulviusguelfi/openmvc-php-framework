@@ -304,6 +304,23 @@ class Multimysql {
         return $this;
     }
 
+    public function change_connection($thisuser = '', $thispassword = '', $thisname = '', $thishost = '') {
+        if (!empty($thisuser)) {
+            $this->dbuser = $thisuser;
+        }
+        if (!empty($thispassword)) {
+            $this->dbpassword = $thispassword;
+        }
+        if (!empty($thishost)) {
+            $this->dbhost = $thishost;
+        }
+        if (!empty($thisname)) {
+            $this->dbname = $thisname;
+        }
+        $this->connecttodb();
+        return $this;
+    }
+
     public function connecttodb() {
         $this->dbh = @mysqli_connect($this->dbhost, $this->dbuser, $this->dbpassword);
         if (!$this->dbh) {
@@ -357,7 +374,7 @@ class Multimysql {
             } else {
                 return 0;  // 0 means it passed.
             }
-            $cnt+=1;
+            $cnt += 1;
         }
 
         return 1;  // Nonzero means fail.
@@ -789,7 +806,36 @@ class Multimysql {
             $formatted_fields[] = $form;
         }
         $sql = "INSERT INTO `$table` (`" . implode('`,`', $fields) . "`) VALUES ('" . implode("','", $formatted_fields) . "')";
-        return $this->query($this->prepare($sql, $data));
+        $this->setNulls($table, $data);
+        return $this->query(str_replace("'NULL'", 'NULL', $this->prepare($sql, array_merge(array_values($data)))));
+    }
+
+    private function setNulls($table, &$data) {
+        if (
+                is_array($data) &&
+                !empty($data) &&
+                !empty($table)
+        ) {
+            $describe = $this->get_results("DESCRIBE " . $table);
+            foreach ($data as $field => &$value) {
+                foreach ($describe as $desc) {
+                    if (
+                            $value == '' &&
+                            $desc->Field == $field &&
+                            $desc->Null == 'YES'
+                    ) {
+                        $value = "NULL";
+                    }
+                    unset($desc);
+                }
+                unset($describe);
+                unset($field);
+                unset($value);
+            }
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     /**
@@ -822,8 +868,22 @@ class Multimysql {
                 $form = $this->field_types[$field];
             else
                 $form = '%s';
+
             $bits[] = "`$field` = {$form}";
         }
+
+//        foreach ($bits as $key => $value) {
+//            if ($key == "id" || $key == "ID")
+//                continue;
+//
+//            if ($value === NULL || strtoupper($value) === 'NULL') {
+//                $fields[] = "{$key} = NULL";
+//            } else {
+//                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+//                $values[] = $value;
+//            }
+//        }
+
 
         $where_formats = $where_format = (array) $where_format;
         foreach ((array) array_keys($where) as $field) {
@@ -837,7 +897,8 @@ class Multimysql {
         }
 
         $sql = "UPDATE `$table` SET " . implode(', ', $bits) . ' WHERE ' . implode(' AND ', $wheres);
-        return $this->query($this->prepare($sql, array_merge(array_values($data), array_values($where))));
+        $this->setNulls($table, $data);
+        return $this->query(str_replace("'NULL'", 'NULL', $this->prepare($sql, array_merge(array_values($data), array_values($where)))));
     }
 
     /**
@@ -1236,6 +1297,224 @@ class Multimysql {
         }
 
         return $tables;
+    }
+
+    /**
+     * Deleta da tabela de acordo com o ID.
+     * 
+     * @param int $id
+     */
+    public function deletar($table, $keyValue) {
+        $sql = $this->prepare('DELETE FROM ' . $table . ' where %1$s = %2$d', $keyValue);
+        return $this->query($sql);
+    }
+
+    protected function generateInsert($table, $data) {
+        $fieldlist = array_keys($data);
+        $fields = implode(",", $fieldlist);
+        $valuelist = array();
+        foreach ($data as $key => $value) {
+            if ($value != NULL || $value === 0 || $value === "") {
+                $valuelist[] = (is_string($value)) ? "%s" : "%d";
+            } else {
+                $valuelist[] = "NULL";
+                unset($data[$key]);
+            }
+        }
+        $values = implode(",", $valuelist);
+        return $this->query(
+                        $this->prepare("INSERT INTO {$table} ({$fields}) values ($values)", array_values($data))
+        );
+    }
+
+    /**
+     * Gera um UPDATE em uma tabela com base em um array WHERE.
+     * 
+     * @param array $data Dados para fazer UPDATE  ------- Ex: array('coluna' => 'valor')
+     * @param array $where Dados para cláusula WHERE ----- Ex: array('coluna' => 'valor')
+     * @param string $join Operador lógico do WHERE ------ Ex:(AND ou OR)
+     * @param string $operator Operador matemático do WHERE -- Ex: (=, <=, >=, LIKE)  
+     * @param string $table Nome da tabela (opcional) ----- Padrão $this->name
+     */
+    public function updateWhere($data, $where, $join = 'AND', $operator = '=', $table = null) {
+        $fields = array();
+        $values = array();
+        if (empty($table))
+            $table = $this->name;
+
+        $myWhere = $this->buildWhere($where, $join, true, $operator);
+
+        foreach ($data as $key => $value) {
+            if ($key == "id" || $key == "ID")
+                continue;
+
+            if ($value === NULL || strtoupper($value) === 'NULL') {
+                $fields[] = "{$key} = NULL";
+            } else {
+                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $values[] = $value;
+            }
+        }
+        $field_and_value = implode(",", $fields);
+
+        $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} {$myWhere}", $values);
+        $retrono = $this->query($sql);
+        return $retrono;
+    }
+
+    protected function generateUpdate($table, $data, $id) {
+        $fields = array();
+        $values = array();
+        foreach ($data as $key => $value) {
+            if ($key == "id" || $key == "ID")
+                continue;
+
+            if ($value === NULL || strtoupper($value) === 'NULL') {
+                $fields[] = "{$key} = NULL";
+            } else {
+                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $values[] = $value;
+            }
+        }
+        $field_and_value = implode(",", $fields);
+        $values[] = $id;
+
+        $id_field = isset($data['ID']) ? 'ID' : 'id';
+        $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} WHERE {$id_field} = %d", $values);
+        return $this->query($sql);
+    }
+
+    public function saveWhere($table_name, $dados, $where = array()) {
+        return $this->salvarOnde($table_name, $dados, $where);
+    }
+
+    public function salvarOnde($table_name, $dados, $onde = array()) {
+        $id = null;
+        if (is_object($dados))
+            $dados = (Array) $dados;
+
+        if (!empty($onde)) {
+            $this->updateWhere($dados, $onde, "AND", "=", $table_name);
+        } else {
+            $this->generateInsert($table_name, $dados);
+        }
+
+        if (!empty($this->last_error)) {
+            return false;
+        } else {
+            $id = !empty($this->insert_id) ? $this->insert_id : $id;
+            return $id;
+        }
+    }
+
+    public function save($table_name, $dados) {
+        return $this->salvar($table_name, $dados);
+    }
+
+    public function salvar($table_name, $dados) {
+        $id = null;
+        if (is_object($dados))
+            $dados = (Array) $dados;
+
+        if (isset($dados['id'])) {
+            $id = !empty($dados['id']) ? $dados['id'] : null;
+            unset($dados['id']);
+        }
+
+        if (isset($dados['ID'])) {
+            $id = !empty($dados['ID']) ? $dados['ID'] : null;
+            unset($dados['ID']);
+        }
+
+        if (null !== $id) {
+            $this->generateUpdate($table_name, $dados, $id);
+        } else {
+            $this->generateInsert($table_name, $dados);
+        }
+
+        if (!empty($this->last_error)) {
+            return false;
+        } else {
+            $id = !empty($this->insert_id) ? $this->insert_id : $id;
+            return $id;
+        }
+    }
+
+    public function get($table_name, $id) {
+        return $this->row($this->prepare("SELECT * FROM {$table_name} WHERE id = %d LIMIT 1", array($id)));
+    }
+
+    /**
+     * Constroi uma clausua WHERE baseado nos parâmetros passados e na clausula de junção (AND ou OR).
+     * 
+     * @param array $params
+     * @param string $join 
+     * @param boolean $whereKeyword
+     * @param string $operator
+     */
+    public function buildWhere($params = array(), $join = 'AND', $whereKeyword = true, $operator = '=') {
+        $where = '';
+        if (!empty($params)) {
+            if (is_array($params)) {
+                $_conditions = array();
+                $lastKey = -1;
+                foreach ($params as $key => $val) {
+                    if (strtoupper($operator) == "LIKE") {
+                        $_conditions[] = "{$key} LIKE '%{$val}%'";
+                    } else if (strstr($key, " LIKE%%")) {
+                        $_conditions[] = str_replace("LIKE%%", "", $key) . " LIKE '%{$val}%'";
+                    } else if ($val == NULL) {
+                        $_conditions[] = " $key IS NULL";
+                    } else if (is_array($val) && !empty($val)) {
+                        $joined_values = array();
+                        $joined = false;
+                        foreach ($val as $in_key => $in_val) {
+                            if (is_numeric($in_val)) {
+                                $joined_values[] = is_numeric($in_val) ? $in_val : "'{$in_val}'";
+                                $joined = true;
+                            }
+
+                            if (is_string($in_key)) {
+                                if (!strstr($in_key, " LIKE%%")) {
+                                    $joined2 = false;
+                                    if (is_array($in_val)) {
+                                        $joined_values_in = array();
+                                        foreach ($in_val as $in_key2 => $in_val2) {
+                                            if (is_numeric($in_val2)) {
+                                                $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
+                                                $joined2 = true;
+                                            }
+                                        }
+                                    } else {
+                                        $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
+                                    }
+                                } else {
+                                    $_conditions[$key] = "(" . $this->buildWhere($val, "AND", false, $operator) . ")";
+                                }
+                            }
+                        }
+                        if ($joined) {
+                            if (is_string($key)) {
+                                $joined_valuesSTR = join(',', $joined_values);
+                                $_conditions[] = "{$key} IN ({$joined_valuesSTR})";
+                            }
+                        }
+                    } else {
+//                        $_conditions[] = "(" . $this->buildWhere($params, "OR", false, $operator) . ")";
+                        $_conditions[$key] = "{$key} " . (strstr($key, " ") ? "" : $operator) . (is_string($val) ? ($val == "NULL" ? $val : "'" . str_replace('"', "'", $val) . "'" ) : $val);
+                    }
+                }
+                $join = strtoupper($join);
+                $join = 'AND' == $join || 'OR' == $join ? " {$join} " : null;
+
+                $prefix = $whereKeyword ? 'WHERE ' : '';
+
+                $where = null !== $join ? $prefix . join($join, $_conditions) : '';
+            } else {
+                $where = (string) $params;
+            }
+        }
+        return $where;
     }
 
 }

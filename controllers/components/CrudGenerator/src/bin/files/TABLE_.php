@@ -40,7 +40,7 @@ class CLASS_NAME_TABLE_ extends Controller {
     }
 
     public function deletar($param) {
-        $id = (!isset($_REQUEST[id]) ? @$param[2] : @$_REQUEST[id]);
+        $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
         $this->TABLE_Model->delete_($id);
         $this->redirect("/TABLE_/listar");
     }
@@ -50,7 +50,7 @@ class CLASS_NAME_TABLE_ extends Controller {
     }
 
     public function editar($param) {
-        $id = (!isset($_REQUEST[id]) ? @$param[2] : @$_REQUEST[id]);
+        $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
         /* LIST_RELATIONS */
         if (empty($_POST)) {
             $obj = $this->TABLE_Model->get_($id);
