@@ -24,7 +24,7 @@ class Curl extends Controller {
         
     }
 
-    public function executeCurl($url, $post = array(), $method = "GET") {
+    public function executeCurl($url, $post = array(), $method = "GET", $json_decode = true) {
         try {
             $handle = curl_init();
 
@@ -54,7 +54,11 @@ class Curl extends Controller {
             $return = curl_exec($handle);
             curl_close($handle);
             unset($handle);
-            return json_decode($return);
+            if ($json_decode) {
+                return json_decode($return);
+            } else {
+                return ($return);
+            }
         } catch (Exception $e) {
             to_log($e->getMessage(), "logs/mauticIntegrationsErrors.log");
             to_log($return, "logs/mauticIntegrationsErrors.log");
@@ -63,8 +67,8 @@ class Curl extends Controller {
         }
     }
 
-    public function execute($url, $post = array(), $method = "GET") {
-        $this->executeCurl($url, $post, $method);
+    public function execute($url, $post = array(), $method = "GET", $json_decode = true) {
+        $this->executeCurl($url, $post, $method, $json_decode);
     }
 
 }
