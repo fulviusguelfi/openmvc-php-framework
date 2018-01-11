@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -17,11 +18,25 @@
   junto com este programa, se não, escreva para a Fundação do Software
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-//        DEFINIR AS CONSTANTES ABAIXO P CONFIGURAR O COMPONENT
-//        $dbuser = MULTIMYSQL_DBUSER;
-//        $dbpassword = MULTIMYSQL_DBPASS;
-//        $dbname = MULTIMYSQL_DBNAME;
-//        $dbhost = MULTIMYSQL_DBHOST;
-include substr(__DIR__, 0, -28) . "/controllers/components/Diff/Diff.php";
+?>
+<?php
 
+set_include_path('/var/www/html/repositorio/RIQUEZA');
+$_SERVER['DOCUMENT_ROOT'] = '/var/www/html/repositorio/RIQUEZA';
+$_SERVER['HTTP_HOST'] = 'api.wta3.com.br';
 
+//print_r($argv);
+
+$_REQUEST['c'] = $argv[1];
+$_REQUEST['a'] = $argv[2];
+$_REQUEST['p'] = array($argv[1], $argv[2], $argv[3]);
+
+require_once("core/min.php");
+
+if (isset($_REQUEST["p"])) {
+    execute_action($_REQUEST['c'], $_REQUEST['a'], $_REQUEST["p"]);
+} else {
+    execute_action($_REQUEST['c'], $_REQUEST['a']);
+}
+
+    
