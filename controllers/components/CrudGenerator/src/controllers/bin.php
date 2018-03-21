@@ -322,8 +322,6 @@ class Bin extends Controller {
                     } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
 //                        echo $obj->Type." <br/>";
                         $inputType = $this->binModel->formType($obj->Type);
-                        pr($obj);
-                        die;
                         if ($inputType == "checkbox") {
                             //CREATE CHECKBOX
                             $php .= '<div class="row">' . $quebra
