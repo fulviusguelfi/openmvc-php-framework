@@ -47,8 +47,7 @@
                             </small>
                         </small>
                         &nbsp;
-                        <a role="button" class="btn btn-xs btn-primary" href="/<?php echo $value->$DB_KEY; ?>/listar">Ver Listagem</a>
-                        <a role="button" class="btn btn-xs btn-primary" href="/<?php echo $value->$DB_KEY; ?>/adicionar">Ver Cadastro</a>
+                        <a role="button" class="btn btn-xs btn-primary" href="/<?php echo $value->$DB_KEY; ?>/listar">Ver CRUD</a>
                     <?php } else { ?>
                         <a role="button" class="btn btn-xs btn-info" title="Clique aqui para gerar o CRUD desta Tabela" href="/?crud=<?php echo($value->$DB_KEY); ?>">Gerar Crud</a>
                         <a role="button" class="btn btn-xs btn-success" title="Clique aqui para gerar o CRUD desta Tabela" href="/?crud=<?php echo($value->$DB_KEY); ?>&bootstrap=true">Gerar Crud Bootstrap</a>
