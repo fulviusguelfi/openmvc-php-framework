@@ -245,8 +245,8 @@ class Bin extends Controller {
             }
         }
         $php .= '<td>'
-                . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>">Editar</a>&nbsp;'
-                . '<a role="button" class="btn btn-xs btn-danger" href="/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>">Deletar</a>'
+                . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
+                . '<a role="button" class="btn btn-xs btn-danger" href="/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
                 . '</td>' . $quebra;
         $php .= '</tr>' . $quebra
                 . '<?php endforeach; ?>' . $quebra;
