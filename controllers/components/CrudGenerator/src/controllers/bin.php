@@ -322,13 +322,15 @@ class Bin extends Controller {
                     } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
 //                        echo $obj->Type." <br/>";
                         $inputType = $this->binModel->formType($obj->Type);
+                        pr($obj);
+                        die;
                         if ($inputType == "checkbox") {
                             //CREATE CHECKBOX
                             $php .= '<div class="row">' . $quebra
                                     . '<div class="col-md-12 ">' . $quebra
                                     . '<div class="form-group">' . $quebra
                                     . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<input class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> >' . $quebra
+                                    . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> >' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra;
@@ -338,7 +340,7 @@ class Bin extends Controller {
                                     . '<div class="col-md-12 ">' . $quebra
                                     . '<div class="form-group">' . $quebra
                                     . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<input class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '">' . $quebra
+                                    . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '">' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra;
@@ -348,7 +350,7 @@ class Bin extends Controller {
                                     . '<div class="col-md-12 ">' . $quebra
                                     . '<div class="form-group">' . $quebra
                                     . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<textarea class="form-control" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea>' . $quebra
+                                    . '<textarea ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea>' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra
                                     . '</div>' . $quebra;
