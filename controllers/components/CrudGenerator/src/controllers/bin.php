@@ -215,6 +215,7 @@ class Bin extends Controller {
         $php .= '<div class="row">' . $quebra;
         $php .= '<div class="container">' . $quebra;
         $php .= '<div class="col-md-12 ">' . $quebra;
+        $php .= '<a role="button" class="btn btn-primary" href="/' . $table_name . '/adicionar" ><span class="glyphicon glyphicon-plus-sign"></span> Adicionar</a><br>' . $quebra;
         $php .= '<div class="table-responsive-xl ">' . $quebra;
         $php .= "<table class='openmvc-table table table-striped table-bordered table-hover'>" . $quebra
                 . "<thead>" . $quebra
@@ -285,6 +286,7 @@ class Bin extends Controller {
         $php .= '<div class="row">' . $quebra;
         $php .= '<div class="container">' . $quebra;
         $php .= '<div class="col-md-12 ">' . $quebra;
+        $php .= '<a role="button" class="btn btn-primary" href="/" ><span class="glyphicon glyphicon-home"></span> Home</a><br>' . $quebra;
         $php .= "<form method='POST' class='openmvc-form' enctype='multipart/form-data'>" . $quebra;
 //        print_r($table_structure);
         foreach ($table_structure as $key => $obj) {
