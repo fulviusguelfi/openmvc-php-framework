@@ -48,19 +48,10 @@ ________________________________________________________________________________
 Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc como abaixo:
 
 
-< VirtualHost openmvc.exemplo:80>
-
-
-
+    < VirtualHost openmvc.exemplo:80>
 	ServerName openmvc.exemplo
-
-
-
 	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
-
-
-
-< /VirtualHost>
+    < /VirtualHost>
 
 ________________________________________________________________________________________________________________________
 
@@ -85,12 +76,12 @@ No endereço http://openmvc.exemplo.com/home/teste/param1/param2 a rota traçada
 Nesse caso dentro da action 'teste($param)' a variável $param assume o tipo Array sendo de que a mesma obteria o formato abaixo:
 
 
-array(
-0 => 'home',
-1 => 'teste',
-2 => 'param1',
-3 => 'param2'
-)
+    array(
+        0 => 'home',
+        1 => 'teste',
+        2 => 'param1',
+        3 => 'param2'
+    )
 
 __________________________________________________________________________________________________________________________________
  
@@ -113,11 +104,11 @@ Controllers:
 
 Exemplo:
 
-class Meu_controller extends Controller {
+    class Meu_controller extends Controller {
 
-    public function index() {}
+        public function index() {}
 
-}
+    }
 _____________________________________________________________________________________________________
 
 
@@ -144,17 +135,17 @@ ________________________________________________________________________________
   
 -No caso abaixo carregaremos dentro da variável $this o component PHPMailer,  e a mesma terá toda a Classe PHPMailer carregada no objeto $this->PHPMailer
 
-$this->load('components','PHPMailer');
+    $this->load('components','PHPMailer');
 
 
 -No caso abaixo carregaremos dentro da variável $this o arquivo /models/exemploModel.php, e a mesma terá toda a Classe ExemploModel carregada no objeto $this->exemploModel
 
-$this->load('models','exemploModel');
+    $this->load('models','exemploModel');
 
 
 - No caso abaixo carregaremos dentro da variável $this o arquivo /controllers/meu_controller2.php, e a mesma terá toda a Classe Meu_controller2 carregada no objeto $this->meu_controller2
 
-$this->load('controllers','meu_controller2');
+    $this->load('controllers','meu_controller2');
 ___________________________________________________________________________________________________________________
 
 
@@ -165,7 +156,7 @@ ________________________________________________________________________________
 
 Nesse caso redirecionamos para o arquivo /controllers/meu_controller.php na action 'exemplo()'.
 
-$this->redirect('/meu_controller/exemplo');
+    $this->redirect('/meu_controller/exemplo');
 ____________________________________________________________________________________________________________________
 
 
@@ -177,7 +168,7 @@ ________________________________________________________________________________
 
 Nesse caso carregaremos o arquivo /views/home/index.php e passaremos a variável $var_exemplo para a ele.
 
- $this->view("home/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));
+    $this->view("home/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));
 ____________________________________________________________________________________________________________________
 
 
@@ -193,11 +184,11 @@ Models:
 
 Exemplo:
 
-class MinhaTabelaModel extends Model {  
+    class MinhaTabelaModel extends Model {  
 
-var $name = "$NOME_DA_TABELA_NO_DB";  
+        var $name = "$NOME_DA_TABELA_NO_DB";  
 
-}
+    }
 _____________________________________________________________________________________________________________
 
 - 2: Variável $this do seu Model
@@ -221,7 +212,7 @@ ________________________________________________________________________________
 
 Exemplo:
 
-return $this->delete($id);
+    return $this->delete($id);
 ______________________________________________________________________________________________________________
   
 - 4: Função save() do Model 
@@ -248,17 +239,15 @@ Exemplo:
 
 Neste caso faremos o UPDATE da linha com id=1 e trocaremos o email 'exemplo@abcd.com' pelo 'aaaa@xpto.com'.
 
-$dados = (object) array("id"=> 1, "email"=>"aaaa@xpto.com" );
-
-return $this->save($dados);
+    $dados = (object) array("id"=> 1, "email"=>"aaaa@xpto.com" );
+    return $this->save($dados);
 
 
 
 Neste caso faremos o INSERT de uma nova linha da tabela default.
 
-$dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );
-
-return $this->save($dados);
+    $dados = (object) array("nome"=>"teste", "email"=>"bbb@exemplo.com" );
+    return $this->save($dados);
 ______________________________________________________________________________________________________________
 
   
