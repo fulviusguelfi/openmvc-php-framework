@@ -134,12 +134,10 @@ ________________________________________________________________________________
   Por Exemplo:
   
 -No caso abaixo carregaremos dentro da variável $this o component PHPMailer,  e a mesma terá toda a Classe PHPMailer carregada no objeto $this->PHPMailer
-
     $this->load('components','PHPMailer');
 
 
 -No caso abaixo carregaremos dentro da variável $this o arquivo /models/exemploModel.php, e a mesma terá toda a Classe ExemploModel carregada no objeto $this->exemploModel
-
     $this->load('models','exemploModel');
 
 
