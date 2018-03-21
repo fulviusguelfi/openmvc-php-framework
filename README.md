@@ -1,11 +1,11 @@
 ----OpenMvc PHP Framework----
 =============================
-O OpenMvc é uma framework PHP Open Source baseada no conceito de MVC ou seja, Models(Banco de Dados), Views(Html e Css) e Controllers(Regras de Negócio).
+OpenMvcPHP é um framework Open Source baseada no conceito de MVC ou seja, Models(Banco de Dados), Views(Html e Css) e Controllers(Regras de Negócio).
 
-Requisitos:
+Requisitos Mínimos:
 ============
 - Apache2 + Mod_rewirte 
-- PHP5
+- PHP5 ou superior
 - Mysql
 
 Instalação:
@@ -15,9 +15,9 @@ Instalação:
  
 
  
-git clone https://thiago-bsws@bitbucket.org/thiago-bsws/openmvc.git
+git clone https://bitbucket.org/bswsteam/openmvc-php-framework.git
 
-git remote set-url origin https://github.com/user/$NOVO_REPOSITORIO.git
+git remote set-url origin https://bitbucket.org/user/$NOVO_REPOSITORIO.git
 
 ____________________________________________________________________________________________________________________
 
@@ -27,24 +27,17 @@ ________________________________________________________________________________
 Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as constantes de Banco de Dados como abaixo:
 
 
+    #/* Nome do host do MySQL */
+    define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
 
-/* Nome do host do MySQL */
-define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
+    #/* Usuário do banco de dados MySQL */
+    define('DB_USER', '$USUARIO_DO_BANCO_DE_DADOS');
 
+    #/* Senha do banco de dados MySQL */
+    define('DB_PASSWORD', '$SENHA_DO_BANCO_DE_DADOS');
 
-
-/* Usuário do banco de dados MySQL */
-define('DB_USER', '$USUARIO_DO_BANCO_DE_DADOS');
-
-
-
-/* Senha do banco de dados MySQL */
-define('DB_PASSWORD', '$SENHA_DO_BANCO_DE_DADOS');
-
-
-
-/* IP do host do MySQL */
-define('DB_HOST', '$ENDEREÇO_DO_BANCO_DE_DADOS');
+    #/* IP do host do MySQL */
+    define('DB_HOST', '$ENDEREÇO_DO_BANCO_DE_DADOS');
 
 ______________________________________________________________________________________________________________________
 
