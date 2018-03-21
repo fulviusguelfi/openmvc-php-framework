@@ -38,7 +38,15 @@
                     $controller = $_SERVER['DOCUMENT_ROOT'] . "/controllers/{$value->$DB_KEY}.php";
                     if (file_exists($controller)) {
                         ?>
-                        <b>-----CRUD(MVC) ENCONTRADO-----</b>
+                        <br>
+                        <small class="text-danger">
+                            <small >
+                                <small >
+                                    <b>CRUD ENCONTRADO</b>
+                                </small>
+                            </small>
+                        </small>
+                        &nbsp;
                         <a role="button" class="btn btn-xs btn-primary" href="/<?php echo $value->$DB_KEY; ?>/listar">Ver Listagem</a>
                         <a role="button" class="btn btn-xs btn-primary" href="/<?php echo $value->$DB_KEY; ?>/adicionar">Ver Cadastro</a>
                     <?php } else { ?>
