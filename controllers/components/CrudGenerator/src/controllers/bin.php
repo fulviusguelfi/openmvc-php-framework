@@ -239,7 +239,7 @@ class Bin extends Controller {
                 if ($inputType != 'file')
                     $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
                 else
-                    $php .= '<td><a href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>">Baixar</a></td>' . $quebra;
+                    $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
             } else {
                 $fieldId = $obj->Field;
             }
