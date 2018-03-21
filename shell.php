@@ -21,10 +21,11 @@
 ?>
 <?php
 
-set_include_path('/var/www/html/repositorio/RIQUEZA');
-$_SERVER['DOCUMENT_ROOT'] = '/var/www/html/repositorio/RIQUEZA';
-$_SERVER['HTTP_HOST'] = 'api.wta3.com.br';
+require_once("config.php");
 
+set_include_path(OPENMVC_INCLUDE_PATH);
+$_SERVER['DOCUMENT_ROOT'] = OPENMVC_DOCUMENT_ROOT;
+$_SERVER['HTTP_HOST'] = OPENMVC_HTTP_HOST;
 //print_r($argv);
 
 $_REQUEST['c'] = $argv[1];

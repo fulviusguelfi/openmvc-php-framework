@@ -21,10 +21,20 @@
 ?>
 <?php
 
-define("NOW_ACTION", $_SERVER['REQUEST_URI']);
+// ** Configuraações do OpenMvcPHP - Essas configurações são ultilizadas para as chamadas via console do framework ** //
+//
+/** Raiz da include_path do PHP */
+define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
+
+/** Raiz da aplicação OpenMvcPHP */
+define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework');
+
+/** URL aplicação OpenMvcPHP */
+define('OPENMVC_HTTP_HOST', 'openmvc.local');
+
 
 // ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
-
+//
 /** Nome do host do MySQL */
 define('DB_NAME', 'openmvc');
 
@@ -51,4 +61,8 @@ define('MULTIPLE_DB', FALSE);
  *  Timezone adequado a região
  */
 define('TIMEZONE', 'America/Sao_Paulo');
+
+
+
+define("NOW_ACTION", $_SERVER['REQUEST_URI']);
 ?>
