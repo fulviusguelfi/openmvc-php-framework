@@ -361,7 +361,7 @@ class Bin extends Controller {
                 $php .= '<input type="hidden" name="' . $obj->Field . '" value="<?php echo $obj->' . $obj->Field . ' ?>">' . $quebra;
             }
         }
-        $php .= '<div><input type="submit" class="btn btn-success" role="button" ></div>' . $quebra
+        $php .= '<div><button type="submit" class="btn btn-success" role="button" ><span class="glyphicon glyphicon-ok-circle"></span> Salvar</button></div>' . $quebra
                 . '</form>' . $quebra;
         $php .= '</div>' . $quebra;
         $php .= '</div>' . $quebra;
