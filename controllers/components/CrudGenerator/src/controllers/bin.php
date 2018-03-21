@@ -215,6 +215,7 @@ class Bin extends Controller {
         $php .= '<div class="row">' . $quebra;
         $php .= '<div class="container">' . $quebra;
         $php .= '<div class="col-md-12 ">' . $quebra;
+        $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
         $php .= '<a role="button" class="btn btn-primary" href="/' . $table_name . '/adicionar" ><span class="glyphicon glyphicon-plus-sign"></span> Adicionar</a><br>' . $quebra;
         $php .= '<div class="table-responsive-xl ">' . $quebra;
         $php .= "<table class='openmvc-table table table-striped table-bordered table-hover'>" . $quebra
@@ -286,6 +287,7 @@ class Bin extends Controller {
         $php .= '<div class="row">' . $quebra;
         $php .= '<div class="container">' . $quebra;
         $php .= '<div class="col-md-12 ">' . $quebra;
+        $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
         $php .= '<a role="button" class="btn btn-primary" href="/" ><span class="glyphicon glyphicon-home"></span> Home</a><br>' . $quebra;
         $php .= "<form method='POST' class='openmvc-form' enctype='multipart/form-data'>" . $quebra;
 //        print_r($table_structure);
@@ -361,7 +363,8 @@ class Bin extends Controller {
                 $php .= '<input type="hidden" name="' . $obj->Field . '" value="<?php echo $obj->' . $obj->Field . ' ?>">' . $quebra;
             }
         }
-        $php .= '<div><button type="submit" class="btn btn-success" role="button" ><span class="glyphicon glyphicon-ok-circle"></span> Salvar</button></div>' . $quebra
+        $php .= '<div class="col-md-6"><button type="reset" class="btn btn-danger" role="button" ><span class="glyphicon glyphicon-remove-circle"></span> Limpar</button></div>' . $quebra;
+        $php .= '<div class="col-md-6"><button type="submit" class="btn btn-success" role="button" ><span class="glyphicon glyphicon-ok-circle"></span> Salvar</button></div>' . $quebra
                 . '</form>' . $quebra;
         $php .= '</div>' . $quebra;
         $php .= '</div>' . $quebra;
