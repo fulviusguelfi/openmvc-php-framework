@@ -614,6 +614,8 @@ Multimysql
     define("MULTIMYSQL_DBHOST", $DB_HOST);
     $this->load("components", "Multimysql");
 
+    #O MULTIMYSQL CONTEMPLA TODAS AS FUNÇÕES DO MODEL MAIS AS LISTADAS ABAIXO
+
     #list row
     $xpto = $this->Multimysql->get_row("SELECT * FROM example WHERE 1 limit 1");
 
