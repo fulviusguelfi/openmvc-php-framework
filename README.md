@@ -82,7 +82,7 @@ NGINX
 
             server_name openmvc.exemplo.com;
 
-            root /var/www/html/$LOCAL_DA_PASTA_DO_OPENMVC;
+            root /$LOCAL_DA_PASTA_DO_OPENMVC;
             index index.php;
 
             location / {
