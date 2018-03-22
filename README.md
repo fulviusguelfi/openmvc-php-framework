@@ -52,7 +52,7 @@ ________________________________________________________________________________
 
 Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc como abaixo:
 
-
+-APACHE2
     < VirtualHost *:80>
 	ServerName openmvc.exemplo
 	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
@@ -61,6 +61,31 @@ Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc
             AllowOverride All
         </Directory>
     < /VirtualHost>
+
+
+-NGINX
+    server {
+            listen 80;
+            listen [::]:80;
+
+            server_name openmvc.exemplo;
+
+            root /var/www/html/$LOCAL_DA_PASTA_DO_OPENMVC;
+            index index.php;
+
+            location / {
+                    try_files $uri $uri/ /index.php?q=$uri&$args;
+            }
+
+            location ~ \.php$ {
+                    try_files $uri /index.php =404;
+                    fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+                    fastcgi_index index.php;
+                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                    include fastcgi_params;
+            }
+    }
+
 
 ________________________________________________________________________________________________________________________
 
