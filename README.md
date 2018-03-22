@@ -52,7 +52,8 @@ ________________________________________________________________________________
 
 Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc como abaixo:
 
--APACHE2
+APACHE2
+
     < VirtualHost *:80>
 	ServerName openmvc.exemplo
 	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
@@ -63,7 +64,10 @@ Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc
     < /VirtualHost>
 
 
--NGINX
+
+
+NGINX
+
     server {
             listen 80;
             listen [::]:80;
