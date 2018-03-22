@@ -6,7 +6,6 @@ Requisitos Mínimos:
 ============
 - Nginx ou (Apache2 + mod_rewrite + libapache-mod-php)
 - Mysql >= 5.4
-
 - PHP >= 5.1
 - Fpm PHP Extension
 - MCrypt PHP Extension
