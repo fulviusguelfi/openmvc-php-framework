@@ -29,8 +29,16 @@ ________________________________________________________________________________
 
  - Passo 2: config.php
  
-Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as constantes de Banco de Dados como abaixo:
+Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
 
+    #/** Raiz da include_path do PHP */
+    define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
+
+    #/** Raiz da aplicação OpenMvcPHP */
+    define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework');
+
+    #/** URL aplicação OpenMvcPHP */
+    define('OPENMVC_HTTP_HOST', 'openmvc.exemplo.com');
 
     #/* Nome do host do MySQL */
     define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
@@ -55,7 +63,7 @@ Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc
 APACHE2
 
     < VirtualHost *:80>
-	ServerName openmvc.exemplo
+	ServerName openmvc.exemplo.com
 	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
         <Directory /$LOCAL_DA_PASTA_DO_OPENMVC/>
             Options Indexes FollowSymLinks
@@ -72,7 +80,7 @@ NGINX
             listen 80;
             listen [::]:80;
 
-            server_name openmvc.exemplo;
+            server_name openmvc.exemplo.com;
 
             root /var/www/html/$LOCAL_DA_PASTA_DO_OPENMVC;
             index index.php;
