@@ -4,9 +4,15 @@ OpenMvcPHP é um framework Open Source baseada no conceito de MVC ou seja, Model
 
 Requisitos Mínimos:
 ============
-- Apache2 + Mod_rewirte 
-- PHP5 ou superior
-- Mysql
+- Nginx ou (Apache2 + mod_rewrite + libapache-mod-php)
+- Mysql >= 5.4
+
+- PHP >= 5.1
+- Fpm PHP Extension
+- MCrypt PHP Extension
+- Curl PHP Extension
+- Mbstring PHP Extension
+- Mysql PHP Extension
 
 Instalação:
 ===========
@@ -587,7 +593,7 @@ COMPONENTS
 ______________________________________________________________________________________________________________
 
 
-GERADOR DE CRUD AUTOMÁTICO (1.3)
+GERADOR DE CRUD AUTOMÁTICO (1.4)
 =====================================
 CrudGenerator CRUD - Create, Read, Update, Delete
 
@@ -640,5 +646,5 @@ ________________________________________________________________________________
 Licença:
 ========
 
-- Copyright(c) 2013 - 2017 Thiago Valentoni Guelfi - BSWS
+- Created by Thiago Valentoni Guelfi - 2013/2018
 - Open Source - Licença Pública Geral GNU
