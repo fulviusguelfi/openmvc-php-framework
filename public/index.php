@@ -21,12 +21,9 @@
 ?>
 <?php
 
-require_once("core/min.php");
+/**
+ * This file doesn't do anything, but loads the OpenMvc Framework Rote
+ */
+require_once("../app/core/min.php");
+mapear_paginas($_SERVER['REQUEST_URI']);
 
-if (isset($_REQUEST["p"])) {
-    execute_action($_REQUEST['c'], $_REQUEST['a'], $_REQUEST["p"]);
-} else {
-    execute_action($_REQUEST['c'], $_REQUEST['a']);
-}
-
-    

@@ -35,14 +35,14 @@ class Bin extends Controller {
         echo '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">';
         echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>';
         echo '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';
-        if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php")) {
+        if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php")) {
             echo "<center class=\"text-danger\">";
             echo "<h2>Erro ao ciar CRUD da tabela {$table_name}!<br> O arquivo " . $_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php" . " já existe no servidor.</h2><br>";
             echo "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
             echo "</center>";
         } else {
             $this->gerarCrud($table_name, $bootstrap);
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php")) {
+            if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php")) {
                 echo "<center class=\"text-success\">";
                 echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2><br>";
                 echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
@@ -65,7 +65,9 @@ class Bin extends Controller {
 
     public function gerarCrud($table_name, $bootstrap = false) {
         $table_structure = $this->binModel->getTableStructure($table_name);
-        $view_dir = $_SERVER['DOCUMENT_ROOT'] . "/views/{$table_name}";
+        $view_dir = "{$_SERVER['DOCUMENT_ROOT']}/../views/{$table_name}";
+        $controller_dir = "{$_SERVER['DOCUMENT_ROOT']}/../controllers";
+        $model_dir = "{$_SERVER['DOCUMENT_ROOT']}/../models";
         // CREATE VIEWS DIR
         mkdir($view_dir, 0777, true);
         touch($view_dir);
@@ -83,21 +85,22 @@ class Bin extends Controller {
             chmod($view_dir . '/edit.php', 0777);
         }
         // CREATE CONTROLLER {$table_name}.php
-        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php")) {
+        if (!file_exists("$controller_dir/{$table_name}.php")) {
             $this->makeController($table_name);
-            touch($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php");
-            chmod($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php", 0777);
+            touch("$controller_dir/{$table_name}.php");
+            chmod("$controller_dir/{$table_name}.php", 0777);
         }
         // CREATE MODEL {$table_name}.php
-        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/models/{$table_name}Model.php")) {
+        if (!file_exists("$model_dir/{$table_name}Model.php")) {
             $this->makeModel($table_name);
-            touch($_SERVER['DOCUMENT_ROOT'] . "/models/{$table_name}Model.php");
-            chmod($_SERVER['DOCUMENT_ROOT'] . "/models/{$table_name}Model.php", 0777);
+            touch("$model_dir/{$table_name}Model.php");
+            chmod("$model_dir/{$table_name}Model.php", 0777);
         }
     }
 
     public function makeModel($table_name) {
-        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/models/{$table_name}Model.php")) {
+        $file_path = "{$_SERVER['DOCUMENT_ROOT']}/../models/{$table_name}Model.php";
+        if (!file_exists($file_path)) {
             $RETURN_LISTAR = '$this->listar($page, $max_for_page)';
             $HAVE_FILEFIELD = '';
             $EXECUTE_FILEFIELD = FALSE;
@@ -114,24 +117,27 @@ class Bin extends Controller {
                 $RETURN_LISTAR = '$this->listar($page, $max_for_page, null, "' . substr($HAVE_FILEFIELD, 0, -1) . '")';
             }
 
-            $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/models/{$table_name}Model.php", "wa");
+            $fp = fopen($file_path, "wa");
             $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_Model.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
             $php = str_replace("/* RETURN_LISTAR */", $RETURN_LISTAR, $php);
             fwrite($fp, $php);
             fclose($fp);
+        } else {
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
         }
     }
 
     public function makeController($table_name) {
+        $file_path = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php";
         if (PATH_SEPARATOR == ":") {
             $quebra = "\r\n";
         } else {
             $quebra = "\n";
         }
-        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php")) {
-            $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php", "wa");
+        if (!file_exists($file_path)) {
+            $fp = fopen($file_path, "wa");
             $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
@@ -193,6 +199,8 @@ class Bin extends Controller {
 
             fwrite($fp, $php);
             fclose($fp);
+        } else {
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
         }
     }
 
@@ -203,62 +211,67 @@ class Bin extends Controller {
             $quebra = "\n";
         }
         $idStyle = 'id';
-        $fp = fopen($view_dir . '/list.php', 'wa');
-        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
-        if ($bootstrap) {
-            $php .= '<style>.openmvc-table {width:100%;}</style>' . $quebra;
-            $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
-            $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
-            $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
-            $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
-        }
-        $php .= '<div class="row">' . $quebra;
-        $php .= '<div class="container">' . $quebra;
-        $php .= '<div class="col-md-12 ">' . $quebra;
-        $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
-        $php .= '<a role="button" class="btn btn-primary" href="/' . $table_name . '/adicionar" ><span class="glyphicon glyphicon-plus-sign"></span> Adicionar</a><br>' . $quebra;
-        $php .= '<div class="table-responsive-xl ">' . $quebra;
-        $php .= "<table class='openmvc-table table table-striped table-bordered table-hover'>" . $quebra
-                . "<thead>" . $quebra
-                . "<tr>" . $quebra;
-        foreach ($table_structure as $key => $obj) {
-            if ($obj->Field != "id" && $obj->Field != "ID") {
-                $php .= "<th>" . ucwords($obj->Field) . "</th>" . $quebra;
-            } else {
-                $idStyle = $obj->Field;
+        $file_path = $view_dir . '/list.php';
+        if (!file_exists($file_path)) {
+            $fp = fopen($file_path, 'wa');
+            $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/core/gnu.php') . $quebra;
+            if ($bootstrap) {
+                $php .= '<style>.openmvc-table {width:100%;}</style>' . $quebra;
+                $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
+                $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
+                $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
+                $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
             }
-        }
-        $php .= "<th>A&ccedil;&otilde;es</th>" . $quebra;
-        $php .= "</tr>" . $quebra
-                . "</thead>" . $quebra
-                . "<tbody>" . $quebra
-                . '<?php foreach($list as $key => $obj): ?>' . $quebra
-                . '<tr>' . $quebra;
-        foreach ($table_structure as $key => $obj) {
-            if ($obj->Field != "id" && $obj->Field != "ID") {
-                $inputType = $this->binModel->formType($obj->Type);
-                if ($inputType != 'file')
-                    $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
-                else
-                    $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
-            } else {
-                $fieldId = $obj->Field;
+            $php .= '<div class="row">' . $quebra;
+            $php .= '<div class="container">' . $quebra;
+            $php .= '<div class="col-md-12 ">' . $quebra;
+            $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
+            $php .= '<a role="button" class="btn btn-primary" href="/' . $table_name . '/adicionar" ><span class="glyphicon glyphicon-plus-sign"></span> Adicionar</a><br>' . $quebra;
+            $php .= '<div class="table-responsive-xl ">' . $quebra;
+            $php .= "<table class='openmvc-table table table-striped table-bordered table-hover'>" . $quebra
+                    . "<thead>" . $quebra
+                    . "<tr>" . $quebra;
+            foreach ($table_structure as $key => $obj) {
+                if ($obj->Field != "id" && $obj->Field != "ID") {
+                    $php .= "<th>" . ucwords($obj->Field) . "</th>" . $quebra;
+                } else {
+                    $idStyle = $obj->Field;
+                }
             }
+            $php .= "<th>A&ccedil;&otilde;es</th>" . $quebra;
+            $php .= "</tr>" . $quebra
+                    . "</thead>" . $quebra
+                    . "<tbody>" . $quebra
+                    . '<?php foreach($list as $key => $obj): ?>' . $quebra
+                    . '<tr>' . $quebra;
+            foreach ($table_structure as $key => $obj) {
+                if ($obj->Field != "id" && $obj->Field != "ID") {
+                    $inputType = $this->binModel->formType($obj->Type);
+                    if ($inputType != 'file')
+                        $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
+                    else
+                        $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
+                } else {
+                    $fieldId = $obj->Field;
+                }
+            }
+            $php .= '<td>'
+                    . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
+                    . '<a role="button" class="btn btn-xs btn-danger" href="/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
+                    . '</td>' . $quebra;
+            $php .= '</tr>' . $quebra
+                    . '<?php endforeach; ?>' . $quebra;
+            $php .= '</tbody>' . $quebra
+                    . '</table>' . $quebra;
+            $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
+            fwrite($fp, $php);
+            fclose($fp);
+        } else {
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
         }
-        $php .= '<td>'
-                . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
-                . '<a role="button" class="btn btn-xs btn-danger" href="/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
-                . '</td>' . $quebra;
-        $php .= '</tr>' . $quebra
-                . '<?php endforeach; ?>' . $quebra;
-        $php .= '</tbody>' . $quebra
-                . '</table>' . $quebra;
-        $php .= '</div>' . $quebra;
-        $php .= '</div>' . $quebra;
-        $php .= '</div>' . $quebra;
-        $php .= '</div>' . $quebra;
-        fwrite($fp, $php);
-        fclose($fp);
     }
 
     public function makeViewEdit($view_dir, $table_structure, $bootstrap = false) {
@@ -276,7 +289,7 @@ class Bin extends Controller {
             $mytables[] = $table1->$DB_KEY . "_id";
             $mytables[] = $table1->$DB_KEY . "_ID";
         }
-        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/core/gnu.php') . $quebra;
+        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/core/gnu.php') . $quebra;
         if ($bootstrap) {
             $php .= '<style>.openmvc-form input, .openmvc-form textarea, .openmvc-form button, .openmvc-form select {width:100%;}</style>' . $quebra;
             $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;

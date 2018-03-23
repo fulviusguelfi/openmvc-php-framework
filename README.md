@@ -27,10 +27,12 @@ git remote set-url origin https://bitbucket.org/user/$NOVO_REPOSITORIO.git
 ____________________________________________________________________________________________________________________
 
 
- - Passo 2: config.php
+ - Passo 2: app/configs/app.php & app/configs/database.php
  
-Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
+Dentro dos arquivos localizado app.php e database.php na app/configs/ do OpenMvc configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
 
+
+app/configs/app.php
     #/** Raiz da include_path do PHP */
     define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
 
@@ -39,7 +41,13 @@ Dentro do arquivo localizado na raiz do OpenMvc "/config.php" configurar as cons
 
     #/** URL aplicação OpenMvcPHP */
     define('OPENMVC_HTTP_HOST', 'openmvc.exemplo.com');
+    
+    #/** Ativa o Debug de aplicação OpenMvcPHP */
+    define('OPENMVC_DEBUG', false);
 
+
+
+app/configs/database.php
     #/* Nome do host do MySQL */
     define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
 
@@ -64,8 +72,8 @@ APACHE2
 
     < VirtualHost *:80>
 	ServerName openmvc.exemplo.com
-	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC
-        <Directory /$LOCAL_DA_PASTA_DO_OPENMVC/>
+	DocumentRoot /$LOCAL_DA_PASTA_DO_OPENMVC/public
+        <Directory /$LOCAL_DA_PASTA_DO_OPENMVC/public>
             Options Indexes FollowSymLinks
             AllowOverride All
         </Directory>
@@ -82,7 +90,7 @@ NGINX
 
             server_name openmvc.exemplo.com;
 
-            root /$LOCAL_DA_PASTA_DO_OPENMVC;
+            root /$LOCAL_DA_PASTA_DO_OPENMVC/public;
             index index.php;
 
             location / {

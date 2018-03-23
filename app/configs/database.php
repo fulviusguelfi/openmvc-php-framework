@@ -20,10 +20,27 @@
  */
 ?>
 <?php
+// ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
+//
+/** Nome do host do MySQL */
+define('DB_NAME', 'openmvc');
 
-/**
- * This file doesn't do anything, but loads the OpenMvc Framework Rote
- */
-require_once("core/min.php");
-mapear_paginas($_SERVER['REQUEST_URI']);
+/** Usuário do banco de dados MySQL */
+define('DB_USER', 'root');
 
+/** Senha do banco de dados MySQL */
+define('DB_PASSWORD', 'h7t846m2');
+
+/** IP do host do MySQL */
+define('DB_HOST', 'localhost');
+
+/** Conjunto de caracteres do banco de dados a ser usado na criação das tabelas. */
+define('DB_CHARSET', 'utf8');
+
+/** O tipo de collate do banco de dados. Não altere isso se tiver dúvidas. */
+define('DB_COLLATE', '');
+
+define('INC', 'app/includes');
+
+define('MULTIPLE_DB', FALSE);
+?>

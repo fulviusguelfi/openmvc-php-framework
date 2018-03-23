@@ -35,7 +35,7 @@
                     <?php $DB_KEY = "Tables_in_" . DB_NAME; ?>
                     <b><?php echo($value->$DB_KEY); ?></b>
                     <?php
-                    $controller = $_SERVER['DOCUMENT_ROOT'] . "/controllers/{$value->$DB_KEY}.php";
+                    $controller = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$value->$DB_KEY}.php";
                     if (file_exists($controller)) {
                         ?>
                         <br>

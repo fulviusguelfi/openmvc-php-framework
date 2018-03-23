@@ -21,23 +21,26 @@
 ?>
 <?php
 
-require_once("config.php");
+// ** Configuraações do OpenMvcPHP - Essas configurações são ultilizadas para as chamadas via console do framework ** //
+//
+/** Raiz da include_path do PHP */
+define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
 
-set_include_path(OPENMVC_INCLUDE_PATH);
-$_SERVER['DOCUMENT_ROOT'] = OPENMVC_DOCUMENT_ROOT;
-$_SERVER['HTTP_HOST'] = OPENMVC_HTTP_HOST;
-//print_r($argv);
+/** Raiz da aplicação OpenMvcPHP */
+define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework');
 
-$_REQUEST['c'] = $argv[1];
-$_REQUEST['a'] = $argv[2];
-$_REQUEST['p'] = array($argv[1], $argv[2], $argv[3]);
+/** URL aplicação OpenMvcPHP */
+define('OPENMVC_HTTP_HOST', 'openmvc.local');
 
-require_once("core/min.php");
+/** Ativa o Debug de aplicação OpenMvcPHP */
+define('OPENMVC_DEBUG', false);
 
-if (isset($_REQUEST["p"])) {
-    execute_action($_REQUEST['c'], $_REQUEST['a'], $_REQUEST["p"]);
-} else {
-    execute_action($_REQUEST['c'], $_REQUEST['a']);
-}
+/**
+ *  Timezone adequado a região
+ */
+define('TIMEZONE', 'America/Sao_Paulo');
 
-    
+
+
+define("NOW_ACTION", $_SERVER['REQUEST_URI']);
+?>

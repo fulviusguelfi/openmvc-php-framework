@@ -367,7 +367,7 @@ class wpdb {
         if (!$this->dbh) {
             $this->bail(sprintf(/* WP_I18N_DB_CONN_ERROR */"
 <h1>Error establishing a database connection</h1>
-<p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>%s</code>. This could mean your host's database server is down.</p>
+<p>This either means that the username and password information is incorrect or we can't contact the database server at <code>%s</code>. This could mean your host's database server is down.</p>
 <ul>
 	<li>Are you sure you have the correct username and password?</li>
 	<li>Are you sure that you have typed the correct hostname?</li>
@@ -1300,8 +1300,8 @@ class wpdb {
 
 if (!isset($db)) {
     /**
-     * WordPress Database Object, if it isn't set already in wp-content/db.php
-     * @global object $db Creates a new wpdb object based on wp-config.php Constants for the database
+     * WordPress Database Object, if it isn't set already in app/includes/db.php
+     * @global object $db Creates a new wpdb object based on app/configs/database.php Constants for the database
      * @since 0.71
      */
     $db = new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);

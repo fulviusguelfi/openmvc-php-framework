@@ -42,38 +42,41 @@ class Loader {
      * @param String $name
      */
     public function load($item, $name) {
-        $loadedItem = $this->getLoadedItem($item, $name);
+        try {
+            $loadedItem = $this->getLoadedItem($item, $name);
 
-        if (null !== $loadedItem) {
-            return $loadedItem;
-        }
+            if (null !== $loadedItem) {
+                return $loadedItem;
+            }
 
-        $file = null;
+            $file = null;
+            if ($item == "components")
+                $file = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$item}/{$name}/load.php";
+            else
+                $file = "{$_SERVER['DOCUMENT_ROOT']}/../{$item}/{$name}.php";
 
-        if ($item == "components")
-            $file = "{$_SERVER['DOCUMENT_ROOT']}/controllers/{$item}/{$name}/load.php";
-        else
-            $file = "{$_SERVER['DOCUMENT_ROOT']}/{$item}/{$name}.php";
-
-        if (empty($file) || !file_exists($file)) {
-            $backtrace = debug_backtrace();
+            if (empty($file) || !file_exists($file)) {
+                $backtrace = debug_backtrace();
 //            pr($backtrace[0][line]);
 
-            echo_error("O arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/{$file}</b> n&atilde;o pode ser carregado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p> <b>\$this->load(\"{$item}\",\"{$name}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
-            return false; // TODO: Lançar erro como exception???
+                echo_error("O arquivo <b>{$file}</b> n&atilde;o pode ser carregado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p> <b>\$this->load(\"{$item}\",\"{$name}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+                return false; // TODO: Lançar erro como exception???
+            }
+            require_once $file;
+
+            $name = str_replace('/', '_', $name);
+            $klass = ucfirst($name);
+
+            if ($item == "models" || strpos($item, "/models") > 0)
+                $instance = new $klass();
+            else
+                $instance = new $klass($name);
+
+            $this->registerLoadedItem($item, $name, $instance);
+        } catch (Exception $e) {
+            echo_error("Exceção capturada: {$e->getMessage()}", 'Exception');
+//            echo 'Exceção capturada: ', $e->getMessage(), "\n";
         }
-
-        require_once $file;
-
-        $name = str_replace('/', '_', $name);
-        $klass = ucfirst($name);
-
-        if ($item == "models" || strpos($item, "/models") > 0)
-            $instance = new $klass();
-        else
-            $instance = new $klass($name);
-
-        $this->registerLoadedItem($item, $name, $instance);
     }
 
     private function registerLoadedItem($item, $name, $instance) {

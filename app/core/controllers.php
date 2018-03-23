@@ -91,7 +91,7 @@ class Controller extends Loader {
 
         $helpers = array();
         foreach ($this->helpers as $helper) {
-            require_once("helpers/{$helper}.php");
+            require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/helpers/{$helper}.php");
             if (class_exists($klasse = ucfirst($helper))) {
                 $helpers[$helper] = new $klasse();
             }
@@ -102,12 +102,12 @@ class Controller extends Loader {
         ob_start();
         if (!empty($this->layout)) {
             ob_start();
-            include "views/{$name}.php";
+            include "{$_SERVER['DOCUMENT_ROOT']}/../views/{$name}.php";
             $layout_content = ob_get_contents();
             ob_end_clean();
-            include("views/layouts/{$this->layout}.php");
+            include("{$_SERVER['DOCUMENT_ROOT']}/../views/layouts/{$this->layout}.php");
         } else {
-            $viewPath = "views/{$name}.php";
+            $viewPath = "{$_SERVER['DOCUMENT_ROOT']}/../views/{$name}.php";
             if (file_exists($viewPath)) {
                 include($viewPath);
             }

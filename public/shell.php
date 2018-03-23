@@ -1,5 +1,4 @@
 
-
 <?php
 
 /*
@@ -20,29 +19,25 @@
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 ?>
-
-
 <?php
 
-/* Load Core */
-include_once("core/functions.php");
-include_once("core/exceptions.php");
-include_once("core/loader.php");
-include_once("core/models.php");
-include_once("core/views.php");
-include_once("core/controllers.php");
-include_once("core/forms.php");
-include_once("core/helpers.php");
-include_once("core/menus.php");
-include_once("core/actions.php");
-include_once("core/filters.php");
-include_once("core/components.php");
-include_once("core/tests.php");
-include_once("core/wp.php");
-include_once("core/mapper.php");
+require_once("../app/configs/autoload.php");
 
+set_include_path(OPENMVC_INCLUDE_PATH);
+$_SERVER['DOCUMENT_ROOT'] = OPENMVC_DOCUMENT_ROOT;
+$_SERVER['HTTP_HOST'] = OPENMVC_HTTP_HOST;
+//print_r($argv);
 
-/* Load Config */
-include_once("core/config.php");
-include_once("config/menu.php");
-include_once("config/routes.php");
+$_REQUEST['c'] = $argv[1];
+$_REQUEST['a'] = $argv[2];
+$_REQUEST['p'] = $argv;
+
+require_once("../app/core/min.php");
+
+if (isset($_REQUEST["p"])) {
+    execute_action($_REQUEST['c'], $_REQUEST['a'], $_REQUEST["p"]);
+} else {
+    execute_action($_REQUEST['c'], $_REQUEST['a']);
+}
+
+    

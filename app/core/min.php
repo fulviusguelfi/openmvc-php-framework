@@ -21,25 +21,33 @@
 ?>
 <?php
 
-require_once("config.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/configs/autoload.php");
+// you want all errors to be triggered
+
+if (OPENMVC_DEBUG == true) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On');
+} else {
+    ini_set('display_errors', 'Off');
+}
 
 if (function_exists('date_default_timezone_set'))
     date_default_timezone_set(TIMEZONE);
 
-require_once("core/functions.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/functions.php");
 
-require( INC . '/functions.php' );
-require( INC . '/db.php' );
+require( "{$_SERVER['DOCUMENT_ROOT']}/../".INC . '/functions.php' );
+require( "{$_SERVER['DOCUMENT_ROOT']}/../".INC . '/db.php' );
 
 
-require_once("core/exceptions.php");
-require_once("core/loader.php");
-require_once("core/models.php");
-require_once("core/views.php");
-require_once("core/controllers.php");
-require_once("core/forms.php");
-require_once("core/helpers.php");
-require_once("core/components.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/exceptions.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/loader.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/models.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/views.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/controllers.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/forms.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/helpers.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/components.php");
 
 function carregar_pagina($controller, $action, $param = NULL) {
     if ($param == NULL)

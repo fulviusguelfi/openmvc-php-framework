@@ -2895,10 +2895,11 @@ function _wp_mysql_week($column) {
 }
 
 function execute_action($controller, $action, $params = null) {
-    require_once("core/functions.php");
-    if (is_file($_SERVER['DOCUMENT_ROOT'] . "/controllers/{$controller}.php")) {
+    require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/functions.php");
+    $controller_path = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$controller}.php";
+    if (is_file($controller_path)) {
         try {
-            include_once ("controllers/{$controller}.php");
+            include_once ($controller_path);
             $klass = ucfirst($controller);
             $instance = new $klass($controller, $action);
             if (method_exists($instance, $action)) {
@@ -2909,7 +2910,7 @@ function execute_action($controller, $action, $params = null) {
             }else {
                 $backtrace = debug_backtrace();
 //            pr($backtrace[0][line]);
-                echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+                echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>$controller_path</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
             }
         } catch (Exception $e) {
             echo_error("Exceção capturada: {$e->getMessage()}", 'Exception');
@@ -2917,7 +2918,7 @@ function execute_action($controller, $action, $params = null) {
         }
     } else {
         $backtrace = debug_backtrace();
-        echo_error("O Arquivo <b>{$_SERVER['DOCUMENT_ROOT']}/controllers/{$controller}.php</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
+        echo_error("O Arquivo <b>$controller_path</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
     }
 }
 
