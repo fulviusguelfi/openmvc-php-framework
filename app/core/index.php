@@ -33,13 +33,6 @@ include_once("app/core/views.php");
 include_once("app/core/controllers.php");
 include_once("app/core/forms.php");
 include_once("app/core/helpers.php");
-include_once("app/core/menus.php");
-include_once("app/core/actions.php");
-include_once("app/core/filters.php");
-include_once("app/core/components.php");
-include_once("app/core/tests.php");
-include_once("app/core/wp.php");
-include_once("app/core/mapper.php");
 
 
 /* Load Config */

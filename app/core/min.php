@@ -47,7 +47,6 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/views.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/controllers.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/forms.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/helpers.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/components.php");
 
 function carregar_pagina($controller, $action, $param = NULL) {
     if ($param == NULL)
