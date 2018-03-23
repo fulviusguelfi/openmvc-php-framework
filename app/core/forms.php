@@ -83,6 +83,9 @@ class Field {
     }
 
     protected function parseAttrs($attrs) {
+        if ($this->required) {
+            $attrs['required'] = "required";
+        }
         $output = array();
         if (!empty($attrs)) {
             foreach ($attrs as $name => $value) {
@@ -215,7 +218,7 @@ class InputField extends Field {
             }
         }
 
-        return parent::render($attributes);
+        return parent::render($name, $attributes);
     }
 
 }
