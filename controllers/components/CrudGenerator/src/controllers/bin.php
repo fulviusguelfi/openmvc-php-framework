@@ -118,7 +118,7 @@ class Bin extends Controller {
             }
 
             $fp = fopen($file_path, "wa");
-            $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_Model.php");
+            $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../controllers/components/CrudGenerator/src/bin/files/TABLE_Model.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
             $php = str_replace("/* RETURN_LISTAR */", $RETURN_LISTAR, $php);
@@ -138,7 +138,7 @@ class Bin extends Controller {
         }
         if (!file_exists($file_path)) {
             $fp = fopen($file_path, "wa");
-            $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/controllers/components/CrudGenerator/src/bin/files/TABLE_.php");
+            $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../controllers/components/CrudGenerator/src/bin/files/TABLE_.php");
             $php = str_replace("CLASS_NAME_TABLE_", ucwords($table_name), $php);
             $php = str_replace("TABLE_", $table_name, $php);
 
