@@ -34,7 +34,3 @@ include_once("app/core/controllers.php");
 include_once("app/core/forms.php");
 include_once("app/core/helpers.php");
 
-
-/* Load Config */
-include_once("app/core/config.php");
-
