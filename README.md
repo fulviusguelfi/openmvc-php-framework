@@ -32,7 +32,8 @@ ________________________________________________________________________________
 Dentro dos arquivos localizado app.php e database.php na app/configs/ do OpenMvc configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
 
 
-app/configs/app.php
+-app/configs/app.php
+
     #/** Raiz da include_path do PHP */
     define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
 
@@ -47,7 +48,8 @@ app/configs/app.php
 
 
 
-app/configs/database.php
+-app/configs/database.php
+
     #/* Nome do host do MySQL */
     define('DB_NAME', '$NOME_DO_BANCO_DE_DADOS');
 
