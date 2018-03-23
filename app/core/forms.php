@@ -787,16 +787,14 @@ class Form extends Loader {
 
         $opts = array("action" => "", "method" => "post");
         $attributes = array_merge($opts, $attrs);
-        $list_attributes = array();
-        foreach ($attributes as $key => $value) {
-            $list_attributes[] = "{$key}=\"{$value}\"";
-        }
-        $attr = implode(" ", $list_attributes);
+        $attr = $this->parseFormAttrs($attrs);
         return "<form {$attr}>";
     }
 
-    public function submit($text = "Enviar") {
-        return "<button type=\"submit\">{$text}</button>";
+    public function submit($text = "Enviar", $attrs = array()) {
+        unset($attrs['type']);
+        $attributes = $this->parseFormAttrs($attrs);
+        return "<button {$attributes} type=\"submit\">{$text}</button>";
     }
 
     public function close() {
@@ -841,6 +839,19 @@ class Form extends Loader {
 
 
         return $dados;
+    }
+
+    protected function parseFormAttrs($attrs) {
+        $output = array();
+        if (!empty($attrs)) {
+            foreach ($attrs as $name => $value) {
+                if (null !== $value) {
+                    $output[] = sprintf('%s="%s"', $name, $value);
+                }
+            }
+        }
+        $attributes = join(' ', $output);
+        return $attributes;
     }
 
 }
