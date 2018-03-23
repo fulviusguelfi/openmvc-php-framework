@@ -24,7 +24,6 @@
 
 class Controller extends Loader {
 
-    var $form;
     var $helpers;
     var $name;
     var $action;
@@ -121,34 +120,6 @@ class Controller extends Loader {
             echo $viewContents;
     }
 
-    public function form($name, $data = array()) {
-        require_once("forms/{$name}.php");
-
-        if (strpos($name, '/')) {
-            $pieces = explode('/', $name);
-            $pieces = array_map('ucfirst', $pieces);
-            $form = join('_', $pieces);
-
-            $pieces = explode('_', $form);
-            $pieces = array_map('ucfirst', $pieces);
-            $form = join('_', $pieces);
-        } else {
-            $form = ucfirst($name);
-        }
-
-        return new $form($data);
-    }
-
-    public function business($name, $data = array()) {
-        $business = ucfirst($name) . "Business";
-        if (!class_exists($business)) {
-            require_once("business/{$name}/index.php");
-        }
-
-        $business = new $business($data);
-        return $business->get($data);
-    }
-
     /**
      * Compara a action com a ação atual
      * @param Sring $action
@@ -237,27 +208,6 @@ class Controller extends Loader {
         }
     }
 
-    /**
-     * Armazera o canal pelo qual o usuário acessou o portal
-     * @param stdClass $canal 
-     */
-    protected function setCanalNavegacao($canal) {
-        $this->useSession();
-        if (is_array($canal)) {
-            settype($canal, 'object');
-        }
-        $_SESSION['canalNavegacao'] = $canal;
-    }
-
-    /**
-     *
-     * @return stdClass
-     */
-    protected function getCanalNavegacao() {
-        $this->useSession();
-        return isset($_SESSION['canalNavegacao']) ? $_SESSION['canalNavegacao'] : null;
-    }
-
     protected function out_redirect($url) {
         echo "<meta http-equiv='refresh' content='0;url={$url}' >";
         die;
@@ -299,108 +249,4 @@ class Controller extends Loader {
         list( $controller, $action ) = explode("/", $url);
         return array($controller, $action);
     }
-
-    /**
-     * Adiciona scripts ou estilos CSS baseado em uma convenção de nomenclatura de diretórios
-     * relativa ao controller/action executado. Estes estilos e/ou scripts devem ser adicionados
-     * ao interceptar a ação 'admin_enqueue_scripts'. Isso é feito, em geral, na implementação do
-     * médodo {@link Controller::init()}
-     * 
-     * Exemplo:
-     * <code>
-     * public function init() {
-     * 	add_action('admin_enqueue_scripts', array($this, 'adicionarScripts'));
-     * }
-     * 
-     * public function adicionarScripts()
-     * {
-     *  $this->addActionMedia('script', $this->action);
-     * 	// OU $this->addActionScript();
-     * 	
-     * 	$this->addActionMedia('style', $this->action); 
-     *  // OU $this->addActionStyle();
-     * }
-     * </code>
-     * 
-     * 
-     * @param string $type Tipo de mídia (script|style) a ser adicionado via wp_enqueue_*
-     * @param type $action Nome da action usada para determinar o arquivo carregado
-     * @return void
-     */
-    protected function addActionMedia($type, $action = null) {
-        $action = !empty($action) ? $action : $this->action;
-        $controller = $this->name; // TODO: Adicionar suporte para carregar de outros controllers??
-        $type = strtolower($type);
-
-        $id = sprintf('%s_%s', $controller, $action);
-        $source = '';
-        $deps = array();
-
-        $enqueueFunction = 'wp_enqueue_' . (string) $type;
-
-        switch ($type) {
-            case 'script':
-                $path = sprintf('/media/js/%s/%s.js', $controller, $action);
-                if (file_exists($path))
-                    $source = sprintf('media/js/%s/%s.js', $controller, $action);
-                $deps = $this->getActionScriptDependencies($action);
-                break;
-
-            case 'style':
-                $path = sprintf('/media/css/%s/%s.css', $controller, $action);
-                if (file_exists($path))
-                    $source = sprintf('media/css/%s/%s.css', $controller, $action);
-                $deps = $this->getActionStlyeDependencies($action);
-                break;
-
-            default:
-                return; // Tipo não permitido. Lançar exception?
-                break;
-        }
-
-        if (!empty($source)) {
-            $enqueueFunction($id, $source, $deps);
-        }
-    }
-
-    /**
-     * Método facilitador para a utilização de {@link Controller::addActionMedia()}
-     * @param string $action 
-     */
-    protected function addActionScript($action = null) {
-        $this->addActionMedia('script', $action);
-    }
-
-    /**
-     * Método facilitador para a utilização de {@link Controller::addActionMedia()}
-     * @param string $action 
-     */
-    protected function addActionStyle($action = null) {
-        $this->addActionMedia('style', $action);
-    }
-
-    /**
-     * Obtém as dependências de um script de uma action. Deve ser sobrescrita pelos controllers
-     * decendentes para que o comportamento padrão seja alterado.
-     * 
-     * @param string $action
-     */
-    protected function getActionScriptDependencies($action) {
-        $deps = array();
-        return $deps;
-    }
-
-    /**
-     * Obtém as dependencias de estilo uma action baseado em seu nome.
-     * Deve ser sobrescrita pelos controllers decendentes para que o comportamento padrão seja 
-     * alterado.
-     * 
-     * @param string $action
-     * @return array 
-     */
-    protected function getActionStlyeDependencies($action) {
-        $deps = array();
-        return $deps;
-    }
-
 }
