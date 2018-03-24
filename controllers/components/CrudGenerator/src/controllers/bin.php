@@ -331,65 +331,41 @@ class Bin extends Controller {
                                 }
                             }
                             //CREATE SELECT RELATION TABLES
-                            $php .= '<div class="row">' . $quebra;
                             $php .= '<div class="col-md-12 ">' . $quebra;
-                            $php .= '<select  name="' . $obj->Field . '" id="' . $obj->Field . '_ID">' . $quebra;
-                            $php .= '<?php foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '): ?>' . $quebra;
-                            $php .= '<option value="<?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?>" <?php echo ($obj' . $table->$DB_KEY . '->' . $idTable . '== $obj->' . $obj->Field . ' ? "selected" : "")?>><?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?></option>' . $quebra;
-                            $php .= '<?php endforeach; ?>' . $quebra;
-                            $php .= '</select>' . $quebra;
-                            $php .= '<label for="' . $obj->Field . '_ID">' . ucwords($table->$DB_KEY) . '</label>' . $quebra;
+                            $php .= '<div class="form-group">' . $quebra;
+                            $php .= '<?php' . $quebra
+                                    . ' $data = array();' . $quebra
+                                    . ' $data[] = array("label" => "--Selecione um ' . ucwords($obj->Field) . '--", "value" => "");' . $quebra
+                                    . ' foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '):' . $quebra
+                                    . ' $data[] = array("label" => $obj' . $table->$DB_KEY . '->' . $idTable . ', "value" => $obj' . $table->$DB_KEY . '->' . $idTable . ');' . $quebra
+                                    . ' endforeach;' . $quebra
+                                    . ' $forms->fields["' . $obj->Field . '"] = new SelectField($data,' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
+                                    . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
+                                    . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
+                                    . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
+                                    . '?>' . $quebra;
                             $php .= '</div>' . $quebra;
                             $php .= '</div>' . $quebra;
                             $escreveu = 1;
                         } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
 //                        echo $obj->Type." <br/>";
                             $inputType = $this->binModel->formType($obj->Type);
-                            if ($inputType == "checkbox") {
-                                //CREATE CHECKBOX
-                                $php .= '<div class="row">' . $quebra
-                                        . '<div class="col-md-12 ">' . $quebra
-                                        . '<div class="form-group">' . $quebra
-                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                        . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> >' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra;
-                            } else if ($inputType != "textarea") {
-                                //CREATE DEFAULT
-                                $loadClass = $this->binModel->formTypeHelpper($inputType);
-                                $php .= '<div class="row">' . $quebra;
-                                $php .= '<div class="col-md-12 ">' . $quebra;
-                                $php .= '<div class="form-group">' . $quebra;
-                                $php .= '<?php' . $quebra
-                                        . ' $forms->fields["' . $obj->Field . '"] = new ' . $loadClass . '(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
-                                        . ($inputType != "file" ? ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra : '')
-                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
-                                        . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
-                                        . '?>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                            } else if ($inputType == "textarea") {
-                                //CREATE TEXTAREA
-                                $php .= '<div class="row">' . $quebra;
-                                $php .= '<div class="col-md-12 ">' . $quebra;
-                                $php .= '<div class="form-group">' . $quebra;
-                                $php .= '<?php' . $quebra
-                                        . ' $forms->fields["' . $obj->Field . '"] = new TextField(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
-                                        . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
-                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
-                                        . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
-                                        . '?>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                                $php .= '</div>' . $quebra;
-                            }
+                            $loadClass = $this->binModel->formTypeHelpper($inputType);
+
+                            $php .= '<div class="col-md-12 ">' . $quebra;
+                            $php .= '<div class="form-group">' . $quebra;
+                            $php .= '<?php' . $quebra
+                                    . ' $forms->fields["' . $obj->Field . '"] = new ' . $loadClass . '(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
+                                    . ($inputType != "file" ? ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra : '')
+                                    . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
+                                    . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
+                                    . '?>' . $quebra;
+                            $php .= '</div>' . $quebra;
+                            $php .= '</div>' . $quebra;
                             $escreveu = 1;
                         }
                     }
                 } else {
-
                     $php .= '<?php' . $quebra
                             . ' $forms->fields["' . $obj->Field . '"] = new HiddenField(false);' . $quebra
                             . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
