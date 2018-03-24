@@ -357,14 +357,19 @@ class Bin extends Controller {
                                         . '</div>' . $quebra;
                             } else if ($inputType != "textarea") {
                                 //CREATE DEFAULT
-                                $php .= '<div class="row">' . $quebra
-                                        . '<div class="col-md-12 ">' . $quebra
-                                        . '<div class="form-group">' . $quebra
-                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                        . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '">' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra;
+                                $loadClass = $this->binModel->formTypeHelpper($inputType);
+                                $php .= '<div class="row">' . $quebra;
+                                $php .= '<div class="col-md-12 ">' . $quebra;
+                                $php .= '<div class="form-group">' . $quebra;
+                                $php .= '<?php' . $quebra
+                                        . ' $forms->fields["' . $obj->Field . '"] = new ' . $loadClass . '(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
+                                        . ($inputType != "file") ? ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra : ''
+                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
+                                        . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
+                                        . '?>' . $quebra;
+                                $php .= '</div>' . $quebra;
+                                $php .= '</div>' . $quebra;
+                                $php .= '</div>' . $quebra;
                             } else if ($inputType == "textarea") {
                                 //CREATE TEXTAREA
                                 $php .= '<div class="row">' . $quebra;
