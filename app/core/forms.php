@@ -559,8 +559,8 @@ class SelectField extends MultipleField {
     }
 
     private function setGroup($group, $type, $item) {
-        if (!is_null($group) && isset($item['id'])) {
-            $id = $item['id'];
+        if (!is_null($group) && isset($item['value'])) {
+            $id = $item['value'];
             $this->groups[$type][$id] = $group;
         }
     }
@@ -574,17 +574,17 @@ class SelectField extends MultipleField {
         }
 
         $attributes = $attrs + array(
-            'value' => $item['id']
+            'value' => $item['value']
         );
 
         if ($this->isSelected($item)) {
             $attributes['selected'] = 'selected';
         }
 
-        $tag = sprintf('<option %s>%s</option>', $this->parseAttrs($attributes, true), $item['nome']);
+        $tag = sprintf('<option %s>%s</option>', $this->parseAttrs($attributes, true), $item['label']);
 
-        $prefix = $this->pre_option($item['id'], $pre_option_attrs);
-        $suffix = $this->post_option($item['id']);
+        $prefix = $this->pre_option($item['value'], $pre_option_attrs);
+        $suffix = $this->post_option($item['value']);
 
         return $prefix . $tag . $suffix;
     }
@@ -619,7 +619,7 @@ class SelectField extends MultipleField {
     public function pre_tag($name, $cssclass, $disable = false) {
         $attrs = array(
             'name' => $name,
-            'id' => $name
+            'value' => $name
         );
 
         if (is_array($cssclass)) {
@@ -652,7 +652,7 @@ class SelectField extends MultipleField {
     }
 
     public function isSelected($item) {
-        return (((string) $this->value) === ((string) $item['id']));
+        return (((string) $this->value) === ((string) $item['value']));
     }
 
     public function checked($item) {
