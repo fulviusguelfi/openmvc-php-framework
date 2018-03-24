@@ -30,8 +30,8 @@ class Home extends Controller {
 
     public function load_crud($params = array()) {
         if (!empty($params)) {
-            $_REQUEST['crud'] = (empty($_REQUEST['crud']) ? $params[3] : $_REQUEST['crud']);
-            $_REQUEST['bootstrap'] = (empty($_REQUEST['bootstrap']) ? $params[4] : $_REQUEST['bootstrap']);
+            $_REQUEST['crud'] = (empty($_REQUEST['crud']) ? $params[2] : $_REQUEST['crud']);
+            $_REQUEST['bootstrap'] = (empty($_REQUEST['bootstrap']) ? $params[3] : $_REQUEST['bootstrap']);
         }
         $this->load("components", "CrudGenerator");
         $this->CrudGenerator->bootstrap = true;
