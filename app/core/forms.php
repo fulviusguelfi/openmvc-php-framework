@@ -797,6 +797,12 @@ class Form extends Loader {
         return "<button {$attributes} type=\"submit\">{$text}</button>";
     }
 
+    public function reset($text = "Limpar", $attrs = array()) {
+        unset($attrs['type']);
+        $attributes = $this->parseFormAttrs($attrs);
+        return "<button {$attributes} type=\"reset\">{$text}</button>";
+    }
+
     public function close() {
         return "</form>";
     }
