@@ -23,12 +23,16 @@
 
 class Home extends Controller {
 
-    public function index() {
-        $this->loadCrudGenerator();
+    public function index($params) {
+        $this->load_crud($params);
 //        $this->view("home/index", array("var" => "Lorem Ipsum"));
     }
 
-    public function loadCrudGenerator() {
+    public function load_crud($params) {
+        if (!empty($params)) {
+            $_REQUEST['crud'] = (empty($_REQUEST['crud']) ? $params[3] : $_REQUEST['crud']);
+            $_REQUEST['bootstrap'] = (empty($_REQUEST['bootstrap']) ? $params[4] : $_REQUEST['bootstrap']);
+        }
         $this->load("components", "CrudGenerator");
         $this->CrudGenerator->bootstrap = true;
         $this->CrudGenerator->execute();
