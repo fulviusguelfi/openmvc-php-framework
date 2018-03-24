@@ -124,8 +124,10 @@ class Bin extends Controller {
             $php = str_replace("/* RETURN_LISTAR */", $RETURN_LISTAR, $php);
             fwrite($fp, $php);
             fclose($fp);
+            touch($file_path);
+            chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
         }
     }
 
@@ -199,8 +201,10 @@ class Bin extends Controller {
 
             fwrite($fp, $php);
             fclose($fp);
+            touch($file_path);
+            chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
         }
     }
 
@@ -269,8 +273,10 @@ class Bin extends Controller {
             $php .= '</div>' . $quebra;
             fwrite($fp, $php);
             fclose($fp);
+            touch($file_path);
+            chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
         }
     }
 
@@ -280,110 +286,121 @@ class Bin extends Controller {
         } else {
             $quebra = "\n";
         }
-        $fp = fopen($view_dir . '/edit.php', 'wa');
-        $DB_KEY = "Tables_in_" . DB_NAME;
-        $tables = $this->binModel->getTables();
-        foreach ($tables as $keyTable1 => $table1) {
-            $mytables[] = "id_" . $table1->$DB_KEY;
-            $mytables[] = "ID_" . $table1->$DB_KEY;
-            $mytables[] = $table1->$DB_KEY . "_id";
-            $mytables[] = $table1->$DB_KEY . "_ID";
-        }
-        $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
-        if ($bootstrap) {
-            $php .= '<style>.openmvc-form input, .openmvc-form textarea, .openmvc-form button, .openmvc-form select {width:100%;}</style>' . $quebra;
-            $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
-            $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
-            $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
-            $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
-        }
-        $php .= '<div class="row">' . $quebra;
-        $php .= '<div class="container">' . $quebra;
-        $php .= '<div class="col-md-12 ">' . $quebra;
-        $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
-        $php .= '<a role="button" class="btn btn-primary" href="/" ><span class="glyphicon glyphicon-home"></span> Home</a><br>' . $quebra;
-        $php .= "<form method='POST' class='openmvc-form' enctype='multipart/form-data'>" . $quebra;
-//        print_r($table_structure);
-        foreach ($table_structure as $key => $obj) {
-            $escreveu = 0;
-            if ($obj->Field != "id" && $obj->Field != "ID") {
-                foreach ($tables as $keyTable => $table) {
-//                    echo $obj->Field . " => " . $table->$DB_KEY . "<br/>";
-                    if ((
-                            ($obj->Field == "id_" . $table->$DB_KEY) ||
-                            ($obj->Field == "ID_" . $table->$DB_KEY) ||
-                            ($obj->Field == $table->$DB_KEY . "_id") ||
-                            ($obj->Field == $table->$DB_KEY . "_ID")) &&
-                            !$escreveu
-                    ) {
-                        $relationTable_structure = $this->binModel->getTableStructure($table->$DB_KEY);
-                        foreach ($relationTable_structure as $value) {
-                            if ($value->Field == 'id' || $value->Field == 'ID') {
-                                $idTable = $value->Field;
-                            }
-                        }
-                        //CREATE SELECT RELATION TABLES
-                        $php .= '<div class="row">' . $quebra;
-                        $php .= '<div class="col-md-12 ">' . $quebra;
-                        $php .= '<select  name="' . $obj->Field . '" id="' . $obj->Field . '_ID">' . $quebra;
-                        $php .= '<?php foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '): ?>' . $quebra;
-                        $php .= '<option value="<?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?>" <?php echo ($obj' . $table->$DB_KEY . '->' . $idTable . '== $obj->' . $obj->Field . ' ? "selected" : "")?>><?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?></option>' . $quebra;
-                        $php .= '<?php endforeach; ?>' . $quebra;
-                        $php .= '</select>' . $quebra;
-                        $php .= '<label for="' . $obj->Field . '_ID">' . ucwords($table->$DB_KEY) . '</label>' . $quebra;
-                        $php .= '</div>' . $quebra;
-                        $php .= '</div>' . $quebra;
-                        $escreveu = 1;
-                    } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
-//                        echo $obj->Type." <br/>";
-                        $inputType = $this->binModel->formType($obj->Type);
-                        if ($inputType == "checkbox") {
-                            //CREATE CHECKBOX
-                            $php .= '<div class="row">' . $quebra
-                                    . '<div class="col-md-12 ">' . $quebra
-                                    . '<div class="form-group">' . $quebra
-                                    . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> >' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra;
-                        } else if ($inputType != "textarea") {
-                            //CREATE DEFAULT
-                            $php .= '<div class="row">' . $quebra
-                                    . '<div class="col-md-12 ">' . $quebra
-                                    . '<div class="form-group">' . $quebra
-                                    . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '">' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra;
-                        } else if ($inputType == "textarea") {
-                            //CREATE TEXTAREA
-                            $php .= '<div class="row">' . $quebra
-                                    . '<div class="col-md-12 ">' . $quebra
-                                    . '<div class="form-group">' . $quebra
-                                    . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                    . '<textarea ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea>' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra
-                                    . '</div>' . $quebra;
-                        }
-                        $escreveu = 1;
-                    }
-                }
-            } else {
-
-                $php .= '<input type="hidden" name="' . $obj->Field . '" value="<?php echo $obj->' . $obj->Field . ' ?>">' . $quebra;
+        $file_path = $view_dir . '/edit.php';
+        if (!file_exists($file_path)) {
+            $fp = fopen($file_path, 'wa');
+            $DB_KEY = "Tables_in_" . DB_NAME;
+            $tables = $this->binModel->getTables();
+            foreach ($tables as $keyTable1 => $table1) {
+                $mytables[] = "id_" . $table1->$DB_KEY;
+                $mytables[] = "ID_" . $table1->$DB_KEY;
+                $mytables[] = $table1->$DB_KEY . "_id";
+                $mytables[] = $table1->$DB_KEY . "_ID";
             }
+            $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
+            if ($bootstrap) {
+                $php .= '<style>.openmvc-form input, .openmvc-form textarea, .openmvc-form button, .openmvc-form select {width:100%;}</style>' . $quebra;
+                $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
+                $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
+                $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
+                $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
+            }
+            $php .= '<div class="row">' . $quebra;
+            $php .= '<div class="container">' . $quebra;
+            $php .= '<div class="col-md-12 ">' . $quebra;
+            $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
+            $php .= '<a role="button" class="btn btn-primary" href="/" ><span class="glyphicon glyphicon-home"></span> Home</a><br>' . $quebra;
+            $php .= '<?php echo $forms->open(array("class"=>"openmvc-form"));?>' . $quebra;
+//        print_r($table_structure);
+            foreach ($table_structure as $key => $obj) {
+                $escreveu = 0;
+                if ($obj->Field != "id" && $obj->Field != "ID") {
+                    foreach ($tables as $keyTable => $table) {
+//                    echo $obj->Field . " => " . $table->$DB_KEY . "<br/>";
+                        if ((
+                                ($obj->Field == "id_" . $table->$DB_KEY) ||
+                                ($obj->Field == "ID_" . $table->$DB_KEY) ||
+                                ($obj->Field == $table->$DB_KEY . "_id") ||
+                                ($obj->Field == $table->$DB_KEY . "_ID")) &&
+                                !$escreveu
+                        ) {
+                            $relationTable_structure = $this->binModel->getTableStructure($table->$DB_KEY);
+                            foreach ($relationTable_structure as $value) {
+                                if ($value->Field == 'id' || $value->Field == 'ID') {
+                                    $idTable = $value->Field;
+                                }
+                            }
+                            //CREATE SELECT RELATION TABLES
+                            $php .= '<div class="row">' . $quebra;
+                            $php .= '<div class="col-md-12 ">' . $quebra;
+                            $php .= '<select  name="' . $obj->Field . '" id="' . $obj->Field . '_ID">' . $quebra;
+                            $php .= '<?php foreach($' . $table->$DB_KEY . ' as $key => $obj' . $table->$DB_KEY . '): ?>' . $quebra;
+                            $php .= '<option value="<?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?>" <?php echo ($obj' . $table->$DB_KEY . '->' . $idTable . '== $obj->' . $obj->Field . ' ? "selected" : "")?>><?php echo $obj' . $table->$DB_KEY . '->' . $idTable . '?></option>' . $quebra;
+                            $php .= '<?php endforeach; ?>' . $quebra;
+                            $php .= '</select>' . $quebra;
+                            $php .= '<label for="' . $obj->Field . '_ID">' . ucwords($table->$DB_KEY) . '</label>' . $quebra;
+                            $php .= '</div>' . $quebra;
+                            $php .= '</div>' . $quebra;
+                            $escreveu = 1;
+                        } else if (!$escreveu && !in_array($obj->Field, $mytables)) {
+//                        echo $obj->Type." <br/>";
+                            $inputType = $this->binModel->formType($obj->Type);
+                            if ($inputType == "checkbox") {
+                                //CREATE CHECKBOX
+                                $php .= '<div class="row">' . $quebra
+                                        . '<div class="col-md-12 ">' . $quebra
+                                        . '<div class="form-group">' . $quebra
+                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
+                                        . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" <?php echo ($obj->' . $obj->Field . '? "checked" : "")?> >' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra;
+                            } else if ($inputType != "textarea") {
+                                //CREATE DEFAULT
+                                $php .= '<div class="row">' . $quebra
+                                        . '<div class="col-md-12 ">' . $quebra
+                                        . '<div class="form-group">' . $quebra
+                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
+                                        . '<input ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" type="' . $inputType . '" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" value="' . ($inputType != 'file' ? '<?php echo $obj->' . $obj->Field . ' ?>' : '') . '">' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra;
+                            } else if ($inputType == "textarea") {
+                                //CREATE TEXTAREA
+                                $php .= '<div class="row">' . $quebra
+                                        . '<div class="col-md-12 ">' . $quebra
+                                        . '<div class="form-group">' . $quebra
+                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
+                                        . '<textarea ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea>' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra
+                                        . '</div>' . $quebra;
+                            }
+                            $escreveu = 1;
+                        }
+                    }
+                } else {
+
+                    $php .= '<?php' . $quebra
+                            . ' $forms->fields["' . $obj->Field . '"] = new HiddenField(false);' . $quebra
+                            . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
+                            . ' echo $forms->render("' . $obj->Field . '");' . $quebra
+                            . '?>' . $quebra;
+                }
+            }
+            $php .= '<div class="col-md-6"><?php echo $forms->reset(\'<span class="glyphicon glyphicon-remove-circle"></span> Limpar\',array("class"=>"btn btn-danger","role"=>"button"));?></div>' . $quebra;
+            $php .= '<div class="col-md-6"><?php echo $forms->submit(\'<span class="glyphicon glyphicon-ok-circle"></span> Enviar\',array("class"=>"btn btn-success","role"=>"button"));?></div>' . $quebra;
+            $php .= '<?php echo $forms->close();?>' . $quebra;
+            $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
+            fwrite($fp, $php);
+            fclose($fp);
+            touch($file_path);
+            chmod($file_path, 0777);
+        } else {
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-03");
         }
-        $php .= '<div class="col-md-6"><button type="reset" class="btn btn-danger" role="button" ><span class="glyphicon glyphicon-remove-circle"></span> Limpar</button></div>' . $quebra;
-        $php .= '<div class="col-md-6"><button type="submit" class="btn btn-success" role="button" ><span class="glyphicon glyphicon-ok-circle"></span> Salvar</button></div>' . $quebra
-                . '</form>' . $quebra;
-        $php .= '</div>' . $quebra;
-        $php .= '</div>' . $quebra;
-        $php .= '</div>' . $quebra;
-        fwrite($fp, $php);
-        fclose($fp);
     }
 
 }
