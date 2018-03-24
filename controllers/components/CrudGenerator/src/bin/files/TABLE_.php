@@ -50,6 +50,7 @@ class CLASS_NAME_TABLE_ extends Controller {
     }
 
     public function editar($param) {
+        $this->helpers[] = "forms";
         $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
         /* LIST_RELATIONS */
         if (empty($_POST)) {
