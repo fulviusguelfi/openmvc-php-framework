@@ -82,8 +82,8 @@ class Field {
         }
     }
 
-    protected function parseAttrs($attrs) {
-        if ($this->required) {
+    protected function parseAttrs($attrs, $ignore_required = false) {
+        if ($this->required && !$ignore_required) {
             $attrs['required'] = "required";
         }
         $output = array();
@@ -581,7 +581,7 @@ class SelectField extends MultipleField {
             $attributes['selected'] = 'selected';
         }
 
-        $tag = sprintf('<option %s>%s</option>', $this->parseAttrs($attributes), $item['nome']);
+        $tag = sprintf('<option %s>%s</option>', $this->parseAttrs($attributes, true), $item['nome']);
 
         $prefix = $this->pre_option($item['id'], $pre_option_attrs);
         $suffix = $this->post_option($item['id']);
@@ -599,7 +599,7 @@ class SelectField extends MultipleField {
                 'label' => $label
             );
 
-            $pre_option = sprintf('<optgroup %s>', $this->parseAttrs($attributes));
+            $pre_option = sprintf('<optgroup %s>', $this->parseAttrs($attributes, true));
         }
 
         return $pre_option;
