@@ -127,7 +127,7 @@ class Bin extends Controller {
             touch($file_path);
             chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-01", false);
         }
     }
 
@@ -204,7 +204,7 @@ class Bin extends Controller {
             touch($file_path);
             chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02", FALSE);
         }
     }
 
@@ -276,7 +276,7 @@ class Bin extends Controller {
             touch($file_path);
             chmod($file_path, 0777);
         } else {
-            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02");
+            echo_error("O arquivo $file_path já existe! Abortando...", "CRUDGEN-02", FALSE);
         }
     }
 

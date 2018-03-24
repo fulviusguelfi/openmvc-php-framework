@@ -1803,6 +1803,9 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2938,7 +2941,7 @@ function pr($var, $var_dump = false) {
     echo "</pre>";
 }
 
-function echo_error($error_message, $num_error = null) {
+function echo_error($error_message, $num_error = null, $die_after = true) {
     echo "<style>
         #openmvc-error {
                         width: 820px;
@@ -2953,7 +2956,9 @@ function echo_error($error_message, $num_error = null) {
     echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
     echo "<div id='openmvc-error'>{$error_message}</div>";
     echo "</center>";
-    die();
+    if ($die_after) {
+        die();
+    }
 }
 
 function slugify($text) {
@@ -2992,7 +2997,7 @@ function generate_file_upload_name($name) {
                 is_numeric($index_number)) {
             $next = (int) $index_number + 1;
             $tmp_exploded[$last_key] = str_replace($index_number . "-", $next . "-", $tmp_exploded[$last_key]);
-        }else{
+        } else {
             $next = 1;
             $tmp_exploded[$last_key] = $next . "-" . $tmp_exploded[$last_key];
         }
@@ -3003,6 +3008,6 @@ function generate_file_upload_name($name) {
         end($tmp1_exploded);
         $last1_key = key($tmp1_exploded);
         $retorno = array("file_path" => $name, "file_name" => $tmp1_exploded[$last1_key]);
-        return (object)$retorno;
+        return (object) $retorno;
     }
 }
