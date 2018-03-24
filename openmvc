@@ -30,6 +30,8 @@ $_SERVER['HTTP_HOST'] = OPENMVC_HTTP_HOST;
 
 $_REQUEST['c'] = $argv[1];
 $_REQUEST['a'] = $argv[2];
+unset($argv[1]);
+$argv = array_values($argv);
 $_REQUEST['p'] = $argv;
 
 require_once("app/core/min.php");
