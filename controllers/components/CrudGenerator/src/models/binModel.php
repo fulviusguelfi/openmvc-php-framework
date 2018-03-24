@@ -54,6 +54,26 @@ class BinModel extends Model {
         }
     }
 
+    public function formTypeHelpper($tipo_db) {
+        $ultima = substr($tipo_db, -1);
+        if ($ultima == ")") {
+            $primeira = strrpos($tipo_db, '(');
+            $tipo_db = substr($tipo_db, 0, $primeira);
+        }
+        $types = array(
+            "text" => "CharField", // TIPO DE FORM DEFAULT
+            "number" => "NumberField",
+            "checkbox" => "CheckField",
+            "textarea" => "TextField",
+            "file" => "FileField",
+        );
+        if (array_key_exists($tipo_db, $types)) {
+            return $types[$tipo_db];
+        } else {
+            return $types["default"];
+        }
+    }
+
 }
 
 ?>
