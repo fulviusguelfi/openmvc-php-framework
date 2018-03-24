@@ -223,6 +223,15 @@ class InputField extends Field {
 
 }
 
+class NumberField extends InputField {
+
+    public function __construct($required = true) {
+        parent::__construct($required);
+        $this->type = "number";
+    }
+
+}
+
 class CharField extends InputField {
 
     public function __construct($required = true) {
