@@ -226,6 +226,7 @@ class Bin extends Controller {
                 $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
                 $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
             }
+            $php .= '<script>function confirmDelete(el,url){el.classList.add(\'btn-warning\'); el.classList.remove(\'btn-danger\'); setTimeout(function(){ if(confirm(\'Deseja excluir este item?\')){ window.location=url;}else{el.classList.add(\'btn-danger\'); el.classList.remove(\'btn-warning\');} }, 1);}</script>' . $quebra;
             $php .= '<div class="row">' . $quebra;
             $php .= '<div class="container">' . $quebra;
             $php .= '<div class="col-md-12 ">' . $quebra;
@@ -261,7 +262,7 @@ class Bin extends Controller {
             }
             $php .= '<td>'
                     . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
-                    . '<a role="button" class="btn btn-xs btn-danger" href="/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
+                    . '<a role="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this,\'/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>\')" href="#"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
                     . '</td>' . $quebra;
             $php .= '</tr>' . $quebra
                     . '<?php endforeach; ?>' . $quebra;
