@@ -785,9 +785,9 @@ class Form extends Loader {
 
     public function open($attrs = array()) {
 
-        $opts = array("action" => "", "method" => "post");
+        $opts = array("action" => "", "method" => "post", "enctype" => "multipart/form-data");
         $attributes = array_merge($opts, $attrs);
-        $attr = $this->parseFormAttrs($attrs);
+        $attr = $this->parseFormAttrs($attributes);
         return "<form {$attr}>";
     }
 
