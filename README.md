@@ -115,25 +115,25 @@ ________________________________________________________________________________
 Rotas:
 ======
 
-- 1: O OpenMvc assim que instalado tem como rota padrão de sua raiz o Controller 'home.php' na action 'index()'.
+- 1: O OpenMvc assim que instalado tem como rota padrão de sua raiz o Controller 'common.php' na action 'index()'.
 
 
  - Para apontar para uma rota determinada basta colocar na URL o controller/action, por exemplo:
 
-No endereço http://openmvc.exemplo.com/home/teste a rota traçada seria dentro do controller 'home.php' a action 'teste()'.
+No endereço http://openmvc.exemplo.com/common/teste a rota traçada seria dentro do controller 'common.php' a action 'teste()'.
 __________________________________________________________________________________________________________________________
 
 
  - No caso de passar parametros para a mesma action o exemplo seria assim:
 
 
-No endereço http://openmvc.exemplo.com/home/teste/param1/param2 a rota traçada seria dentro do controller 'home.php' a action 'teste($param)'.
+No endereço http://openmvc.exemplo.com/common/teste/param1/param2 a rota traçada seria dentro do controller 'common.php' a action 'teste($param)'.
 
 Nesse caso dentro da action 'teste($param)' a variável $param assume o tipo Array sendo de que a mesma obteria o formato abaixo:
 
 
     array(
-        0 => 'home',
+        0 => 'common',
         1 => 'teste',
         2 => 'param1',
         3 => 'param2'
@@ -146,7 +146,7 @@ ________________________________________________________________________________
 
  - Todo Controller deve conter uma action 'index()' pois a mesma serve como action default do Controller. Por exemplo:
 
-No endereço http://openmvc.exemplo.com/home a rota traçada seria dentro do controller 'home.php' a action 'index()'.
+No endereço http://openmvc.exemplo.com/common a rota traçada seria dentro do controller 'common.php' a action 'index()'.
 
 
 Controllers:
@@ -220,9 +220,9 @@ ________________________________________________________________________________
   - Esta função serve para carregar uma view dentro de uma action e recebe dois parâmetros sendo o primeiro o arquivo da view que
  deseja carregar sem a extensão '.php' no final e o segundo(não obrigatorio) é um array de variáveis que a View recebe. Por Exemplo:
 
-Nesse caso carregaremos o arquivo /views/home/index.php e passaremos a variável $var_exemplo para a ele.
+Nesse caso carregaremos o arquivo /views/common/index.php e passaremos a variável $var_exemplo para a ele.
 
-    $this->view("home/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));
+    $this->view("common/index", array("var_exemplo" => $VALOR_DA_VARIAVEL));
 ____________________________________________________________________________________________________________________
 
 
@@ -622,13 +622,13 @@ do OpenMVC passando os parametros '$_REQUEST[c]'(controller), '$_REQUEST[a]'(act
 
 Exemplo:
 
-Nesse caso iremos fazer uma requisição por post no controller 'home' na action 'teste()'
+Nesse caso iremos fazer uma requisição por post no controller 'common' na action 'teste()'
 
 
 jQuery.ajax({
                 url: "/ajax.php",
                 type: "post",
-                data: {c:'home', a:'teste'}
+                data: {c:'common', a:'teste'}
             })
 
 ______________________________________________________________________________________________________________
