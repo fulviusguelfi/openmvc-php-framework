@@ -20,6 +20,7 @@
  */
 ?>
 <?php
+
 // ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
 //
 /** Nome do host do MySQL */
@@ -29,13 +30,16 @@ define('DB_NAME', 'openmvc');
 define('DB_USER', 'root');
 
 /** Senha do banco de dados MySQL */
-define('DB_PASSWORD', 'h7t846m2');
+define('DB_PASSWORD', 'guelfi');
 
 /** IP do host do MySQL */
 define('DB_HOST', 'localhost');
 
 /** Conjunto de caracteres do banco de dados a ser usado na criação das tabelas. */
 define('DB_CHARSET', 'utf8');
+
+/** Driver de conexão com o banco de dados. */
+define('DB_DRIVER', 'mysqli');
 
 /** O tipo de collate do banco de dados. Não altere isso se tiver dúvidas. */
 define('DB_COLLATE', '');
