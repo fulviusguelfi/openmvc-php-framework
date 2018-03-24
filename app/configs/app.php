@@ -42,5 +42,5 @@ define('TIMEZONE', 'America/Sao_Paulo');
 
 
 
-define("NOW_ACTION", $_SERVER['REQUEST_URI']);
+define("NOW_ACTION", @$_SERVER['REQUEST_URI']);
 ?>
