@@ -214,7 +214,7 @@ class Bin extends Controller {
         $file_path = $view_dir . '/list.php';
         if (!file_exists($file_path)) {
             $fp = fopen($file_path, 'wa');
-            $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/core/gnu.php') . $quebra;
+            $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
             if ($bootstrap) {
                 $php .= '<style>.openmvc-table {width:100%;}</style>' . $quebra;
                 $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
@@ -289,7 +289,7 @@ class Bin extends Controller {
             $mytables[] = $table1->$DB_KEY . "_id";
             $mytables[] = $table1->$DB_KEY . "_ID";
         }
-        $php = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/core/gnu.php') . $quebra;
+        $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
         if ($bootstrap) {
             $php .= '<style>.openmvc-form input, .openmvc-form textarea, .openmvc-form button, .openmvc-form select {width:100%;}</style>' . $quebra;
             $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
