@@ -21,7 +21,7 @@
 ?>
 <?php
 
-require_once("../app/configs/autoload.php");
+require_once("app/configs/autoload.php");
 
 set_include_path(OPENMVC_INCLUDE_PATH);
 $_SERVER['DOCUMENT_ROOT'] = OPENMVC_DOCUMENT_ROOT;
@@ -32,7 +32,7 @@ $_REQUEST['c'] = $argv[1];
 $_REQUEST['a'] = $argv[2];
 $_REQUEST['p'] = $argv;
 
-require_once("../app/core/min.php");
+require_once("app/core/min.php");
 
 if (isset($_REQUEST["p"])) {
     execute_action($_REQUEST['c'], $_REQUEST['a'], $_REQUEST["p"]);
