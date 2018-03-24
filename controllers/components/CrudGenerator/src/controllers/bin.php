@@ -367,14 +367,18 @@ class Bin extends Controller {
                                         . '</div>' . $quebra;
                             } else if ($inputType == "textarea") {
                                 //CREATE TEXTAREA
-                                $php .= '<div class="row">' . $quebra
-                                        . '<div class="col-md-12 ">' . $quebra
-                                        . '<div class="form-group">' . $quebra
-                                        . '<label for="' . $obj->Field . '_ID">' . ucwords($obj->Field) . '</label>' . $quebra
-                                        . '<textarea ' . ($obj->Null == "NO" ? " required " : "") . ' class="form-control" id="' . $obj->Field . '_ID" placeholder="' . ucwords($obj->Field) . '" name="' . $obj->Field . '" ><?php echo $obj->' . $obj->Field . ' ?></textarea>' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra
-                                        . '</div>' . $quebra;
+                                $php .= '<div class="row">' . $quebra;
+                                $php .= '<div class="col-md-12 ">' . $quebra;
+                                $php .= '<div class="form-group">' . $quebra;
+                                $php .= '<?php' . $quebra
+                                        . ' $forms->fields["' . $obj->Field . '"] = new TextField(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
+                                        . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
+                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>"));' . $quebra
+                                        . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
+                                        . '?>' . $quebra;
+                                $php .= '</div>' . $quebra;
+                                $php .= '</div>' . $quebra;
+                                $php .= '</div>' . $quebra;
                             }
                             $escreveu = 1;
                         }
