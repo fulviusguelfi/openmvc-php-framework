@@ -373,7 +373,7 @@ class Bin extends Controller {
                                 $php .= '<?php' . $quebra
                                         . ' $forms->fields["' . $obj->Field . '"] = new TextField(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
                                         . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
-                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>"));' . $quebra
+                                        . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
                                         . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
                                         . '?>' . $quebra;
                                 $php .= '</div>' . $quebra;
