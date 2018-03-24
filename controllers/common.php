@@ -21,11 +21,11 @@
 ?>
 <?php
 
-class Home extends Controller {
+class Common extends Controller {
 
     public function index() {
         $this->load_crud();
-//        $this->view("home/index", array("var" => "Lorem Ipsum"));
+//        $this->view("common/index", array("var" => "Lorem Ipsum"));
     }
 
     public function load_crud($params = array()) {

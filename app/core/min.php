@@ -68,7 +68,7 @@ function mapear_paginas($uri) {
             $slug[1] = $slug[2];
             $slug[2] = $slug[3];
             if (empty($slug[0]))
-                $slug[0] = "home";
+                $slug[0] = "common";
         }
         if (isset($slug[1]) && !empty($slug[1])) {
             carregar_pagina("$slug[0]", "$slug[1]", $slug);
@@ -76,7 +76,7 @@ function mapear_paginas($uri) {
             carregar_pagina("$slug[0]", "index", $slug);
         }
     } else {
-        carregar_pagina("home", "index", $slug);
+        carregar_pagina("common", "index", $slug);
     }
 }
 
