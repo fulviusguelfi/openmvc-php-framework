@@ -23,8 +23,8 @@
 
 class Home extends Controller {
 
-    public function index($params = array()) {
-        $this->load_crud($params);
+    public function index() {
+        $this->load_crud();
 //        $this->view("home/index", array("var" => "Lorem Ipsum"));
     }
 
