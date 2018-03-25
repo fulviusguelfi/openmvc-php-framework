@@ -1,4 +1,3 @@
-
 <?php
 
 /*
@@ -18,8 +17,6 @@
   junto com este programa, se não, escreva para a Fundação do Software
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-?>
-<?php
 
 // ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
 //
@@ -30,7 +27,7 @@ define('DB_NAME', 'openmvc');
 define('DB_USER', 'root');
 
 /** Senha do banco de dados MySQL */
-define('DB_PASSWORD', 'h7t846m2');
+define('DB_PASSWORD', 'guelfi');
 
 /** IP do host do MySQL */
 define('DB_HOST', 'localhost');
@@ -41,7 +38,38 @@ define('DB_CHARSET', 'utf8');
 /** Driver de conexão com o banco de dados. */
 define('DB_DRIVER', 'mysqli');
 
-/** O tipo de collate do banco de dados. Não altere isso se tiver dúvidas. */
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * !!!!!ATENÇÃO!!!!!
+ * Não altere daqui para baixo se tiver qualquer dúvida ou não tiver certeza do que está fazendo.
+ * 
+ *  */
 define('DB_COLLATE', '');
 
 define('INC', 'app/includes');
