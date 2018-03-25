@@ -1806,6 +1806,8 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2453,17 +2455,17 @@ function wp_ob_end_flush_all() {
  *
  * This function is used to load the database class file either at runtime or by
  * wp-admin/setup-config.php We must globalise $db to ensure that it is
- * defined globally by the inline code in db.php.
+ * defined globally by the inline code in '/app/includes/drivers/???.php'
  *
  * @since 2.5.0
  * @global $db WordPress Database Object
  */
 function require_wp_db() {
     global $db;
-    if (file_exists(WP_CONTENT_DIR . '/db.php'))
-        require_once( WP_CONTENT_DIR . '/db.php' );
+    if (file_exists(WP_CONTENT_DIR . '/drivers/' . strtolower(DB_DRIVER) . '.php'))
+        require_once( WP_CONTENT_DIR . '/drivers/' . strtolower(DB_DRIVER) . '.php' );
     else
-        require_once( INC . '/db.php' );
+        require_once( INC . '/drivers/' . strtolower(DB_DRIVER) . '.php' );
 }
 
 /**

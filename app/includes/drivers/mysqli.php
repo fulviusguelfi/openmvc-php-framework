@@ -55,7 +55,7 @@ define('ARRAY_N', 'ARRAY_N', false);
  * WordPress Database Access Abstraction Object
  *
  * It is possible to replace this class with your own
- * by setting the $db global variable in wp-content/db.php
+ * by setting the $db global variable in  app/includes/mysqli.php
  * file with your class. You can name it wpdb also, since
  * this file will not be included, if the other file is
  * available.
@@ -415,7 +415,7 @@ class wpdb {
             } else {
                 return 0;  // 0 means it passed.
             }
-            $cnt+=1;
+            $cnt += 1;
         }
 
         return 1;  // Nonzero means fail.
@@ -1300,7 +1300,7 @@ class wpdb {
 
 if (!isset($db)) {
     /**
-     * WordPress Database Object, if it isn't set already in app/includes/db.php
+     * WordPress Database Object, if it isn't set already in app/includes/mysqli.php
      * @global object $db Creates a new wpdb object based on app/configs/database.php Constants for the database
      * @since 0.71
      */
