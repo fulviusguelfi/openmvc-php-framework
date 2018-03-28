@@ -171,10 +171,10 @@ class Bin extends Controller {
                 }
                 $inputType = $this->binModel->formType($structure->Type);
                 if ($inputType == "checkbox") {
-                    $CONDITIONS .= 'if(!empty($_POST[' . $structure->Field . ']) && $_POST[' . $structure->Field . ']){';
-                    $CONDITIONS .= '$_POST[' . $structure->Field . '] = 1;';
+                    $CONDITIONS .= 'if(!empty($_POST["' . $structure->Field . '"]) && $_POST["' . $structure->Field . '"]){';
+                    $CONDITIONS .= '$_POST["' . $structure->Field . '"] = 1;';
                     $CONDITIONS .= '}else{';
-                    $CONDITIONS .= '$_POST[' . $structure->Field . '] = 0;';
+                    $CONDITIONS .= '$_POST["' . $structure->Field . '"] = 0;';
                     $CONDITIONS .= '}' . $quebra;
                 }
                 if ($inputType == "file") {
