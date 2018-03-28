@@ -27,7 +27,7 @@ class Bin extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function crud($params, $bootstrap = false) {
+    public function crud($params=array(), $bootstrap = false) {
 //        $table_name = $params[2];
         $table_name = $params;
         $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : false);
