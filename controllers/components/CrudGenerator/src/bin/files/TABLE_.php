@@ -45,11 +45,11 @@ class CLASS_NAME_TABLE_ extends Controller {
         $this->redirect("/TABLE_/listar");
     }
 
-    public function adicionar($param) {
+    public function adicionar($param = array()) {
         $this->editar($param);
     }
 
-    public function editar($param) {
+    public function editar($param = array()) {
         $this->helpers[] = "forms";
         $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
         /* LIST_RELATIONS */
