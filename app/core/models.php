@@ -97,7 +97,7 @@ class Model extends Loader {
         $valuelist = array();
         foreach ($data as $key => $value) {
             if ($value != NULL || $value === 0)
-                $valuelist[] = (is_string($value)) ? "%s" : "%d";
+                $valuelist[] = $this->keyToSprintf($value);
             else {
                 $valuelist[] = "NULL";
                 unset($data[$key]);
@@ -134,7 +134,7 @@ class Model extends Loader {
             if ($value === NULL || strtoupper($value) === 'NULL') {
                 $fields[] = "{$key} = NULL";
             } else {
-                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $fields[] = "{$key} = " . $this->keyToSprintf($value);
                 $values[] = $value;
             }
         }
@@ -154,7 +154,7 @@ class Model extends Loader {
             if ($value === NULL || strtoupper($value) === 'NULL') {
                 $fields[] = "{$key} = NULL";
             } else {
-                $fields[] = "{$key} = " . ((is_numeric($value)) ? "%d" : "%s");
+                $fields[] = "{$key} = " . $this->keyToSprintf($value);
                 $values[] = $value;
             }
         }
@@ -164,6 +164,10 @@ class Model extends Loader {
         $id_field = isset($data['ID']) ? 'ID' : 'id';
         $sql = $this->prepare("UPDATE {$table} SET {$field_and_value} WHERE {$id_field} = %d", $values);
         return $this->query($sql);
+    }
+
+    protected function keyToSprintf($value) {
+        return (is_numeric($value)) ? is_int($value) ? "%d" : "%f" : "%s";
     }
 
     public function download($params) {
@@ -428,7 +432,7 @@ class Model extends Loader {
                 $modelNameB = "{$_SERVER['DOCUMENT_ROOT']}/models/{$table_name}Model.php";
                 if (file_exists($modelNameA) && file_exists($modelNameB)) {
                     $have_relation_join = true;
-                    $relation_join .=$this->make_join_fields($tableName, $fields, $have_relation_join) . ",%virgula%";
+                    $relation_join .= $this->make_join_fields($tableName, $fields, $have_relation_join) . ",%virgula%";
                 }
             }
         }
@@ -450,7 +454,7 @@ class Model extends Loader {
                 if (file_exists($modelNameA) && file_exists($modelNameB)) {
                     $relation_join .= " LEFT JOIN {$tableName} ON ($tableName.id = {$table_name}.{$colObj->Field}) ";
                     if (!strstr($relation_join, "LEFT JOIN {$tableName} ON"))
-                        $relation_join .=$this->make_join($tableName);
+                        $relation_join .= $this->make_join($tableName);
                 }
             }
         }
