@@ -167,7 +167,8 @@ class Model extends Loader {
     }
 
     protected function keyToSprintf($value) {
-        return (is_numeric($value)) ? is_int($value) ? "%d" : "%f" : "%s";
+        $floatVal = (float) $value;
+        return (is_numeric($value)) ? ((int) $floatVal != $floatVal) ? "%f" : "%d" : "%s";
     }
 
     public function download($params) {
