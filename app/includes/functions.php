@@ -838,68 +838,64 @@ function wp($query_vars = '') {
  * @return string Empty string if not found, or description if found.
  */
 function get_status_header_desc($code) {
-    global $wp_header_to_desc;
-
     $code = absint($code);
 
-    if (!isset($wp_header_to_desc)) {
-        $wp_header_to_desc = array(
-            100 => 'Continue',
-            101 => 'Switching Protocols',
-            102 => 'Processing',
-            200 => 'OK',
-            201 => 'Created',
-            202 => 'Accepted',
-            203 => 'Non-Authoritative Information',
-            204 => 'No Content',
-            205 => 'Reset Content',
-            206 => 'Partial Content',
-            207 => 'Multi-Status',
-            226 => 'IM Used',
-            300 => 'Multiple Choices',
-            301 => 'Moved Permanently',
-            302 => 'Found',
-            303 => 'See Other',
-            304 => 'Not Modified',
-            305 => 'Use Proxy',
-            306 => 'Reserved',
-            307 => 'Temporary Redirect',
-            400 => 'Bad Request',
-            401 => 'Unauthorized',
-            402 => 'Payment Required',
-            403 => 'Forbidden',
-            404 => 'Not Found',
-            405 => 'Method Not Allowed',
-            406 => 'Not Acceptable',
-            407 => 'Proxy Authentication Required',
-            408 => 'Request Timeout',
-            409 => 'Conflict',
-            410 => 'Gone',
-            411 => 'Length Required',
-            412 => 'Precondition Failed',
-            413 => 'Request Entity Too Large',
-            414 => 'Request-URI Too Long',
-            415 => 'Unsupported Media Type',
-            416 => 'Requested Range Not Satisfiable',
-            417 => 'Expectation Failed',
-            422 => 'Unprocessable Entity',
-            423 => 'Locked',
-            424 => 'Failed Dependency',
-            426 => 'Upgrade Required',
-            500 => 'Internal Server Error',
-            501 => 'Not Implemented',
-            502 => 'Bad Gateway',
-            503 => 'Service Unavailable',
-            504 => 'Gateway Timeout',
-            505 => 'HTTP Version Not Supported',
-            506 => 'Variant Also Negotiates',
-            507 => 'Insufficient Storage',
-            510 => 'Not Extended'
-        );
-    }
+    $header_to_desc = array(
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        102 => 'Processing',
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        207 => 'Multi-Status',
+        226 => 'IM Used',
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Found',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        306 => 'Reserved',
+        307 => 'Temporary Redirect',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Timeout',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Request Entity Too Large',
+        414 => 'Request-URI Too Long',
+        415 => 'Unsupported Media Type',
+        416 => 'Requested Range Not Satisfiable',
+        417 => 'Expectation Failed',
+        422 => 'Unprocessable Entity',
+        423 => 'Locked',
+        424 => 'Failed Dependency',
+        426 => 'Upgrade Required',
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Timeout',
+        505 => 'HTTP Version Not Supported',
+        506 => 'Variant Also Negotiates',
+        507 => 'Insufficient Storage',
+        510 => 'Not Extended'
+    );
 
-    if (isset($wp_header_to_desc[$code]))
-        return $wp_header_to_desc[$code];
+    if (isset($header_to_desc[$code]))
+        return $header_to_desc[$code];
     else
         return '';
 }
@@ -1747,6 +1743,8 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
                 if ($new_filename != $filename)
                     $proper_filename = $new_filename; // Mark that it changed
+
+
 
 
 
@@ -2958,6 +2956,7 @@ function echo_error($error_message, $num_error = null, $die_after = true) {
     echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
     echo "<div id='openmvc-error'>{$error_message}</div>";
     echo "</center>";
+    header($_SERVER["SERVER_PROTOCOL"] . " {$num_error} " . get_status_header_desc($num_error), true, $num_error);
     if ($die_after) {
         die();
     }
