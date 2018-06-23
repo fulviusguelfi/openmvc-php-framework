@@ -647,9 +647,9 @@ class wpdb {
             return false;
 
         if ($caller = $this->get_caller())
-            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR_FULL */'WordPress database error %1$s for query %2$s made by %3$s'/* /WP_I18N_DB_QUERY_ERROR_FULL */, $str, $this->last_query, $caller);
+            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR_FULL */'OpenMVC database error %1$s for query %2$s made by %3$s'/* /WP_I18N_DB_QUERY_ERROR_FULL */, $str, $this->last_query, $caller);
         else
-            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR */'WordPress database error %1$s for query %2$s'/* /WP_I18N_DB_QUERY_ERROR */, $str, $this->last_query);
+            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR */'OpenMVC database error %1$s for query %2$s'/* /WP_I18N_DB_QUERY_ERROR */, $str, $this->last_query);
 
         $log_error = true;
         if (!function_exists('error_log'))
