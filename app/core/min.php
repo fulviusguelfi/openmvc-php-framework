@@ -21,20 +21,32 @@
 ?>
 <?php
 
+require_once 'color.class.php';
+
+function console_output($string, $color = "white", $noInfo = false) {
+    $finalLine = "";
+
+    if (!$noInfo) {
+        $finalLine .= ConsoleColors::getColoredString("[" . date("Y-m-d H:i:s") . "]", 'purple') . " ";
+    }
+
+    echo $ret = $finalLine . ConsoleColors::getColoredString($string, $color);
+    return $ret;
+}
+
 $fileAutoLoad = "{$_SERVER['DOCUMENT_ROOT']}/../app/configs/autoload.php";
 if (isset($argv[1]) && !empty($argv[1])) {
     if (!file_exists($fileAutoLoad)) {
-        echo "\033[0;31mOpenMVC ERROR:: \033[1;37mNão foi possível iniciar o OpenMVC Console Client!\n";
-        echo "Verifique a constante OPENMVC_DOCUMENT_ROOT no arquivo app/configs/app.php.\n\n\n\n";
+        console_output("OpenMVC ERROR:: ", "red");
+        console_output("Não foi possível iniciar o OpenMVC Console Client!\n", "white", true);
+        console_output("Verifique a constante OPENMVC_DOCUMENT_ROOT no arquivo app/configs/app.php.\n\n\n\n", "yellow", true);
         exit();
     }
-
-    echo "\033[0;32mOpenMVC:: \033[1;37mExecutando OpenMVC Console Client!\n";
-    echo "Controller: {$_REQUEST['c']} | Action: {$_REQUEST['a']}\n";
-    echo "Params:\n";
-    print_r($_REQUEST['p']);
-    echo "\n";
-    echo "\n";
+    console_output("OpenMVC:: ", "green");
+    console_output("Executando OpenMVC Console Client!\n", "white", true);
+    console_output("Controller: {$_REQUEST['c']} | Action: {$_REQUEST['a']}\n", "cyan", true);
+    console_output("Params:\n", "cyan", true);
+    console_output(print_r($_REQUEST['p'], true) . "\n\n", "cyan", true);
 }
 require_once($fileAutoLoad);
 // you want all errors to be triggered
