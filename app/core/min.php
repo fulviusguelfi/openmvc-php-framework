@@ -21,7 +21,22 @@
 ?>
 <?php
 
-require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/configs/autoload.php");
+$fileAutoLoad = "{$_SERVER['DOCUMENT_ROOT']}/../app/configs/autoload.php";
+if (isset($argv[1]) && !empty($argv[1])) {
+    if (!file_exists($fileAutoLoad)) {
+        echo "\033[0;31mOpenMVC ERROR:: \033[1;37mNão foi possível iniciar o OpenMVC Console Client!\n";
+        echo "Verifique a constante OPENMVC_DOCUMENT_ROOT no arquivo app/configs/app.php.\n\n\n\n";
+        exit();
+    }
+
+    echo "\033[0;32mOpenMVC:: \033[1;37mExecutando OpenMVC Console Client!\n";
+    echo "Controller: {$_REQUEST['c']} | Action: {$_REQUEST['a']}\n";
+    echo "Params:\n";
+    print_r($_REQUEST['p']);
+    echo "\n";
+    echo "\n";
+}
+require_once($fileAutoLoad);
 // you want all errors to be triggered
 
 if (OPENMVC_DEBUG == true) {
