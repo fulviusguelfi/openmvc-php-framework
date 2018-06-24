@@ -38,6 +38,25 @@ class Common extends Controller {
         $this->CrudGenerator->execute();
     }
 
+    public function crud($params = array()) {
+        if (!empty($params)) {
+            $action = $params[2]; // create | delete
+            $table = $params[3];
+            $bootstrap = (!empty($params[4]) ? $params[4] : false);
+        }
+        if ($action == "create") {
+            $this->load_crud(array(null, null, $table, $bootstrap));
+        }
+        if ($action == "delete") {
+            unlink("{$_SERVER["DOCUMENT_ROOT"]}/../controllers/{$table}.php");
+            unlink("{$_SERVER["DOCUMENT_ROOT"]}/../models/{$table}Model.php");
+            unlink("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/list.php");
+            unlink("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/edit.php");
+            rmdir("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/");
+            echo parse_view_console("<h3>Crud {$table} removido com sucesso.</h3><br>");
+        }
+    }
+
 }
 
 ?>
