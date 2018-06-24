@@ -67,6 +67,8 @@ function parse_view_console($html) {
             "&Atilde;",
             "&iacute;",
             "&Iacute;",
+            "&ccedil;",
+            "&Ccedil;",
             "<pre>",
             "</pre>",
         );
@@ -100,6 +102,8 @@ function parse_view_console($html) {
             "Ã",
             "í",
             "Í",
+            "ç",
+            "Ç",
             console_output("", "light_blue", true, false),
             console_output("", "default", true, false),
         );
