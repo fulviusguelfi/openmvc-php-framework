@@ -31,7 +31,7 @@ $openMVCRunFromConsole = true;
 
 $_REQUEST['c'] = $argv[1];
 $_REQUEST['a'] = $argv[2];
-unset($argv[1]);
+unset($argv[0]);
 $argv = array_values($argv);
 $_REQUEST['p'] = $argv;
 
