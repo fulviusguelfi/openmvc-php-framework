@@ -629,10 +629,11 @@ class Multimysql {
         $query = htmlspecialchars($this->last_query, ENT_QUOTES);
 
         // If there is an error then take note of it
-        print "<div id='error'>
+        $print = "<div id='error'>
 		<p class='wpdberror'><strong>WordPress database error:</strong> [$str]<br />
 		<code>$query</code></p>
 		</div>";
+        echo_error($print);
     }
 
     /**

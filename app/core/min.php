@@ -23,19 +23,93 @@
 
 require_once 'color.class.php';
 
-function console_output($string, $color = "white", $noInfo = false) {
+function console_output($string, $color = "white", $noInfo = false, $resetColor = true) {
     $finalLine = "";
 
     if (!$noInfo) {
         $finalLine .= ConsoleColors::getColoredString("[" . date("Y-m-d H:i:s") . "]", 'purple') . " ";
     }
 
-    echo $ret = $finalLine . ConsoleColors::getColoredString($string, $color);
+    echo $ret = $finalLine . ConsoleColors::getColoredString($string, $color, null, $resetColor);
     return $ret;
 }
 
+function parse_view_console($html) {
+    global $openMVCRunFromConsole;
+    if (isset($openMVCRunFromConsole) && $openMVCRunFromConsole) {
+        $search = array(
+            "</p>",
+            "<br/>",
+            "<br>",
+            "</tr>",
+            "<th>",
+            "</th>",
+            "<b>",
+            "</b>",
+            "<strong>",
+            "</strong>",
+            "<h1>",
+            "</h1>",
+            "<h2>",
+            "</h2>",
+            "<h3>",
+            "</h3>",
+            "<h4>",
+            "</h4>",
+            "<h5>",
+            "</h5>",
+            "<h2 class='openmvc-error'>",
+            "</h2>",
+            "&nbsp;",
+            "&otilde;",
+            "&atilde;",
+            "&Otilde;",
+            "&Atilde;",
+            "&iacute;",
+            "&Iacute;",
+            "<pre>",
+            "</pre>",
+        );
+        $replace = array(
+            "\n",
+            "\n",
+            "\n",
+            console_output("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n", "brown", true),
+            console_output("", "cyan", true, false),
+            console_output("", "default", true, false),
+            console_output("", "blue", true, false),
+            console_output("", "default", true, false),
+            console_output("", "blue", true, false),
+            console_output("", "default", true, false),
+            console_output("", "yellow", true, false),
+            console_output("", "default", true, false),
+            console_output("", "yellow", true, false),
+            console_output("", "default", true, false),
+            console_output("", "yellow", true, false),
+            console_output("", "default", true, false),
+            console_output("", "yellow", true, false),
+            console_output("", "default", true, false),
+            console_output("", "yellow", true, false),
+            console_output("", "default", true, false),
+            console_output("", "red", true, false),
+            console_output("", "default", true, false),
+            " ",
+            "õ",
+            "ã",
+            "Õ",
+            "Ã",
+            "í",
+            "Í",
+            console_output("", "light_blue", true, false),
+            console_output("", "default", true, false),
+        );
+        $html = strip_tags(str_replace($search, $replace, $html));
+    }
+    return $html;
+}
+
 $fileAutoLoad = "{$_SERVER['DOCUMENT_ROOT']}/../app/configs/autoload.php";
-if (isset($argv[1]) && !empty($argv[1])) {
+if (isset($openMVCRunFromConsole) && $openMVCRunFromConsole) {
     if (!file_exists($fileAutoLoad)) {
         console_output("OpenMVC ERROR:: ", "red");
         console_output("Não foi possível iniciar o OpenMVC Console Client!\n", "white", true);

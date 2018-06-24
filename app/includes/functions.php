@@ -1806,6 +1806,8 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null) {
 
 
 
+
+
                     
 // Redefine the extension / MIME
                 $wp_filetype = wp_check_filetype($new_filename, $mimes);
@@ -2942,7 +2944,7 @@ function pr($var, $var_dump = false) {
 }
 
 function echo_error($error_message, $num_error = null, $die_after = true) {
-    echo "<style>
+    $echo = "<style>
         #openmvc-error {
                         width: 820px;
                         background: #f5f5f5;
@@ -2950,12 +2952,14 @@ function echo_error($error_message, $num_error = null, $die_after = true) {
                         box-shadow: 1px 1px 3px #333;
                         }
          </style>";
-    echo '<meta charset="utf-8">';
-    echo "<center>";
-    echo "<h2>OpenMVC ERROR::</h2>";
-    echo (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1>" : "");
-    echo "<div id='openmvc-error'>{$error_message}</div>";
-    echo "</center>";
+    $echo .= '<meta charset="utf-8">';
+    $echo .= "<center>";
+
+    $echo .= "<h2 class='openmvc-error'>OpenMVC ERROR:: </h2>";
+    $echo .= (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1> " : "");
+    $echo .= "<div id='openmvc-error'>{$error_message}</div>";
+    $echo .= "</center>";
+    echo parse_view_console($echo);
     header($_SERVER["SERVER_PROTOCOL"] . " {$num_error} " . get_status_header_desc($num_error), true, $num_error);
     if ($die_after) {
         die();

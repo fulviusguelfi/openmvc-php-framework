@@ -18,7 +18,6 @@
   junto com este programa, se não, escreva para a Fundação do Software
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 ?>
 <?php
 
@@ -75,6 +74,7 @@ class Controller extends Loader {
             $this->params = array_merge($this->params, $_GET);
     }
 
+
     /**
      * Este Método chama a view
      *  
@@ -113,6 +113,7 @@ class Controller extends Loader {
         }
 
         $viewContents = ob_get_clean();
+        $viewContents = parse_view_console($viewContents);
 
         if (true === $return)
             return $viewContents;
@@ -249,4 +250,5 @@ class Controller extends Loader {
         list( $controller, $action ) = explode("/", $url);
         return array($controller, $action);
     }
+
 }

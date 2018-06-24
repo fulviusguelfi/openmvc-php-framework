@@ -27,40 +27,41 @@ class Bin extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function crud($params=array(), $bootstrap = false) {
+    public function crud($params = array(), $bootstrap = false) {
 //        $table_name = $params[2];
         $table_name = $params;
         $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : false);
 
-        echo '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">';
-        echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>';
-        echo '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';
+        $echo = '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">';
+        $echo .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>';
+        $echo .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';
         if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php")) {
-            echo "<center class=\"text-danger\">";
-            echo "<h2>Erro ao ciar CRUD da tabela {$table_name}!<br> O arquivo " . $_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php" . " já existe no servidor.</h2><br>";
-            echo "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
-            echo "</center>";
+            $echo .= "<center class=\"text-danger\">";
+            $echo .= "<h2>Erro ao ciar CRUD da tabela {$table_name}!<br> O arquivo " . $_SERVER['DOCUMENT_ROOT'] . "/controllers/{$table_name}.php" . " já existe no servidor.</h2><br>";
+            $echo .= "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
+            $echo .= "</center>";
         } else {
             $this->gerarCrud($table_name, $bootstrap);
             if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php")) {
-                echo "<center class=\"text-success\">";
-                echo "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2><br>";
-                echo "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
-                echo "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
-                echo "</center>";
-                echo "<pre>";
+                $echo .= "<center class=\"text-success\">";
+                $echo .= "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2><br>";
+                $echo .= "<h4>Para acessar o crud entre nas URLs abaixo: <br/><br/> <a href='/{$table_name}/listar'>http://endereco.exemplo/{$table_name}/listar</a> <br/> <a href='/{$table_name}/adicionar'>http://endereco.exemplo/{$table_name}/adicionar</a></h4>";
+                $echo .= "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
+                $echo .= "</center>";
+                $echo .= "<pre>";
                 $table_structure = $this->binModel->getTableStructure($table_name);
-                print_r($table_structure);
-                echo "</pre>";
+                $echo .= print_r($table_structure, true);
+                $echo .= "</pre>";
             } else {
-                echo "<center class=\"text-danger\">";
-                echo "<h2>Erro ao ciar CRUD da tabela {$table_name}!<br> Verifique a permisa&atilde;o da pasta do OpenMvc.</h2><br>";
-                echo "<h4>De a permisa&atilde;o 0777 reucsivamente para a pasta {$_SERVER['DOCUMENT_ROOT']} e tente novamente.</h4>";
-                echo "<p>EX: sudo chmod -Rf 0777 {$_SERVER['DOCUMENT_ROOT']}</p>";
-                echo "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
-                echo "</center>";
+                $echo .= "<center class=\"text-danger\">";
+                $echo .= "<h2>Erro ao criar CRUD da tabela {$table_name}!<br> Verifique a permisa&atilde;o da pasta do OpenMvc.</h2><br>";
+                $echo .= "<h4>De a permisa&atilde;o 0777 reucsivamente para a pasta {$_SERVER['DOCUMENT_ROOT']} e tente novamente.</h4>";
+                $echo .= "<p>EX: sudo chmod -Rf 0777 {$_SERVER['DOCUMENT_ROOT']}</p>";
+                $echo .= "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
+                $echo .= "</center>";
             }
         }
+        echo parse_view_console($echo);
     }
 
     public function gerarCrud($table_name, $bootstrap = false) {
