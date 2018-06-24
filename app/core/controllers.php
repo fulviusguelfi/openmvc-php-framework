@@ -74,7 +74,6 @@ class Controller extends Loader {
             $this->params = array_merge($this->params, $_GET);
     }
 
-
     /**
      * Este Método chama a view
      *  
@@ -198,7 +197,7 @@ class Controller extends Loader {
             $param = $this->bindParams($params);
             $url = "{$controller}/{$action}{$param}";
         }
-        echo "<meta http-equiv='refresh' content='0;url={$url}' >";
+        echo parse_view_console("<meta http-equiv='refresh' content='0;url={$url}' >");
         die;
     }
 
