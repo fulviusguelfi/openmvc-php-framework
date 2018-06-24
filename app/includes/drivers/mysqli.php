@@ -1308,17 +1308,3 @@ if (!isset($db)) {
     $db = new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 }
 ?>
-        return $tables;
-    }
-
-}
-
-if (!isset($db)) {
-    /**
-     * WordPress Database Object, if it isn't set already in app/includes/mysqli.php
-     * @global object $db Creates a new wpdb object based on app/configs/database.php Constants for the database
-     * @since 0.71
-     */
-    $db = new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-}
-?>
