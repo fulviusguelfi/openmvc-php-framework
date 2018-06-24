@@ -645,11 +645,11 @@ class wpdb {
 
         if ($this->suppress_errors)
             return false;
-
+        $error_str = console_output("OpenMVC database error::\n", "red", true);
         if ($caller = $this->get_caller())
-            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR_FULL */'OpenMVC database error %1$s for query %2$s made by %3$s'/* /WP_I18N_DB_QUERY_ERROR_FULL */, $str, $this->last_query, $caller);
+            $error_str .= sprintf(/* WP_I18N_DB_QUERY_ERROR_FULL */ '%1$s for query %2$s made by %3$s'/* /WP_I18N_DB_QUERY_ERROR_FULL */, $str, $this->last_query, $caller);
         else
-            $error_str = sprintf(/* WP_I18N_DB_QUERY_ERROR */'OpenMVC database error %1$s for query %2$s'/* /WP_I18N_DB_QUERY_ERROR */, $str, $this->last_query);
+            $error_str .= sprintf(/* WP_I18N_DB_QUERY_ERROR */ '%1$s for query %2$s'/* /WP_I18N_DB_QUERY_ERROR */, $str, $this->last_query);
 
         $log_error = true;
         if (!function_exists('error_log'))
@@ -1294,6 +1294,20 @@ class wpdb {
                 $tables['usermeta'] = CUSTOM_USER_META_TABLE;
         }
 
+        return $tables;
+    }
+
+}
+
+if (!isset($db)) {
+    /**
+     * WordPress Database Object, if it isn't set already in app/includes/mysqli.php
+     * @global object $db Creates a new wpdb object based on app/configs/database.php Constants for the database
+     * @since 0.71
+     */
+    $db = new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
+}
+?>
         return $tables;
     }
 
