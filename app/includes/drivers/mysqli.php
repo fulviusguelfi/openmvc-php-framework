@@ -660,7 +660,7 @@ class wpdb {
             $log_error = false;
 
         if ($log_error)
-            @error_log($error_str, 0);
+            @parse_view_console(error_log($error_str, 0));
 
         // Is error output turned on or not..
         if (!$this->show_errors)
@@ -671,7 +671,7 @@ class wpdb {
 
         // If there is an error then take note of it
         $print = "<div id='error'>
-		<p class='wpdberror'><strong>WordPress database error:</strong> [$str]<br />
+		<p class='wpdberror'><strong>OpenMVC database error:</strong> [$str]<br />
 		<code>$query</code></p>
 		</div>";
         echo_error($print);
