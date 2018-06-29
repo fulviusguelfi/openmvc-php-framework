@@ -61,6 +61,15 @@ class Controller extends Loader {
         return $this->action;
     }
 
+    public function lockActionToConsole($msg = null) {
+        if (!isset($openMVCRunFromConsole) || !$openMVCRunFromConsole) {
+            if (empty($msg)) {
+                $msg = "A action solicitada está travada para o acesso somente via console!";
+            }
+            echo_error($msg, 403, true);
+        }
+    }
+
     /**
      * Adiciona um objeto no array parametros
      * @param mixed $data

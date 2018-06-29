@@ -39,6 +39,7 @@ class Common extends Controller {
     }
 
     public function crud($params = array()) {
+        $this->lockActionToConsole("A action crud do CrudGenerator está travada para o acesso somente via console!");
         if (!empty($params)) {
             $action = $params[2]; // create | delete
             $table = $params[3];
