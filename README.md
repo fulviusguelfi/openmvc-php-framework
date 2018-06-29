@@ -29,22 +29,23 @@ ________________________________________________________________________________
 
  - Passo 2: app/configs/app.php & app/configs/database.php
  
-Dentro dos arquivos localizado app.php e database.php na app/configs/ do OpenMvc configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
+Dentro dos arquivos app.php e database.php localizados na app/configs/ do OpenMvc configurar as constantes de Banco de Dados, Url e Diretório da aplicação como abaixo:
 
 
 -app/configs/app.php
 
-    #/** Raiz da include_path do PHP */
-    define('OPENMVC_INCLUDE_PATH', '/var/www/html/openmvc-php-framework');
-
     #/** Raiz da aplicação OpenMvcPHP */
-    define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework');
+    define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework/public');
+
+    #/** Raiz da include_path do PHP */
+    define('OPENMVC_INCLUDE_PATH', OPENMVC_DOCUMENT_ROOT);
 
     #/** URL aplicação OpenMvcPHP */
-    define('OPENMVC_HTTP_HOST', 'openmvc.exemplo.com');
-    
+    define('OPENMVC_HTTP_HOST', 'openmvc.local');
+
     #/** Ativa o Debug de aplicação OpenMvcPHP */
     define('OPENMVC_DEBUG', false);
+
 
 
 
