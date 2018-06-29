@@ -640,16 +640,13 @@ COMPONENTS
 ______________________________________________________________________________________________________________
 
 
-GERADOR DE CRUD AUTOMÁTICO (1.5)
+GERADOR DE CRUD AUTOMÁTICO (1.4)
 =====================================
 CrudGenerator CRUD - Create, Read, Update, Delete
 
 - 1: O OpenMvc assim que instalado já vem com o CrudGenerator funcionando, em sua tela inicial será exibida uma mensagem "Bem Vindo ao OpenMVC"
 seguido pela lista de Tabelas encontradas no Mysql conectado.
     - Para gerar o crud de uma tabela basta clicar no link exibido na lista ou acessar a url /?crud=$NOME_DA_TABELA
-    - Para gerar o crud via console basta entrar na pasta raiz do openmvc e executar o comando: php openmvc crud create $NOME_DA_TABELA
-    - Para gerar o crud com Bootstrap via console basta entrar na pasta raiz do openmvc e executar o comando: php openmvc crud create $NOME_DA_TABELA true
-    - Para DELETAR o crud via console basta entrar na pasta raiz do openmvc e executar o comando: php openmvc crud delete $NOME_DA_TABELA
     - Para que o CrudGenerator relacione automaticamente duas ou mais tabelas basta que na tabela em questão exista a coluna 
 com o seguinte nome 'id_$NOME_DA_TABELA_A_RELACIONAR' ou '$NOME_DA_TABELA_A_RELACIONAR_id', 
 neste caso o crud irá gerar um select com os ids dos objetos da tabela relacionada
