@@ -640,7 +640,7 @@ COMPONENTS
 ______________________________________________________________________________________________________________
 
 
-GERADOR DE CRUD AUTOMÁTICO (1.4)
+GERADOR DE CRUD AUTOMÁTICO (1.5)
 =====================================
 CrudGenerator CRUD - Create, Read, Update, Delete
 
