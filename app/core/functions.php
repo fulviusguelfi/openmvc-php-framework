@@ -20,7 +20,7 @@
  */
 ?>
 <?php
-
+@session_start();
 Class Files {
 
     public function readTemplate($file_name) {
