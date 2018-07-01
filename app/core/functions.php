@@ -19,7 +19,9 @@
  */
 ?>
 <?php
+
 @session_start();
+
 Class Files {
 
     public function readTemplate($file_name) {
@@ -50,45 +52,53 @@ Class Files {
  * 	Imprime na tela o dump de um variavel php
  * 
  */
-function debug($var = false, $backTrace = false, $showHtml = false, $showFrom = true) {
-    if ($showFrom) {
-        $calledFrom = debug_backtrace();
-        $time = date("H:i:s", time());
-        echo '<strong>Debug =>' . substr($calledFrom[0]['file'], 1) . '</strong>';
-        echo ' (Hora: <strong>' . $time . '</strong>) (line <strong>' . $calledFrom[0]['line'] . '</strong>)';
-    }
-    echo "\n<pre>\n";
+if (!function_exists('debug')) {
 
-    $var = print_r($var, true);
-    if ($showHtml) {
-        $var = str_replace('<', '&lt;', str_replace('>', '&gt;', $var));
+    function debug($var = false, $backTrace = false, $showHtml = false, $showFrom = true) {
+        if ($showFrom) {
+            $calledFrom = debug_backtrace();
+            $time = date("H:i:s", time());
+            echo '<strong>Debug =>' . substr($calledFrom[0]['file'], 1) . '</strong>';
+            echo ' (Hora: <strong>' . $time . '</strong>) (line <strong>' . $calledFrom[0]['line'] . '</strong>)';
+        }
+        echo "\n<pre>\n";
+
+        $var = print_r($var, true);
+        if ($showHtml) {
+            $var = str_replace('<', '&lt;', str_replace('>', '&gt;', $var));
+        }
+
+        if ($backTrace) {
+            backtrace();
+            echo "<h2>Dump:</h2>";
+        }
+        echo $var . "\n</pre>\n";
     }
 
-    if ($backTrace) {
-        backtrace();
-        echo "<h2>Dump:</h2>";
-    }
-    echo $var . "\n</pre>\n";
 }
 
-function backtrace() {
-    $backtrace = array_reverse(debug_backtrace());
-    echo "<h2>Backtrace:</h2>";
-    $dados = "";
-    foreach ($backtrace as $executado):
-        $dados .= "<br><strong>Tempo:</strong> " . date("H:i:s");
-        if (isset($executado["file"]))
-            $dados .= "<br><strong>Arquivo:</strong><a href='file://{$executado["file"]}'>{$executado["file"]}</a>";
-        if (isset($executado["line"]))
-            $dados .= "  <strong>Linha:</strong> {$executado["line"]}";
-        if (isset($executado["function"]))
-            $dados .= "<br><strong>Metodo:</strong>  {$executado["function"]}";
-        if (isset($executado["args"]))
-            $dados .= "<br><strong>Parametros:</strong><br> <pre>" . print_r($executado["args"], true) .
-                    "</pre><br>";
-    endforeach;
+if (!function_exists('backtrace')) {
 
-    echo $dados;
+    function backtrace() {
+        $backtrace = array_reverse(debug_backtrace());
+        echo "<h2>Backtrace:</h2>";
+        $dados = "";
+        foreach ($backtrace as $executado):
+            $dados .= "<br><strong>Tempo:</strong> " . date("H:i:s");
+            if (isset($executado["file"]))
+                $dados .= "<br><strong>Arquivo:</strong><a href='file://{$executado["file"]}'>{$executado["file"]}</a>";
+            if (isset($executado["line"]))
+                $dados .= "  <strong>Linha:</strong> {$executado["line"]}";
+            if (isset($executado["function"]))
+                $dados .= "<br><strong>Metodo:</strong>  {$executado["function"]}";
+            if (isset($executado["args"]))
+                $dados .= "<br><strong>Parametros:</strong><br> <pre>" . print_r($executado["args"], true) .
+                        "</pre><br>";
+        endforeach;
+
+        echo $dados;
+    }
+
 }
 
 /**
@@ -100,28 +110,32 @@ function backtrace() {
  *   
  * @param Mixed $var
  */
-function to_log($var, $file_path = null) {
-    $out = array();
-    $calledFrom = debug_backtrace();
-    $out[] = "Data:  " . date("F j, Y, g:i a");
-    $out[] = 'Arquivo:' . substr($calledFrom[0]['file'], 1);
-    $out[] = 'Linha: ' . $calledFrom[0]['line'];
-    $out[] = "\n\n";
-    $out[] = print_r($var, true);
-    $out[] = "\n\n";
+if (!function_exists('to_log')) {
 
-    $log_file = "logs/debug.log";
-    if (null !== $file_path) {
-        $log_file = $file_path;
+    function to_log($var, $file_path = null) {
+        $out = array();
+        $calledFrom = debug_backtrace();
+        $out[] = "Data:  " . date("F j, Y, g:i a");
+        $out[] = 'Arquivo:' . substr($calledFrom[0]['file'], 1);
+        $out[] = 'Linha: ' . $calledFrom[0]['line'];
+        $out[] = "\n\n";
+        $out[] = print_r($var, true);
+        $out[] = "\n\n";
+
+        $log_file = "logs/debug.log";
+        if (null !== $file_path) {
+            $log_file = $file_path;
+        }
+
+        if (!file_exists($log_file)) {
+            $newLogFile = fopen($log_file, "w");
+            touch($log_file);
+            chmod($log_file, 0777);
+        }
+
+        file_put_contents($log_file, join("\n", $out), FILE_APPEND);
     }
 
-    if (!file_exists($log_file)) {
-        $newLogFile = fopen($log_file, "w");
-        touch($log_file);
-        chmod($log_file, 0777);
-    }
-
-    file_put_contents($log_file, join("\n", $out), FILE_APPEND);
 }
 
 /**
@@ -203,25 +217,33 @@ if (!function_exists('date_parse_from_format')) {
 
 }
 
-function isAndroid() {
+if (!function_exists('isAndroid')) {
 
-    $agent = $_SERVER['HTTP_USER_AGENT'];
-    if (preg_match("/Android/", $agent) != false)
-        $android = true;
-    else
-        $android = false;
+    function isAndroid() {
 
-    return $android;
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        if (preg_match("/Android/", $agent) != false)
+            $android = true;
+        else
+            $android = false;
+
+        return $android;
+    }
+
 }
 
-function url_atual() {
-    $pageURL = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-    } else {
-        $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+if (!function_exists('url_atual')) {
+
+    function url_atual() {
+        $pageURL = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        if ($_SERVER["SERVER_PORT"] != "80") {
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        } else {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        }
+        return $pageURL;
     }
-    return $pageURL;
+
 }
 
 if (!function_exists('pogtime')) {
@@ -248,3 +270,27 @@ if (!function_exists('is_multisite')) {
 
 }
 
+if (!function_exists('encrypt')) {
+
+    function encrypt($string, $seed, $cipher = "AES-128-CBC") {
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $ciphertext_raw = openssl_encrypt($string, $cipher, $seed, $options = OPENSSL_RAW_DATA, $iv);
+        $hmac = hash_hmac('sha256', $ciphertext_raw, $seed, $as_binary = true);
+        return base64_encode($iv . $hmac . $ciphertext_raw);
+    }
+
+}
+
+if (!function_exists('decrypt')) {
+
+    function decrypt($string, $seed, $cipher = "AES-128-CBC") {
+        $c = base64_decode($string);
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = substr($c, 0, $ivlen);
+        $hmac = substr($c, $ivlen, $sha2len = 32);
+        $ciphertext_raw = substr($c, $ivlen + $sha2len);
+        return openssl_decrypt($ciphertext_raw, $cipher, $seed, $options = OPENSSL_RAW_DATA, $iv);
+    }
+
+}
