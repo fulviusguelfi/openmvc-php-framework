@@ -1,4 +1,4 @@
-----OpenMvc PHP Framework----
+----  OpenMvc PHP Framework V2.0  ----
 =============================
 OpenMvcPHP é um framework Open Source baseada no conceito de MVC ou seja, Models(Banco de Dados), Views(Html e Css) e Controllers(Regras de Negócio).
 
