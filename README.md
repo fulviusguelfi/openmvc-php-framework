@@ -4,14 +4,9 @@ OpenMvcPHP é um framework Open Source baseada no conceito de MVC ou seja, Model
 
 Requisitos Mínimos:
 ============
-- Nginx ou (Apache2 + mod_rewrite + libapache-mod-php)
+- Nginx ou (Apache2 + mod_rewrite)
 - Mysql >= 5.4
 - PHP >= 5.1
-- Fpm PHP Extension
-- MCrypt PHP Extension
-- Curl PHP Extension
-- Mbstring PHP Extension
-- Mysql PHP Extension
 
 Instalação:
 ===========
