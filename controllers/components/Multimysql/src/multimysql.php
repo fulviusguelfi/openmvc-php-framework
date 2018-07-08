@@ -604,8 +604,8 @@ class Multimysql {
 
         if ($this->suppress_errors)
             return false;
-
-        $error_str = console_output("OpenMVC database error::\n", "red", true);
+        if (!empty($openMVCRunFromConsole))
+            $error_str = console_output("OpenMVC database error::\n", "red", true);
         if ($caller = $this->get_caller())
             $error_str .= sprintf(/* WP_I18N_DB_QUERY_ERROR_FULL */ '%1$s for query %2$s made by %3$s'/* /WP_I18N_DB_QUERY_ERROR_FULL */, $str, $this->last_query, $caller);
         else
