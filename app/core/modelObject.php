@@ -19,6 +19,7 @@ class modelObject {
                 $this->{$funcName} = function($method, $arg) {
                     $field = lcfirst(substr($method, 3));
                     $this->$field = $arg;
+                    $this->OPENMVC_modelObject[$field] = $this->$field;
                 };
 //            Create Getter
                 $this->functions[] = $funcName = "get" . ucfirst($field);
