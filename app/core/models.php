@@ -305,7 +305,7 @@ class Model extends Loader {
         return $this->load($obj);
     }
 
-    public function load($obj = null) {
+    public function load($obj = null, $name = null) {
         if (empty($obj)) {
             foreach ($this->tableDesc as $intObj) {
                 $obj[$intObj->Field] = null;

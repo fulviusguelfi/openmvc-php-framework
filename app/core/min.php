@@ -139,9 +139,7 @@ if (function_exists('date_default_timezone_set'))
     date_default_timezone_set(TIMEZONE);
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/functions.php");
-
-require( "{$_SERVER['DOCUMENT_ROOT']}/../" . INC . '/functions.php' );
-require( "{$_SERVER['DOCUMENT_ROOT']}/../" . INC . '/drivers/' . strtolower(DB_DRIVER) . '.php' );
+require_once( "{$_SERVER['DOCUMENT_ROOT']}/../" . INC . '/drivers/' . strtolower(DB_DRIVER) . '.php' );
 
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/exceptions.php");

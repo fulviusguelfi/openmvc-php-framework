@@ -101,17 +101,17 @@ if (!function_exists('backtrace')) {
 
 }
 
-/**
- * @Author Thiago Valentoni Guelfi
- * @since  07-10-2010
- * 
- *  Geração de arquivo log basiado no metodo "$this->log()" 
- *  do CakePHP
- *   
- * @param Mixed $var
- */
 if (!function_exists('to_log')) {
 
+    /**
+     * @Author Thiago Valentoni Guelfi
+     * @since  07-10-2010
+     * 
+     *  Geração de arquivo log basiado no metodo "$this->log()" 
+     *  do CakePHP
+     *   
+     * @param Mixed $var
+     */
     function to_log($var, $file_path = null) {
         $out = array();
         $calledFrom = debug_backtrace();
@@ -138,11 +138,11 @@ if (!function_exists('to_log')) {
 
 }
 
-/**
- * POG para funcionar o strptime no Windows
- */
 if (!function_exists('date_parse_from_format')) {
 
+    /**
+     * POG para funcionar o strptime no Windows
+     */
     function date_parse_from_format($format, $date) {
         $returnArray = array('hour' => 0, 'minute' => 0, 'second' => 0,
             'month' => 0, 'day' => 0, 'year' => 0);
@@ -267,14 +267,6 @@ if (!function_exists('pogtime')) {
 
 }
 
-if (!function_exists('is_multisite')) {
-
-    function is_multisite() {
-        return false;
-    }
-
-}
-
 if (!function_exists('encrypt')) {
 
     function encrypt($string, $seed, $cipher = "AES-128-CBC") {
@@ -296,6 +288,512 @@ if (!function_exists('decrypt')) {
         $hmac = substr($c, $ivlen, $sha2len = 32);
         $ciphertext_raw = substr($c, $ivlen + $sha2len);
         return openssl_decrypt($ciphertext_raw, $cipher, $seed, $options = OPENSSL_RAW_DATA, $iv);
+    }
+
+}
+
+if (!function_exists('mysql2date')) {
+
+    /**
+     * Converts MySQL DATETIME field to user specified date format.
+     *
+     * If $dateformatstring has 'G' value, then gmmktime() function will be used to
+     * make the time. If $dateformatstring is set to 'U', then mktime() function
+     * will be used to make the time.
+     *
+     * The $translate will only be used, if it is set to true and it is by default
+     * and if the $wp_locale object has the month and weekday set.
+     *
+     * @since 0.71
+     *
+     * @param string $dateformatstring Either 'G', 'U', or php date format.
+     * @param string $mysqlstring Time from mysql DATETIME field.
+     * @param bool $translate Optional. Default is true. Will switch format to locale.
+     * @return string Date formated by $dateformatstring or locale (if available).
+     */
+    function mysql2date($dateformatstring, $mysqlstring, $translate = true) {
+        $m = $mysqlstring;
+        if (empty($m))
+            return false;
+
+        if ('G' == $dateformatstring) {
+            return strtotime($m . ' +0000');
+        }
+
+        $i = strtotime($m);
+
+        if ('U' == $dateformatstring)
+            return $i;
+
+        if (true === $translate) {
+            if (trim($dateformatstring) == 'd/M') {
+
+                $meses = array('01' => 'Jan', '02' => 'Fev', '03' => 'Mar', '04' => 'Abr', '05' => 'Mai', '06' => 'Jun',
+                    '07' => 'Jul', '08' => 'Ago', '09' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez');
+                return date('d', $i) . "/" . $meses[date('m', $i)];
+            }
+            return date_i18n($dateformatstring, $i);
+        } else if ('strftime' === $translate) {
+            setlocale(LC_TIME, 'pt_BR');
+            return strftime($dateformatstring, $i);
+        } else {
+            return date($dateformatstring, $i);
+        }
+    }
+
+}
+
+if (!function_exists('size_format')) {
+
+    /**
+     * Convert number of bytes largest unit bytes will fit into.
+     *
+     * It is easier to read 1kB than 1024 bytes and 1MB than 1048576 bytes. Converts
+     * number of bytes to human readable number by taking the number of that unit
+     * that the bytes will go into it. Supports TB value.
+     *
+     * Please note that integers in PHP are limited to 32 bits, unless they are on
+     * 64 bit architecture, then they have 64 bit size. If you need to place the
+     * larger size then what PHP integer type will hold, then use a string. It will
+     * be converted to a double, which should always have 64 bit length.
+     *
+     * Technically the correct unit names for powers of 1024 are KiB, MiB etc.
+     * @link http://en.wikipedia.org/wiki/Byte
+     *
+     * @since 2.3.0
+     *
+     * @param int|string $bytes Number of bytes. Note max integer size for integers.
+     * @param int $decimals Precision of number of decimal places. Deprecated.
+     * @return bool|string False on failure. Number string on success.
+     */
+    function size_format($bytes, $decimals = 0) {
+        $quant = array(
+            // ========================= Origin ====
+            'TB' => 1099511627776, // pow( 1024, 4)
+            'GB' => 1073741824, // pow( 1024, 3)
+            'MB' => 1048576, // pow( 1024, 2)
+            'kB' => 1024, // pow( 1024, 1)
+            'B ' => 1, // pow( 1024, 0)
+        );
+        foreach ($quant as $unit => $mag)
+            if (doubleval($bytes) >= $mag)
+                return number_format_i18n($bytes / $mag, $decimals) . ' ' . $unit;
+
+        return false;
+    }
+
+}
+
+if (!function_exists('maybe_unserialize')) {
+
+    /**
+     * Unserialize value only if it was serialized.
+     *
+     * @since 2.0.0
+     *
+     * @param string $original Maybe unserialized original, if is needed.
+     * @return mixed Unserialized data can be any type.
+     */
+    function maybe_unserialize($original) {
+        if (is_serialized($original)) // don't attempt to unserialize data that wasn't serialized going in
+            return @unserialize($original);
+        return $original;
+    }
+
+}
+
+if (!function_exists('is_serialized')) {
+
+    /**
+     * Check value to find if it was serialized.
+     *
+     * If $data is not an string, then returned value will always be false.
+     * Serialized data is always a string.
+     *
+     * @since 2.0.5
+     *
+     * @param mixed $data Value to check to see if was serialized.
+     * @return bool False if not serialized and true if it was.
+     */
+    function is_serialized($data) {
+        // if it isn't a string, it isn't serialized
+        if (!is_string($data))
+            return false;
+        $data = trim($data);
+        if ('N;' == $data)
+            return true;
+        if (!preg_match('/^([adObis]):/', $data, $badions))
+            return false;
+        switch ($badions[1]) {
+            case 'a' :
+            case 'O' :
+            case 's' :
+                if (preg_match("/^{$badions[1]}:[0-9]+:.*[;}]\$/s", $data))
+                    return true;
+                break;
+            case 'b' :
+            case 'i' :
+            case 'd' :
+                if (preg_match("/^{$badions[1]}:[0-9.E-]+;\$/", $data))
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+}
+
+if (!function_exists('is_serialized_string')) {
+
+    /**
+     * Check whether serialized data is of string type.
+     *
+     * @since 2.0.5
+     *
+     * @param mixed $data Serialized data
+     * @return bool False if not a serialized string, true if it is.
+     */
+    function is_serialized_string($data) {
+        // if it isn't a string, it isn't a serialized string
+        if (!is_string($data))
+            return false;
+        $data = trim($data);
+        if (preg_match('/^s:[0-9]+:.*;$/s', $data)) // this should fetch all serialized strings
+            return true;
+        return false;
+    }
+
+}
+
+if (!function_exists('maybe_serialize')) {
+
+    /**
+     * Serialize data, if needed.
+     *
+     * @since 2.0.5
+     *
+     * @param mixed $data Data that might be serialized.
+     * @return mixed A scalar data
+     */
+    function maybe_serialize($data) {
+        if (is_array($data) || is_object($data))
+            return serialize($data);
+
+        if (is_serialized($data))
+            return serialize($data);
+
+        return $data;
+    }
+
+}
+
+if (!function_exists('build_query')) {
+
+    /**
+     * Build URL query based on an associative and, or indexed array.
+     *
+     * This is a convenient function for easily building url queries. It sets the
+     * separator to '&' and uses _http_build_query() function.
+     *
+     * @see _http_build_query() Used to build the query
+     * @link http://us2.php.net/manual/en/function.http-build-query.php more on what
+     * 		http_build_query() does.
+     *
+     * @since 2.3.0
+     *
+     * @param array $data URL-encode key/value pairs.
+     * @return string URL encoded string
+     */
+    function build_query($data) {
+        return _http_build_query($data, null, '&', '', false);
+    }
+
+}
+
+if (!function_exists('add_magic_quotes')) {
+
+    /**
+     * Walks the array while sanitizing the contents.
+     *
+     * @since 0.71
+     *
+     * @param array $array Array to used to walk while sanitizing contents.
+     * @return array Sanitized $array.
+     */
+    function add_magic_quotes($array) {
+        foreach ((array) $array as $k => $v) {
+            if (is_array($v)) {
+                $array[$k] = add_magic_quotes($v);
+            } else {
+                $array[$k] = addslashes($v);
+            }
+        }
+        return $array;
+    }
+
+}
+
+if (!function_exists('get_status_header_desc')) {
+
+    /**
+     * Retrieve the description for the HTTP status.
+     *
+     * @since 2.3.0
+     *
+     * @param int $code HTTP status code.
+     * @return string Empty string if not found, or description if found.
+     */
+    function get_status_header_desc($code) {
+        $code = abs(intval($code));
+
+        $header_to_desc = array(
+            100 => 'Continue',
+            101 => 'Switching Protocols',
+            102 => 'Processing',
+            200 => 'OK',
+            201 => 'Created',
+            202 => 'Accepted',
+            203 => 'Non-Authoritative Information',
+            204 => 'No Content',
+            205 => 'Reset Content',
+            206 => 'Partial Content',
+            207 => 'Multi-Status',
+            226 => 'IM Used',
+            300 => 'Multiple Choices',
+            301 => 'Moved Permanently',
+            302 => 'Found',
+            303 => 'See Other',
+            304 => 'Not Modified',
+            305 => 'Use Proxy',
+            306 => 'Reserved',
+            307 => 'Temporary Redirect',
+            400 => 'Bad Request',
+            401 => 'Unauthorized',
+            402 => 'Payment Required',
+            403 => 'Forbidden',
+            404 => 'Not Found',
+            405 => 'Method Not Allowed',
+            406 => 'Not Acceptable',
+            407 => 'Proxy Authentication Required',
+            408 => 'Request Timeout',
+            409 => 'Conflict',
+            410 => 'Gone',
+            411 => 'Length Required',
+            412 => 'Precondition Failed',
+            413 => 'Request Entity Too Large',
+            414 => 'Request-URI Too Long',
+            415 => 'Unsupported Media Type',
+            416 => 'Requested Range Not Satisfiable',
+            417 => 'Expectation Failed',
+            422 => 'Unprocessable Entity',
+            423 => 'Locked',
+            424 => 'Failed Dependency',
+            426 => 'Upgrade Required',
+            500 => 'Internal Server Error',
+            501 => 'Not Implemented',
+            502 => 'Bad Gateway',
+            503 => 'Service Unavailable',
+            504 => 'Gateway Timeout',
+            505 => 'HTTP Version Not Supported',
+            506 => 'Variant Also Negotiates',
+            507 => 'Insufficient Storage',
+            510 => 'Not Extended'
+        );
+
+        if (isset($header_to_desc[$code]))
+            return $header_to_desc[$code];
+        else
+            return '';
+    }
+
+}
+
+if (!function_exists('cache_javascript_headers')) {
+
+    /**
+     * Set the headers for caching for 10 days with JavaScript content type.
+     *
+     * @since 2.1.0
+     */
+    function cache_javascript_headers($expiresOffset = 864000) {
+        header("Content-Type: text/javascript; charset=UTF-8");
+        header("Vary: Accept-Encoding"); // Handle proxies
+        header("Expires: " . gmdate("D, d M Y H:i:s", time() + $expiresOffset) . " GMT");
+    }
+
+}
+
+if (!function_exists('bool_from_yn')) {
+
+    /**
+     * Whether input is yes or no. Must be 'y' to be true.
+     *
+     * @since 1.0.0
+     *
+     * @param string $yn Character string containing either 'y' or 'n'
+     * @return bool True if yes, false on anything else
+     */
+    function bool_from_yn($yn) {
+        return ( strtolower($yn) == 'y' );
+    }
+
+}
+
+if (!function_exists('is_ssl')) {
+
+    /**
+     * Determine if SSL is used.
+     *
+     * @since 2.6.0
+     *
+     * @return bool True if SSL, false if not used.
+     */
+    function is_ssl() {
+        if (isset($_SERVER['HTTPS'])) {
+            if ('on' == strtolower($_SERVER['HTTPS']))
+                return true;
+            if ('1' == $_SERVER['HTTPS'])
+                return true;
+        } elseif (isset($_SERVER['SERVER_PORT']) && ( '443' == $_SERVER['SERVER_PORT'] )) {
+            return true;
+        }
+        return false;
+    }
+
+}
+
+if (!function_exists('execute_action')) {
+
+    function execute_action($controller, $action, $params = null) {
+        require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/functions.php");
+        $controller_path = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$controller}.php";
+        if (is_file($controller_path)) {
+            try {
+                include_once ($controller_path);
+                $klass = ucfirst($controller);
+                $instance = new $klass($controller, $action);
+                if (method_exists($instance, $action)) {
+                    if (empty($params))
+                        return $instance->$action();
+                    else
+                        return $instance->$action($params);
+                }else {
+                    $backtrace = debug_backtrace();
+//            pr($backtrace[0][line]);
+                    echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>$controller_path</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
+                }
+            } catch (Exception $e) {
+                echo_error("Exceção capturada: {$e->getMessage()}", 'Exception');
+//            echo 'Exceção capturada: ', $e->getMessage(), "\n";
+            }
+        } else {
+            $backtrace = debug_backtrace();
+            echo_error("O Arquivo <b>$controller_path</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
+        }
+    }
+
+}
+
+if (!function_exists('pr')) {
+
+    /**
+     * Imprime uma variável da tela, seja em print_r() ou var_dump().
+     *
+     * @param (string/array/object) $var
+     * @param (boolean) $var_dump
+     */
+    function pr($var, $var_dump = false) {
+        echo "<pre>";
+        if ($var_dump) {
+            var_dump($var);
+        } else {
+            print_r($var);
+        }
+        echo "</pre>";
+    }
+
+}
+
+if (!function_exists('echo_error')) {
+
+    function echo_error($error_message, $num_error = null, $die_after = true) {
+        $echo = "<style>
+        #openmvc-error {
+                        width: 820px;
+                        background: #f5f5f5;
+                        padding: 10px;
+                        box-shadow: 1px 1px 3px #333;
+                        }
+         </style>";
+        $echo .= '<meta charset="utf-8">';
+        $echo .= "<center>";
+
+        $echo .= "<h2 class='openmvc-error'>OpenMVC ERROR:: </h2>";
+        $echo .= (!empty($num_error) ? "<h1 style='font-size: 100px'>{$num_error}</h1> " : "");
+        $echo .= "<div id='openmvc-error'>{$error_message}</div>";
+        $echo .= "</center>";
+        echo parse_view_console($echo);
+        header($_SERVER["SERVER_PROTOCOL"] . " {$num_error} " . get_status_header_desc($num_error), true, $num_error);
+        if ($die_after) {
+            die();
+        }
+    }
+
+}
+if (!function_exists('slugify')) {
+
+    function slugify($text) {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
+
+}
+if (!function_exists('generate_file_upload_name')) {
+
+    function generate_file_upload_name($name) {
+        if (file_exists($name) === TRUE) {
+            $tmp_exploded = explode("/", $name);
+            end($tmp_exploded);
+            $last_key = key($tmp_exploded);
+            $index_number = strstr($tmp_exploded[$last_key], "-", TRUE);
+            if ($index_number !== FALSE &&
+                    is_numeric($index_number)) {
+                $next = (int) $index_number + 1;
+                $tmp_exploded[$last_key] = str_replace($index_number . "-", $next . "-", $tmp_exploded[$last_key]);
+            } else {
+                $next = 1;
+                $tmp_exploded[$last_key] = $next . "-" . $tmp_exploded[$last_key];
+            }
+            $name = implode("/", $tmp_exploded);
+            return generate_file_upload_name($name);
+        } else {
+            $tmp1_exploded = explode("/", $name);
+            end($tmp1_exploded);
+            $last1_key = key($tmp1_exploded);
+            $retorno = array("file_path" => $name, "file_name" => $tmp1_exploded[$last1_key]);
+            return (object) $retorno;
+        }
     }
 
 }
