@@ -147,6 +147,7 @@ require( "{$_SERVER['DOCUMENT_ROOT']}/../" . INC . '/drivers/' . strtolower(DB_D
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/exceptions.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/loader.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/models.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/modelObject.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/views.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/controllers.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/forms.php");

@@ -50,7 +50,13 @@ class Model extends Loader {
     }
 
     public function query($sql) {
-        return $this->db->get_results($sql);
+        $return = $this->db->get_results($sql);
+        if (!empty($return)) {
+            foreach ($return as &$row) {
+                $row = $this->load($row);
+            }
+        }
+        return $return;
     }
 
     public function row($sql) {
@@ -124,7 +130,9 @@ class Model extends Loader {
             $table = $this->name;
         if (empty($where))
             $myWhere = $this->buildWhere($where, $join, true, $operator);
-
+        if (!empty($data->OPENMVC_modelObject)) {
+            $data = $data->OPENMVC_modelObject;
+        }
 
         foreach ($data as $key => $value) {
             if ($key == "id" || $key == "ID")
@@ -288,7 +296,11 @@ class Model extends Loader {
     }
 
     public function get($id) {
-        return $this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id)));
+        return $this->load($this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id))));
+    }
+
+    public function load($obj, $name = null) {
+        return new modelObject($obj, $this->name);
     }
 
     public function save($dados) {
@@ -297,6 +309,10 @@ class Model extends Loader {
 
     public function salvar($dados) {
         $id = null;
+        if (!empty($dados->OPENMVC_modelObject)) {
+            $dados = $dados->OPENMVC_modelObject;
+        }
+
         if (is_object($dados))
             $dados = (Array) $dados;
 

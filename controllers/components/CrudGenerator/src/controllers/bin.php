@@ -254,16 +254,16 @@ class Bin extends Controller {
                 if ($obj->Field != "id" && $obj->Field != "ID") {
                     $inputType = $this->binModel->formType($obj->Type);
                     if ($inputType != 'file')
-                        $php .= '<td><?php echo $obj->' . $obj->Field . '; ?></td>' . $quebra;
+                        $php .= '<td><?php echo $obj->get' . ucfirst($obj->Field) . '(); ?></td>' . $quebra;
                     else
-                        $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->' . $idStyle . '; ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
+                        $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->get' . ucfirst($idStyle) . '(); ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
                 } else {
                     $fieldId = $obj->Field;
                 }
             }
             $php .= '<td>'
-                    . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->' . $fieldId . '; ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
-                    . '<a role="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this,\'/' . $table_name . '/deletar/<?php echo $obj->' . $fieldId . '; ?>\')" href="#"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
+                    . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->get' . ucfirst($fieldId) . '(); ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
+                    . '<a role="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this,\'/' . $table_name . '/deletar/<?php echo $obj->get' . ucfirst($fieldId) . '(); ?>\')" href="#"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
                     . '</td>' . $quebra;
             $php .= '</tr>' . $quebra
                     . '<?php endforeach; ?>' . $quebra;
@@ -342,7 +342,7 @@ class Bin extends Controller {
                                     . ' $data[] = array("label" => $obj' . $table->$DB_KEY . '->' . $idTable . ', "value" => $obj' . $table->$DB_KEY . '->' . $idTable . ');' . $quebra
                                     . ' endforeach;' . $quebra
                                     . ' $forms->fields["' . $obj->Field . '"] = new SelectField($data,' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
-                                    . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
+                                    . ' $forms->fields["' . $obj->Field . '"]->value = $obj->get' . ucfirst($obj->Field) . '();' . $quebra
                                     . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
                                     . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
                                     . '?>' . $quebra;
@@ -358,7 +358,7 @@ class Bin extends Controller {
                             $php .= '<div class="form-group">' . $quebra;
                             $php .= '<?php' . $quebra
                                     . ' $forms->fields["' . $obj->Field . '"] = new ' . $loadClass . '(' . ($obj->Null == "NO" ? "true" : "false") . ');' . $quebra
-                                    . ($inputType != "file" ? ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra : '')
+                                    . ($inputType != "file" ? ' $forms->fields["' . $obj->Field . '"]->value = $obj->get' . ucfirst($obj->Field) . '();' . $quebra : '')
                                     . ' echo $forms->label("' . $obj->Field . '", "' . ucwords($obj->Field) . '<br>");' . $quebra
                                     . ' echo $forms->render("' . $obj->Field . '",array("class"=>"form-control","placeholder"=>"' . ucwords($obj->Field) . '"));' . $quebra
                                     . '?>' . $quebra;
@@ -370,7 +370,7 @@ class Bin extends Controller {
                 } else {
                     $php .= '<?php' . $quebra
                             . ' $forms->fields["' . $obj->Field . '"] = new HiddenField(false);' . $quebra
-                            . ' $forms->fields["' . $obj->Field . '"]->value = $obj->' . $obj->Field . ';' . $quebra
+                            . ' $forms->fields["' . $obj->Field . '"]->value = $obj->get' . ucfirst($obj->Field) . '();' . $quebra
                             . ' echo $forms->render("' . $obj->Field . '");' . $quebra
                             . '?>' . $quebra;
                 }

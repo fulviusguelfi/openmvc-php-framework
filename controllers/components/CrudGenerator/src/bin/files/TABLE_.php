@@ -59,6 +59,7 @@ class CLASS_NAME_TABLE_ extends Controller {
             /* CONDITIONS */
             $obj = (object) $_POST;
             /* OBJECTS */
+            $obj = $this->TABLE_Model->load($obj);
             $salvo = $this->TABLE_Model->insert_($obj);
             if ($salvo)
                 $this->redirect("/TABLE_/listar");

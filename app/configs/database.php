@@ -21,13 +21,13 @@
 // ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
 //
 /** Nome do host do MySQL */
-define('DB_NAME', 'openmvc');
+define('DB_NAME', 'botnet');
 
 /** Usuário do banco de dados MySQL */
 define('DB_USER', 'root');
 
 /** Senha do banco de dados MySQL */
-define('DB_PASSWORD', 'guelfi');
+define('DB_PASSWORD', 'h7t846m2');
 
 /** IP do host do MySQL */
 define('DB_HOST', 'localhost');

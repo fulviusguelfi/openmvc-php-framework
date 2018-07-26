@@ -33,7 +33,8 @@ define('OPENMVC_INCLUDE_PATH', OPENMVC_DOCUMENT_ROOT);
 define('OPENMVC_HTTP_HOST', 'openmvc.local');
 
 /** Ativa o Debug de aplicação OpenMvcPHP */
-define('OPENMVC_DEBUG', false);
+define('OPENMVC_DEBUG', 1);
+ini_set('memory_limit', '512M');
 
 /**
  *  Timezone adequado a região

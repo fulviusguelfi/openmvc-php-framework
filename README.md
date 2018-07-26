@@ -446,11 +446,34 @@ $retorno = $this->updateWhere($data, $where);
 
 $retorno = $this->updateWhere($data, $where, 'AND', '=', $nome_da_tabela);
 ______________________________________________________________________________________________________________
+______________________________________________________________________________________________________________
+  
+  
+  
+  
+
+- 10: Função load() do Model 
+
+    - Retorna os getters e setters para o o objeto carregado.
+
+    PARÂMETROS:
+
+     (array) $obj Objeto a carregar  ------- Ex: array('id' => 1,'coluna' => 'valor')
+
+    RETORNO:
+
+    (OBJECT)//* Retorna Object  */
+
+Exemplo:
+
+$retorno = $this->load(array('id' => 1,'coluna' => 'valor'));
+
+______________________________________________________________________________________________________________
 
 
 
 
-- 10: Função find() do Model 
+- 11: Função find() do Model 
 
     -  Pesquisa da tabela de acordo com os parametros recebidos.
 
@@ -499,7 +522,7 @@ ________________________________________________________________________________
 
 
 
-- 11: Função findAll() do Model 
+- 12: Função findAll() do Model 
 
     -  Pesquisa recursivamente da tabela e seus relacionamentos de acordo com os parametros recebidos.
 
@@ -532,7 +555,7 @@ ________________________________________________________________________________
 
 
 
-- 12: Função join() do Model 
+- 13: Função join() do Model 
 
     -  Cria join na tabela de acordo com os parametros recebidos.
 
@@ -580,7 +603,7 @@ ________________________________________________________________________________
 
 
 
-- 12: Função deleteWhere() do Model 
+- 14: Função deleteWhere() do Model 
 
     -  Deleta da tabela de acordo com os parametros.
 
