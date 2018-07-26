@@ -132,8 +132,8 @@ class Model extends Loader {
             $table = $this->name;
         if (empty($where))
             $myWhere = $this->buildWhere($where, $join, true, $operator);
-        if (!empty($data->OPENMVC_modelObject)) {
-            $data = $data->OPENMVC_modelObject;
+        if (!empty($data->internalObject())) {
+            $data = $data->internalObject();
         }
 
         foreach ($data as $key => $value) {
@@ -328,8 +328,8 @@ class Model extends Loader {
 
     public function salvar($dados) {
         $id = null;
-        if (!empty($dados->OPENMVC_modelObject)) {
-            $dados = $dados->OPENMVC_modelObject;
+        if (!empty($dados->internalObject())) {
+            $dados = $dados->internalObject();
         }
 
         if (is_object($dados))

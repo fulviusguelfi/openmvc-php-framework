@@ -5,32 +5,35 @@ class modelObject {
     private $fields;
     private $functions;
     private $name;
+    private $object;
 
     function __construct($fields, $tableName) {
         $this->name = $tableName;
         if (!empty($fields)) {
-            $this->OPENMVC_modelObject = $this->info = (array) $fields;
-            foreach ($fields as $field => $value) {
+            foreach ((array) $fields as $field => $value) {
                 $this->fields[] = $field;
 //            Set Propriety
-                $this->{$field} = $value;
+                $this->object[$field] = $value;
 //            Create Setter
                 $this->functions[] = $funcName = "set" . ucfirst($field);
                 $this->{$funcName} = function($method, $arg) {
                     $field = lcfirst(substr($method, 3));
-                    $this->$field = $arg;
-                    $this->OPENMVC_modelObject[$field] = $this->$field;
+                    $this->object[$field] = $arg;
                 };
 //            Create Getter
                 $this->functions[] = $funcName = "get" . ucfirst($field);
                 $this->{$funcName} = function($method) {
                     $field = lcfirst(substr($method, 3));
-                    return $this->$field;
+                    return $this->object[$field];
                 };
             }
         } else {
             return (OBJECT) array();
         }
+    }
+
+    public function internalObject() {
+        return $this->object;
     }
 
     public function __call($method, $arguments) {
