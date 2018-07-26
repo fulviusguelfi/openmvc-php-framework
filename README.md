@@ -92,7 +92,7 @@ NGINX
             index index.php;
 
             location / {
-                    try_files $uri $uri/ /index.php?q=$uri&$args;
+                    try_files $uri $uri/ /index.php?$uri;
             }
 
             location ~ \.php$ {

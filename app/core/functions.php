@@ -234,12 +234,17 @@ if (!function_exists('isAndroid')) {
 
 if (!function_exists('url_atual')) {
 
-    function url_atual() {
+    function url_atual($show_uri = true) {
         $pageURL = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        if ($_SERVER["SERVER_PORT"] != "80") {
-            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        if ($show_uri) {
+            $show = "REQUEST_URI";
         } else {
-            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+            $show = "QUERY_STRING";
+        }
+        if ($_SERVER["SERVER_PORT"] != "80") {
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER[$show];
+        } else {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER[$show];
         }
         return $pageURL;
     }
