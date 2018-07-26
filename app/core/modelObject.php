@@ -33,7 +33,7 @@ class modelObject {
     }
 
     public function internalObject() {
-        return $this->object;
+        return (object) $this->object;
     }
 
     public function __call($method, $arguments) {
