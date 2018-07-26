@@ -27,7 +27,7 @@ define('DB_NAME', 'botnet');
 define('DB_USER', 'root');
 
 /** Senha do banco de dados MySQL */
-define('DB_PASSWORD', 'h7t846m2');
+define('DB_PASSWORD', 'guelfi');
 
 /** IP do host do MySQL */
 define('DB_HOST', 'localhost');
