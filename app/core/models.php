@@ -308,12 +308,16 @@ class Model extends Loader {
     public function load($obj = [], $name = null) {
         $obj = (array) $obj;
         $internal = [];
-        foreach ($this->tableDesc as $intObj) {
-            if (!array_key_exists($intObj->Field, $obj)) {
-                $internal[$intObj->Field] = null;
-            } else {
-                $internal[$intObj->Field] = $obj[$intObj->Field];
+        if (!empty($this->tableDesc)) {
+            foreach ($this->tableDesc as $intObj) {
+                if (!array_key_exists($intObj->Field, $obj)) {
+                    $internal[$intObj->Field] = null;
+                } else {
+                    $internal[$intObj->Field] = $obj[$intObj->Field];
+                }
             }
+        } else {
+            $internal = $obj;
         }
         return new modelObject($internal, $this->name);
     }
