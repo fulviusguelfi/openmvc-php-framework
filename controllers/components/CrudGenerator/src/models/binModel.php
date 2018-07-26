@@ -24,11 +24,19 @@
 class BinModel extends Model {
 
     public function getTableStructure($table_name) {
-        return $this->query("DESCRIBE {$table_name}");
+        $return = $this->query("DESCRIBE {$table_name}");
+        foreach ($return as &$re) {
+            $re = (object) $re->internalObject();
+        }
+        return $return;
     }
 
     public function getTables() {
-        return $this->query("SHOW TABLES");
+        $tables = $this->query("SHOW TABLES");
+        foreach ($tables as &$table) {
+            $table = (object) $table->internalObject();
+        }
+        return $tables;
     }
 
     public function formType($tipo_db) {
