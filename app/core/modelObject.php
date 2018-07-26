@@ -40,7 +40,7 @@ class modelObject {
         if (in_array($method, $this->functions)) {
             return call_user_func_array(Closure::bind($this->$method, $this, get_called_class()), array_merge([$method], $arguments));
         } else {
-            echo_error("Function or object \"{$method}\" not found on {$this->table} model!<br/>Check your call or database.", 500);
+            echo_error("Function \"{$method}()\" not found on {$this->table} model!<br/>Getters and Setters for {$this->table} model.<pre>" . implode("()<br/>", $this->functions) . "</pre>", 500);
         }
     }
 
