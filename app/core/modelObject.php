@@ -4,11 +4,11 @@ class modelObject {
 
     private $fields;
     private $functions;
-    private $name;
+    private $table;
     private $object;
 
     function __construct($fields, $tableName) {
-        $this->name = $tableName;
+        $this->table = $tableName;
         if (!empty($fields)) {
             foreach ((array) $fields as $field => $value) {
                 $this->fields[] = $field;
@@ -39,10 +39,8 @@ class modelObject {
     public function __call($method, $arguments) {
         if (in_array($method, $this->functions)) {
             return call_user_func_array(Closure::bind($this->$method, $this, get_called_class()), array_merge([$method], $arguments));
-        } else if (in_array($method, $this->fields)) {
-            return $this->{$method};
         } else {
-            echo_error("Function or object \"{$method}\" not found on {$this->name} model!<br/>Check your call or database.", 500);
+            echo_error("Function or object \"{$method}\" not found on {$this->table} model!<br/>Check your call or database.", 500);
         }
     }
 
