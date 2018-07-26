@@ -30,6 +30,7 @@ class Model extends Loader {
     var $name; //ex. posts, terms, etc
     var $order;
     var $joins;
+    var $tableDesc;
 
     public function __construct($db = null) {
         parent::__construct();
@@ -39,6 +40,7 @@ class Model extends Loader {
         }
         $this->db = $db;
         $this->init();
+        $this->tableDesc = $this->db->get_results("DESCRIBE {$this->name}");
     }
 
     public function __destruct() {
@@ -300,6 +302,11 @@ class Model extends Loader {
     }
 
     public function load($obj, $name = null) {
+        if (empty($obj)) {
+            foreach ($this->tableDesc as $intObj) {
+                $obj[$intObj->Field] = null;
+            }
+        }
         return new modelObject($obj, $this->name);
     }
 
