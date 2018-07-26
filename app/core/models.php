@@ -301,7 +301,11 @@ class Model extends Loader {
         return $this->load($this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id))));
     }
 
-    public function load($obj= null, $name = null) {
+    public function create($obj = null) {
+        return $this->load($obj);
+    }
+
+    public function load($obj = null) {
         if (empty($obj)) {
             foreach ($this->tableDesc as $intObj) {
                 $obj[$intObj->Field] = null;
