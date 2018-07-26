@@ -39,7 +39,6 @@ class modelObject {
         } else if (in_array($method, $this->fields)) {
             return $this->{$method};
         } else {
-            pr(get_parent_class());
             echo_error("Function or object \"{$method}\" not found on {$this->name} model!<br/>Check your call or database.", 500);
         }
     }
