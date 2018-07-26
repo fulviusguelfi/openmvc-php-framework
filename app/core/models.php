@@ -307,12 +307,15 @@ class Model extends Loader {
 
     public function load($obj = null, $name = null) {
         $obj = (array) $obj;
+        $internal = [];
         foreach ($this->tableDesc as $intObj) {
             if (!array_key_exists($intObj->Field, $obj)) {
-                $obj[$intObj->Field] = null;
+                $internal[$intObj->Field] = null;
+            } else {
+                $internal[$intObj->Field] = $obj[$intObj->Field];
             }
         }
-        return new modelObject($obj, $this->name);
+        return new modelObject($internal, $this->name);
     }
 
     public function save($dados) {
