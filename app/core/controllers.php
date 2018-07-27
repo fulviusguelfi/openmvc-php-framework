@@ -61,6 +61,7 @@ class Controller extends Loader {
     }
 
     public function lockActionToConsole($msg = null) {
+        global $openMVCRunFromConsole;
         if (!isset($openMVCRunFromConsole) || !$openMVCRunFromConsole) {
             if (empty($msg)) {
                 $msg = "A action solicitada está travada para o acesso somente via console!";
