@@ -82,6 +82,15 @@ class Model extends Loader {
     }
 
     /**
+     * Retorna as linhas afetadas pela última query.
+     * 
+     * @param null
+     */
+    public function rows_affected() {
+        return $this->db->rows_affected;
+    }
+
+    /**
      * Retorna o nome da Tabela do WordPress
      * Precisa sobrescrever a campo $name na subclasse da Model
      */
