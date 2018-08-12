@@ -82,6 +82,15 @@ class Model extends Loader {
     }
 
     /**
+     * Retorna o erro caso exista disparado pela última query.
+     * 
+     * @param null
+     */
+    public function last_error() {
+        return $this->db->last_error;
+    }
+
+    /**
      * Retorna as linhas afetadas pela última query.
      * 
      * @param null
