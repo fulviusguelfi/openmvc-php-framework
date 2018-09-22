@@ -102,7 +102,7 @@ NGINX
                     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                     include fastcgi_params;
             }
-            location ~ /\.git {
+            location ~ \.git {
                     deny all;
             }
     }
