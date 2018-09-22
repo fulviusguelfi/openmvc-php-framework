@@ -178,9 +178,9 @@ function mapear_paginas($uri) {
                 if ($route['route'] == $slug[1]) {
                     $slug[0] = $route['controller'];
                     $slug[1] = $route['action'];
+                    $autoRoute = false;
                 }
             }
-            $autoRoute = false;
         }
         ksort($slug);
 
