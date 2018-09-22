@@ -147,6 +147,17 @@ ________________________________________________________________________________
 
 No endereço http://openmvc.exemplo.com/common a rota traçada seria dentro do controller 'common.php' a action 'index()'.
 
+__________________________________________________________________________________________________________________________________
+ 
+ 
+- 3: Custom Routes:
+
+ - Você também pode adicionar rotas customizadas no arquivo app/configs/routes.php. Por exemplo:
+
+Adicionando a rota abaixo no arquivo de configurações:
+["route" => "test-route", "controller" => "common", "action" => "index"],
+ao acessar o endereço http://openmvc.exemplo.com/test-route a rota traçada seria dentro do controller 'common.php' a action 'index()'.
+
 
 Controllers:
 ===========
