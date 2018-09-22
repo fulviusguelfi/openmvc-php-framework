@@ -688,7 +688,7 @@ if (!function_exists('execute_action')) {
             }
         } else {
             $backtrace = debug_backtrace();
-            echo_error("O Arquivo <b>$controller_path</b> n&atilde;o foi encontrado!<br> Verifique se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
+            echo_error("O Arquivo <b>$controller_path</b> n&atilde;o foi encontrado!<br> Verifique as rotas ou se o arquivo existe e suas permiss&otilde;es.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 404);
         }
     }
 

@@ -166,7 +166,25 @@ function mapear_paginas($uri) {
     $uri = str_replace('-', '_', $uri);
     $slug = somente_slug($uri);
     if (!empty($slug)) {
-        if (is_dir($_SERVER['DOCUMENT_ROOT'] . "/" . $slug[0])) {
+        $autoRoute = true;
+        if (defined("config_routes") && !empty(config_routes)) {
+            foreach ($slug as $key => $value) {
+                $tmp[$key + 1] = $value;
+            }
+            $slug = $tmp;
+            unset($tmp);
+            foreach (config_routes as $route) {
+                $route['route'] = str_replace('-', '_', $route['route']);
+                if ($route['route'] == $slug[1]) {
+                    $slug[0] = $route['controller'];
+                    $slug[1] = $route['action'];
+                }
+            }
+            $autoRoute = false;
+        }
+        ksort($slug);
+
+        if ($autoRoute && is_dir($_SERVER['DOCUMENT_ROOT'] . "/" . $slug[0])) {
             $slug[0] = $slug[1];
             $slug[1] = $slug[2];
             $slug[2] = $slug[3];
