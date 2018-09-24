@@ -344,7 +344,7 @@ class Model extends Loader {
             $internal = $obj;
         }
         $className = ucfirst($this->name) . "Object";
-        $persistenceFile = __DIR__ . "/../../models/persistences/{$className}.php";
+        $persistenceFile = __DIR__ . "/../../models/persistences/{$this->name}Object.php";
         if (!file_exists($persistenceFile)) {
             $modelObject = str_replace("modelObject", $className, file_get_contents(__DIR__ . "/modelObject.php"));
             $modelObject = str_replace('**tableName**', $this->name, $modelObject);
