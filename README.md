@@ -472,9 +472,9 @@ ________________________________________________________________________________
   
   
 
-- 10: Função load() do Model 
+- 10: Função create() do Model 
 
-    - Retorna os getters e setters para o o objeto carregado.
+    - Cria um objeto com os getters e setters para o model carregado.
 
     PARÂMETROS:
 
@@ -486,7 +486,9 @@ ________________________________________________________________________________
 
 Exemplo:
 
-$retorno = $this->load(array('id' => 1,'coluna' => 'valor'));
+$retorno = $this->create(array('id' => 1,'coluna' => 'valor'));
+$retorno->getId();
+$retorno->getColuna();
 
 ______________________________________________________________________________________________________________
 
