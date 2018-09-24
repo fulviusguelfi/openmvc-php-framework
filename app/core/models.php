@@ -329,7 +329,7 @@ class Model extends Loader {
         return $this->load($obj);
     }
 
-    private function load($obj = [], $name = null) {
+    public function load($obj = [], $name = null) {
         $obj = (array) $obj;
         $internal = [];
         if (!empty($this->tableDesc)) {
