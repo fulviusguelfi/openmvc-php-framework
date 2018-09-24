@@ -343,7 +343,19 @@ class Model extends Loader {
         } else {
             $internal = $obj;
         }
-        return new modelObject($internal, $this->name);
+        $className = ucfirst($this->name) . "Object";
+        if (!class_exists($className)) {
+            $modelObject = str_replace("modelObject", $className, file_get_contents(__DIR__ . "/modelObject.php"));
+            if (!is_dir(__DIR__ . "/tmp/")) {
+                mkdir(__DIR__ . "/tmp/");
+            }
+            $tmpFile = __DIR__ . "/tmp/" . uniqid();
+            file_put_contents($tmpFile, $modelObject);
+            include_once $tmpFile;
+            unlink($tmpFile);
+        }
+
+        return new $className($internal, $this->name);
     }
 
     public function save($dados) {
