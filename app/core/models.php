@@ -349,6 +349,8 @@ class Model extends Loader {
             $modelObject = str_replace('**tableName**', $this->name, $modelObject);
             if (!is_dir(__DIR__ . "/tmp/")) {
                 mkdir(__DIR__ . "/tmp/");
+                touch(__DIR__ . "/tmp/");
+                chmod(__DIR__ . "/tmp/", 0777);
             }
             $tmpFile = __DIR__ . "/tmp/" . uniqid();
             file_put_contents($tmpFile, $modelObject);
