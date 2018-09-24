@@ -70,11 +70,17 @@ class Model extends Loader {
     }
 
     public function get_row($sql) {
-        return $this->db->get_row($sql);
+        return $this->load($this->db->get_row($sql));
     }
 
     public function get_results($sql) {
-        return $this->db->get_results($sql);
+        $return = $this->db->get_results($sql);
+        if (!empty($return)) {
+            foreach ($return as $key => &$value) {
+                $value = $this->load($value);
+            }
+        }
+        return $return;
     }
 
     public function get_var($sql) {

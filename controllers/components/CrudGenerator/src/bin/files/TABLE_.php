@@ -34,8 +34,15 @@ class CLASS_NAME_TABLE_ extends Controller {
 
     /* FUNCTIONS */
 
-    public function listar($page = null, $max_for_page = null) {
+    public function pagina($param) {
+        $page = (int) (!isset($_REQUEST['page']) ? @$param[2] : @$_REQUEST['page']);
+        $max_for_page = 100;
         $list = $this->TABLE_Model->list_($page, $max_for_page);
+        $this->view("TABLE_/list", array("list" => $list));
+    }
+
+    public function listar($param) {
+        $list = $this->TABLE_Model->find();
         $this->view("TABLE_/list", array("list" => $list));
     }
 
