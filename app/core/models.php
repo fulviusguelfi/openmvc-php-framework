@@ -346,6 +346,7 @@ class Model extends Loader {
         $className = ucfirst($this->name) . "Object";
         if (!class_exists($className)) {
             $modelObject = str_replace("modelObject", $className, file_get_contents(__DIR__ . "/modelObject.php"));
+            $modelObject = str_replace('**tableName**', $this->name, $modelObject);
             if (!is_dir(__DIR__ . "/tmp/")) {
                 mkdir(__DIR__ . "/tmp/");
             }
@@ -355,7 +356,7 @@ class Model extends Loader {
             unlink($tmpFile);
         }
 
-        return new $className($internal, $this->name);
+        return new $className($internal);
     }
 
     public function save($dados) {

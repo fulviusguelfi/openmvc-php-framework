@@ -7,8 +7,8 @@ class modelObject {
     private $table;
     private $object;
 
-    function __construct($fields, $tableName) {
-        $this->table = $tableName;
+    function __construct($fields) {
+        $this->table = "**tableName**";
         if (!empty($fields)) {
             foreach ((array) $fields as $field => $value) {
                 $this->fields[] = $field;
