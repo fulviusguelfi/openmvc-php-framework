@@ -49,7 +49,7 @@ class CLASS_NAME_TABLE_ extends Controller {
     public function deletar($param) {
         $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
         $this->TABLE_Model->delete_($id);
-        $this->redirect("/TABLE_/listar");
+        $this->redirect((!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/TABLE_/listar"));
     }
 
     public function adicionar($param = array()) {
@@ -67,8 +67,9 @@ class CLASS_NAME_TABLE_ extends Controller {
             $obj = $this->TABLE_Model->load($_POST);
             /* OBJECTS */
             $salvo = $this->TABLE_Model->insert_($obj);
-            if ($salvo)
-                $this->redirect("/TABLE_/listar");
+            if ($salvo) {
+                $this->redirect((!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/TABLE_/listar"));
+            }
         }
         $this->view("TABLE_/edit", array("obj" => $obj /* VAR_RELATIONS */));
     }
