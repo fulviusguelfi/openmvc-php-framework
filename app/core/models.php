@@ -344,14 +344,14 @@ class Model extends Loader {
             $internal = $obj;
         }
         $className = ucfirst($this->name) . "Object";
-        $persistenceFile = __DIR__ . "/persistences/{$className}.php";
+        $persistenceFile = __DIR__ . "/../../persistences/{$className}.php";
         if (!file_exists($persistenceFile)) {
             $modelObject = str_replace("modelObject", $className, file_get_contents(__DIR__ . "/modelObject.php"));
             $modelObject = str_replace('**tableName**', $this->name, $modelObject);
-            if (!is_dir(__DIR__ . "/persistences/")) {
-                mkdir(__DIR__ . "/persistences/");
-                touch(__DIR__ . "/persistences/");
-                chmod(__DIR__ . "/persistences/", 0777);
+            if (!is_dir(__DIR__ . "/../../persistences/")) {
+                mkdir(__DIR__ . "/../../persistences/");
+                touch(__DIR__ . "/../../persistences/");
+                chmod(__DIR__ . "/../../persistences/", 0777);
             }
             file_put_contents($persistenceFile, $modelObject);
             touch($persistenceFile);
