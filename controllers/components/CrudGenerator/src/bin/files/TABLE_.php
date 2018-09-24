@@ -68,7 +68,7 @@ class CLASS_NAME_TABLE_ extends Controller {
             /* OBJECTS */
             $salvo = $this->TABLE_Model->insert_($obj);
             if ($salvo) {
-                $this->redirect((!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/TABLE_/listar"));
+                $this->redirect("/TABLE_/listar");
             }
         }
         $this->view("TABLE_/edit", array("obj" => $obj /* VAR_RELATIONS */));
