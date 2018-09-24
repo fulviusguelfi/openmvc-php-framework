@@ -64,7 +64,13 @@ ________________________________________________________________________________
 
 - Passo 3: Apontamento do Domínio ou Virtual Host
 
-Crie o seu Domínio ou Virtual Host apontando diretamente para a raiz do OpenMvc como abaixo:
+Crie o seu Domínio ou Virtual Host apontando diretamente para a pasta public do OpenMvc como abaixo:
+
+LIGHTHTTPD PHP
+    
+     cd $LOCAL_DA_PASTA_DO_OPENMVC && php -S localhost:8000 -t public
+
+
 
 APACHE2
 
