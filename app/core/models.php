@@ -62,7 +62,7 @@ class Model extends Loader {
     }
 
     public function row($sql) {
-        return $this->db->get_row($sql);
+        return $this->load($this->db->get_row($sql));
     }
 
     public function prepare($sql, $dados = array()) {
@@ -322,7 +322,7 @@ class Model extends Loader {
     }
 
     public function get($id) {
-        return $this->load($this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id))));
+        return $this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id)));
     }
 
     public function create($obj = null) {
