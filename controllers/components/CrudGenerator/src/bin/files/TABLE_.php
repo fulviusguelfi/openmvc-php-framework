@@ -64,7 +64,7 @@ class CLASS_NAME_TABLE_ extends Controller {
             $obj = $this->TABLE_Model->get_($id);
         } else {
             /* CONDITIONS */
-            $obj = $this->TABLE_Model->load($_POST);
+            $obj = $this->TABLE_Model->create($_POST);
             /* OBJECTS */
             $salvo = $this->TABLE_Model->insert_($obj);
             if ($salvo) {
