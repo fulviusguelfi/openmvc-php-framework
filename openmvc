@@ -41,5 +41,4 @@ if (isset($_REQUEST["p"])) {
 } else {
     execute_action($_REQUEST['c'], $_REQUEST['a']);
 }
-
-    
+?>
