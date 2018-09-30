@@ -1,4 +1,3 @@
-
 <?php
 
 /*
@@ -26,4 +25,4 @@
  */
 require_once("../app/core/min.php");
 mapear_paginas($_SERVER['REQUEST_URI']);
-
+?>
