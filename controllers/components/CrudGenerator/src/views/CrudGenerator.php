@@ -1,4 +1,3 @@
-
 <?php
 /*
   Este arquivo é parte do OpenMvc PHP Framework
