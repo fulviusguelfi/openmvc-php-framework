@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-        <title>404 HTML Template by Colorlib</title>
+        <title>OpenMVC ERROR::</title>
 
         <!-- Google font -->
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
@@ -143,6 +143,7 @@
 
         <div id="notfound">
             <div class="notfound">
+                <h2>OpenMVC ERROR::</h2><br/>
                 <?php if (!empty($num_error)): ?>
                     <div class="notfound-404">
                         <div></div>
