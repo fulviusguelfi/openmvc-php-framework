@@ -683,7 +683,7 @@ if (!function_exists('execute_action')) {
                     echo_error("A action <b>{$action}()</b> n&atilde;o foi encontrada no arquivo <b>$controller_path</b>!<br> Verifique o controller.<p><b>execute_action(\"{$controller}\",\"{$action}\")</b> em {$backtrace[0]['file']} na linha {$backtrace[0]['line']}</p>", 500);
                 }
             } catch (Exception $e) {
-                echo_error("Exceção capturada: {$e->getMessage()}", 'Exception');
+                echo_error("Exceção capturada: {$e->getMessage()}", 500);
 //            echo 'Exceção capturada: ', $e->getMessage(), "\n";
             }
         } else {
