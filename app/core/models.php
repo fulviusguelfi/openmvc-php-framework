@@ -361,8 +361,9 @@ class Model extends Loader {
             if (!class_exists($className)) {
                 include_once $persistenceFile;
             }
-
             return new $className($internal);
+        } else {
+            return new modelObject($internal);
         }
     }
 
