@@ -666,10 +666,10 @@ if (!function_exists('execute_action')) {
 
     function execute_action($controller, $action, $params = null) {
         require_once("{$_SERVER['DOCUMENT_ROOT']}/../app/core/functions.php");
-        $controller_path = "{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$controller}.php";
-        if (is_file($controller_path)) {
+        $controller_path = "/controllers/{$controller}.php";
+        if (is_file("{$_SERVER['DOCUMENT_ROOT']}/.." . $controller_path)) {
             try {
-                include_once ($controller_path);
+                include_once ("{$_SERVER['DOCUMENT_ROOT']}/.." . $controller_path);
                 $klass = ucfirst($controller);
                 $instance = new $klass($controller, $action);
                 if (method_exists($instance, $action)) {
