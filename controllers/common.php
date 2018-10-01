@@ -50,6 +50,7 @@ class Common extends Controller {
         if ($action == "delete") {
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../controllers/{$table}.php");
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../models/{$table}Model.php");
+            unlink("{$_SERVER["DOCUMENT_ROOT"]}/../models/persistences/{$table}Object.php");
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/list.php");
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/edit.php");
             rmdir("{$_SERVER["DOCUMENT_ROOT"]}/../views/{$table}/");
