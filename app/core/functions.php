@@ -717,6 +717,10 @@ if (!function_exists('pr')) {
 if (!function_exists('echo_error')) {
 
     function echo_error($error_message, $num_error = null, $die_after = true) {
+        if (!class_exists('Controller')) {
+            require_once 'loader.php';
+            require_once 'controllers.php';
+        }
         $c = new Controller;
         header($_SERVER["SERVER_PROTOCOL"] . " {$num_error} " . get_status_header_desc($num_error), true, $num_error);
         echo parse_view_console($c->view("../app/core/templates/error", ["error_title" => get_status_header_desc($num_error), "error_message" => $error_message, "num_error" => $num_error], true));
