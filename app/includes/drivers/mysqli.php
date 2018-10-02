@@ -369,9 +369,7 @@ class wpdb {
 <h1>Error establishing a database connection</h1>
 <p>This either means that the username and password information is incorrect or we can't contact the database server at <code>\"" . DB_NAME . "\"</code>. This could mean your host's database server is down.</p>
 <ul>
-	<li>Are you sure you have the correct username and password?</li>
-	<li>Are you sure that you have typed the correct hostname?</li>
-	<li>Are you sure that the database server is running?</li>
+	<li>Check the /app/configs/database.php file.</li>
 </ul>
 ", 500);
         }
