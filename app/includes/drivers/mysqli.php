@@ -637,7 +637,7 @@ class wpdb {
      */
     function print_error($str = '') {
         global $EZSQL_ERROR;
-
+        $error_str = "";
         if (!$str)
             $str = mysqli_error($this->dbh);
         $EZSQL_ERROR[] = array('query' => $this->last_query, 'error_str' => $str);
@@ -674,7 +674,7 @@ class wpdb {
 		<p class='wpdberror'><strong>OpenMVC database error:</strong> [$str]<br />
 		<code>$query</code></p>
 		</div>";
-        echo_error($print);
+        echo_error($print, 500);
     }
 
     /**
