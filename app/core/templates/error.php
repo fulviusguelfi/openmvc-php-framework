@@ -39,7 +39,7 @@
             }
 
             .notfound {
-                max-width: 460px;
+                max-width: 560px;
                 width: 100%;
                 text-align: center;
                 line-height: 1.4;
