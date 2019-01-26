@@ -23,7 +23,7 @@
 // ** Configuraações do OpenMvcPHP - Essas configurações são ultilizadas para as chamadas via console do framework ** //
 //
 /** Raiz da aplicação OpenMvcPHP */
-define('OPENMVC_DOCUMENT_ROOT', '/var/www/html/openmvc-php-framework/public');
+define('OPENMVC_DOCUMENT_ROOT', str_replace('app/configs', 'public', __DIR__));
 
 /** Raiz da include_path do PHP */
 define('OPENMVC_INCLUDE_PATH', OPENMVC_DOCUMENT_ROOT);
