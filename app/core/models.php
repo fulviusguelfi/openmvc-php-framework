@@ -325,14 +325,14 @@ class Model extends Loader {
         return $this->row($this->prepare("SELECT * FROM {$this->name} WHERE id = %d LIMIT 1", array($id)));
     }
 
-    public function create($obj = null) {
-        return $this->load($obj);
+    public function create($obj = null, $cleanObject = true) {
+        return $this->load($obj, $cleanObject);
     }
 
-    public function load($obj = [], $name = null) {
+    public function load($obj = [], $cleanObject = false) {
         $obj = (array) $obj;
         $internal = [];
-        if (!empty($this->tableDesc)) {
+        if ($cleanObject && !empty($this->tableDesc)) {
             foreach ($this->tableDesc as $intObj) {
                 if (!array_key_exists($intObj->Field, $obj)) {
                     $internal[$intObj->Field] = null;
