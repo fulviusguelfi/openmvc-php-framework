@@ -208,7 +208,7 @@ class Model extends Loader {
     public function download($params) {
         $tableName = $params[0];
         $fieldFile = $params[2];
-        $fileId = $params[3];
+        $fileId = unhash_id($params[3]);
         $obj = $this->row("SELECT $fieldFile FROM {$this->name} WHERE id = {$fileId}");
         $header = substr($obj->$fieldFile, 0, strpos($obj->$fieldFile, ';'));
         $mimeType = str_replace('data:', '', $header);

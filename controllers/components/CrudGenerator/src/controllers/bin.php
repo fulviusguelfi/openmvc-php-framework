@@ -254,7 +254,7 @@ class Bin extends Controller {
                     if ($inputType != 'file')
                         $php .= '<td><?php echo $obj->get' . ucfirst($obj->Field) . '(); ?></td>' . $quebra;
                     else
-                        $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo $obj->get' . ucfirst($idStyle) . '(); ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
+                        $php .= '<td><a role="button" class="btn btn-xs btn-info" href="/' . $table_name . '/download/' . $obj->Field . '/<?php echo hash_id($obj->get' . ucfirst($idStyle) . '()); ?>"><span class="glyphicon glyphicon-cloud-download"></span> Baixar</a></td>' . $quebra;
                 } else {
                     $fieldId = $obj->Field;
                 }
