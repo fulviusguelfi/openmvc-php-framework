@@ -260,8 +260,8 @@ class Bin extends Controller {
                 }
             }
             $php .= '<td>'
-                    . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo $obj->get' . ucfirst($fieldId) . '(); ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
-                    . '<a role="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this,\'/' . $table_name . '/deletar/<?php echo $obj->get' . ucfirst($fieldId) . '(); ?>\')" href="#"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
+                    . '<a  role="button" class="btn btn-xs btn-primary" href="/' . $table_name . '/editar/<?php echo hash_id($obj->get' . ucfirst($fieldId) . '()); ?>"><span class="glyphicon glyphicon-pencil"></span> Editar</a>&nbsp;'
+                    . '<a role="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this,\'/' . $table_name . '/deletar/<?php echo hash_id($obj->get' . ucfirst($fieldId) . '()); ?>\')" href="#"><span class="glyphicon glyphicon-trash"></span> Deletar</a>'
                     . '</td>' . $quebra;
             $php .= '</tr>' . $quebra
                     . '<?php endforeach; ?>' . $quebra;
@@ -368,7 +368,7 @@ class Bin extends Controller {
                 } else {
                     $php .= '<?php' . $quebra
                             . ' $forms->fields["' . $obj->Field . '"] = new HiddenField(false);' . $quebra
-                            . ' $forms->fields["' . $obj->Field . '"]->value = $obj->get' . ucfirst($obj->Field) . '();' . $quebra
+                            . ' $forms->fields["' . $obj->Field . '"]->value = hash_id($obj->get' . ucfirst($obj->Field) . '());' . $quebra
                             . ' echo $forms->render("' . $obj->Field . '");' . $quebra
                             . '?>' . $quebra;
                 }

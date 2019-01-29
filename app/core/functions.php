@@ -22,6 +22,9 @@
 
 @session_start();
 
+include_once 'seed.class.php';
+$seed = new Seed();
+
 Class Files {
 
     public function readTemplate($file_name) {
@@ -784,6 +787,24 @@ if (!function_exists('generate_file_upload_name')) {
             $retorno = array("file_path" => $name, "file_name" => $tmp1_exploded[$last1_key]);
             return (object) $retorno;
         }
+    }
+
+}
+
+
+
+if (!function_exists('hash_id')) {
+
+    function hash_id($id) {
+        return $seed::gerar($id);
+    }
+
+}
+if (!function_exists('unhash_id')) {
+
+    function unhash_id($hash) {
+        return $seed::decodificar($id);
+        
     }
 
 }

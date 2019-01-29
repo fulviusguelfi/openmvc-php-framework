@@ -48,6 +48,8 @@ class CLASS_NAME_TABLE_ extends Controller {
 
     public function deletar($param) {
         $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
+        $id = (!empty($id) ? unhash_id($id) : null);
+
         $this->TABLE_Model->delete_($id);
         $this->redirect((!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/TABLE_/listar"));
     }
@@ -59,6 +61,8 @@ class CLASS_NAME_TABLE_ extends Controller {
     public function editar($param = array()) {
         $this->helpers[] = "forms";
         $id = (!isset($_REQUEST['id']) ? @$param[2] : @$_REQUEST['id']);
+        $id = (!empty($id) ? unhash_id($id) : null);
+
         /* LIST_RELATIONS */
         if (empty($_POST)) {
             $obj = $this->TABLE_Model->get_($id);
@@ -66,7 +70,7 @@ class CLASS_NAME_TABLE_ extends Controller {
             /* CONDITIONS */
             $obj = $this->TABLE_Model->create($_POST);
             /* OBJECTS */
-            $salvo = $this->TABLE_Model->insert_($obj);
+            $salvo = $this->TABLE_Model->save_($obj);
             if ($salvo) {
                 $this->redirect("/TABLE_/listar");
             }

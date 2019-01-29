@@ -30,11 +30,11 @@ class CLASS_NAME_TABLE_Model extends Model {
     }
 
     public function delete_($id) {
-        return $this->deletar($id);
+        return $this->delete($id);
     }
 
-    public function insert_($dados) {
-        return $this->salvar($dados);
+    public function save_($dados) {
+        return $this->save($dados);
     }
 
     public function list_($page = null, $max_for_page = null) {
