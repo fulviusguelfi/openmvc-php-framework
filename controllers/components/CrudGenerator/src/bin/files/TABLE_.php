@@ -65,9 +65,14 @@ class CLASS_NAME_TABLE_ extends Controller {
 
         /* LIST_RELATIONS */
         if (empty($_POST)) {
-            $obj = $this->TABLE_Model->get_($id);
+            if (empty($id)) {
+                $obj = $this->TABLE_Model->create();
+            } else {
+                $obj = $this->TABLE_Model->get_($id);
+            }
         } else {
             /* CONDITIONS */
+            (!empty($_POST['id'])) ? $_POST['id'] = unhash_id($_POST['id']) : null;
             $obj = $this->TABLE_Model->create($_POST);
             /* OBJECTS */
             $salvo = $this->TABLE_Model->save_($obj);

@@ -717,6 +717,22 @@ if (!function_exists('pr')) {
 
 }
 
+if (!function_exists('hash_id')) {
+
+    function hash_id($id) {
+        return Seed::gerar($id);
+    }
+
+}
+
+if (!function_exists('unhash_id')) {
+
+    function unhash_id($hash) {
+        return Seed::decodificar($hash);
+    }
+
+}
+
 if (!function_exists('echo_error')) {
 
     function echo_error($error_message, $num_error = null, $die_after = true) {
@@ -791,20 +807,3 @@ if (!function_exists('generate_file_upload_name')) {
 
 }
 
-
-
-if (!function_exists('hash_id')) {
-
-    function hash_id($id) {
-        return $seed::gerar($id);
-    }
-
-}
-if (!function_exists('unhash_id')) {
-
-    function unhash_id($hash) {
-        return $seed::decodificar($id);
-        
-    }
-
-}
