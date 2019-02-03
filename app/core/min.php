@@ -187,7 +187,6 @@ function mapear_paginas($uri) {
                 }
             }
         }
-        $slug = array_values($slug);
         ksort($slug);
 
         if ($autoRoute && is_dir($_SERVER['DOCUMENT_ROOT'] . "/" . $slug[0])) {
