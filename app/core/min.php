@@ -171,11 +171,11 @@ function mapear_paginas($uri) {
             foreach ($slug as $key => $value) {
                 $tmp[$key + 1] = $value;
             }
-            $slug = $tmp;
+            $slug = array_values($tmp);
             unset($tmp);
             foreach (config_routes as $route) {
                 $route['route'] = str_replace('-', '_', $route['route']);
-                if ($route['route'] == $slug[1]) {
+                if ($route['route'] == $slug[0]) {
                     $slug[0] = $route['controller'];
                     $slug[1] = $route['action'];
                     if (!empty($route['params'])) {
