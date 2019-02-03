@@ -178,6 +178,11 @@ function mapear_paginas($uri) {
                 if ($route['route'] == $slug[1]) {
                     $slug[0] = $route['controller'];
                     $slug[1] = $route['action'];
+                    if (!empty($route['params'])) {
+                        foreach ($route['params'] as $param) {
+                            $slug[] = $param;
+                        }
+                    }
                     $autoRoute = false;
                 }
             }
