@@ -26,11 +26,7 @@ class Bin extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function crud($params = array(), $bootstrap = false) {
-//        $table_name = $params[2];
-        $table_name = $params;
-        $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : false);
-
+    public function crud($table_name, $bootstrap) {
         $echo = '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">';
         $echo .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>';
         $echo .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';

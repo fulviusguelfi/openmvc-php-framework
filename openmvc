@@ -26,7 +26,16 @@ set_include_path(OPENMVC_INCLUDE_PATH);
 $_SERVER['DOCUMENT_ROOT'] = OPENMVC_DOCUMENT_ROOT;
 $_SERVER['HTTP_HOST'] = OPENMVC_HTTP_HOST;
 $openMVCRunFromConsole = true;
-//print_r($argv);
+
+
+if (@$argv[1] == "crud" && (@$argv[2] == "create" || @$argv[2] == "delete")) {
+    $argv[0] = "common";
+    $tmp = [];
+    foreach ($argv as $key => $value) {
+        $tmp[$key + 1] = $value;
+    }
+    $argv = $tmp;
+}
 
 $_REQUEST['c'] = @$argv[1];
 $_REQUEST['a'] = @$argv[2];

@@ -28,13 +28,12 @@ class Common extends Controller {
     }
 
     public function load_crud($params = array()) {
-        if (!empty($params)) {
-            $_REQUEST['crud'] = (empty($_REQUEST['crud']) ? $params[2] : $_REQUEST['crud']);
-            $_REQUEST['bootstrap'] = (empty($_REQUEST['bootstrap']) ? $params[3] : $_REQUEST['bootstrap']);
-        }
+        $crud = (!empty($_REQUEST['crud']) ? $_REQUEST['crud'] : (!empty($params[2]) ? $params[2] : null));
+        $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : (!empty($params[3]) && $params[3] != "false" ? $params[3] : false));
+
         $this->load("components", "CrudGenerator");
-        $this->CrudGenerator->bootstrap = true;
-        $this->CrudGenerator->execute();
+        $this->CrudGenerator->bootstrap = (bool) $bootstrap;
+        $this->CrudGenerator->execute($crud);
     }
 
     public function crud($params = array()) {

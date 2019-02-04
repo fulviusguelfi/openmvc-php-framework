@@ -27,9 +27,9 @@ class CrudGenerator extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function execute() {
-        if (!empty($_REQUEST['crud'])) {
-            $this->bin->crud($_REQUEST['crud'], $this->bootstrap);
+    public function execute($crud = null) {
+        if (!empty($crud)) {
+            $this->bin->crud($crud, $this->bootstrap);
         } else {
             $tables = $this->binModel->getTables();
             $this->view("../controllers/components/CrudGenerator/src/views/CrudGenerator", array("tables" => $tables));
