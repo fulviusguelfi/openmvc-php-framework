@@ -21,7 +21,7 @@
 // ** Configuraações do MySQL - Você pode pegar essas informações com o serviço de hospedagem ** //
 //
 /** Nome do host do MySQL */
-define('DB_NAME', 'botnet');
+define('DB_NAME', 'openmvc');
 
 /** Usuário do banco de dados MySQL */
 define('DB_USER', 'root');
