@@ -42,6 +42,9 @@ ini_set('memory_limit', '-1');
 define('TIMEZONE', 'America/Sao_Paulo');
 
 
+define('ONESIGNAL_APP_IP', '$YOUR-ONESIGNAL-APP-ID');
+define('ONESIGNAL_API_KEY', '$YOUR-ONESIGNAL-APP-KEY');
+
 
 define("NOW_ACTION", @$_SERVER['REQUEST_URI']);
 ?>
