@@ -22,9 +22,19 @@
 
 class Common extends Controller {
 
+    public function header() {
+
+        $this->view("common/header", array());
+    }
+
     public function index() {
         $this->load_crud();
 //        $this->view("common/index", array("var" => "Lorem Ipsum"));
+    }
+
+    public function footer() {
+
+        $this->view("common/footer", array());
     }
 
     public function load_crud($params = array()) {
@@ -32,6 +42,8 @@ class Common extends Controller {
         $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : (!empty($params[3]) && $params[3] != "false" ? $params[3] : false));
 
         $this->load("components", "CrudGenerator");
+        $this->CrudGenerator->headerView = '<?php execute_action("common","header");?>';
+        $this->CrudGenerator->footerView = '<?php execute_action("common","footer");?>';
         $this->CrudGenerator->bootstrap = (bool) $bootstrap;
         $this->CrudGenerator->execute($crud);
     }

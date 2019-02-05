@@ -21,6 +21,8 @@
 class CrudGenerator extends Controller {
 
     var $bootstrap = false;
+    var $headerView = false;
+    var $footerView = false;
 
     public function init() {
         $this->load("controllers/components/CrudGenerator/src/controllers", "bin");
@@ -29,7 +31,7 @@ class CrudGenerator extends Controller {
 
     public function execute($crud = null) {
         if (!empty($crud)) {
-            $this->bin->crud($crud, $this->bootstrap);
+            $this->bin->crud($crud, $this->bootstrap, $this->headerView, $this->footerView);
         } else {
             $tables = $this->binModel->getTables();
             $this->view("../controllers/components/CrudGenerator/src/views/CrudGenerator", array("tables" => $tables));

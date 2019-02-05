@@ -26,7 +26,7 @@ class Bin extends Controller {
         $this->load("controllers/components/CrudGenerator/src/models", "binModel");
     }
 
-    public function crud($table_name, $bootstrap) {
+    public function crud($table_name, $bootstrap, $headerView = false, $footerView = false) {
         $echo = '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">';
         $echo .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>';
         $echo .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';
@@ -36,7 +36,7 @@ class Bin extends Controller {
             $echo .= "<a role='button' class='btn btn-xs btn-primary' href='/'>Voltar ao In&iacute;cio</a>";
             $echo .= "</center>";
         } else {
-            $this->gerarCrud($table_name, $bootstrap);
+            $this->gerarCrud($table_name, $bootstrap, $headerView, $footerView);
             if (file_exists("{$_SERVER['DOCUMENT_ROOT']}/../controllers/{$table_name}.php")) {
                 $echo .= "<center class=\"text-success\">";
                 $echo .= "<h2>Crud criado com sucesso para a tabela {$table_name}!</h2><br>";
@@ -59,7 +59,7 @@ class Bin extends Controller {
         echo parse_view_console($echo);
     }
 
-    public function gerarCrud($table_name, $bootstrap = false) {
+    public function gerarCrud($table_name, $bootstrap = false, $headerView = false, $footerView = false) {
         $table_structure = $this->binModel->getTableStructure($table_name);
         $view_dir = "{$_SERVER['DOCUMENT_ROOT']}/../views/{$table_name}";
         $controller_dir = "{$_SERVER['DOCUMENT_ROOT']}/../controllers";
@@ -70,13 +70,13 @@ class Bin extends Controller {
         chmod($view_dir, 0777);
         // CREATE VIEW list.php
         if (!file_exists($view_dir . '/list.php')) {
-            $this->makeViewList($view_dir, $table_structure, $table_name, $bootstrap);
+            $this->makeViewList($view_dir, $table_structure, $table_name, $bootstrap, $headerView, $footerView);
             touch($view_dir . '/list.php');
             chmod($view_dir . '/list.php', 0777);
         }
         // CREATE VIEW edit.php
         if (!file_exists($view_dir . '/edit.php')) {
-            $this->makeViewEdit($view_dir, $table_structure, $bootstrap);
+            $this->makeViewEdit($view_dir, $table_structure, $bootstrap, $headerView, $footerView);
             touch($view_dir . '/edit.php');
             chmod($view_dir . '/edit.php', 0777);
         }
@@ -203,7 +203,7 @@ class Bin extends Controller {
         }
     }
 
-    public function makeViewList($view_dir, $table_structure, $table_name, $bootstrap = false) {
+    public function makeViewList($view_dir, $table_structure, $table_name, $bootstrap = false, $headerView, $footerView) {
         if (PATH_SEPARATOR == ":") {
             $quebra = "\r\n";
         } else {
@@ -214,14 +214,16 @@ class Bin extends Controller {
         if (!file_exists($file_path)) {
             $fp = fopen($file_path, 'wa');
             $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
-            if ($bootstrap) {
+            if ($bootstrap && empty($headerView)) {
                 $php .= '<style>.openmvc-table {width:100%;}</style>' . $quebra;
                 $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
                 $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
                 $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
                 $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
+                $php .= '<script>function confirmDelete(el,url){el.classList.add(\'btn-warning\'); el.classList.remove(\'btn-danger\'); setTimeout(function(){ if(confirm(\'Deseja excluir este item?\')){ window.location=url;}else{el.classList.add(\'btn-danger\'); el.classList.remove(\'btn-warning\');} }, 1);}</script>' . $quebra;
+            } else if (!empty($headerView)) {
+                $php .= "{$headerView}" . $quebra;
             }
-            $php .= '<script>function confirmDelete(el,url){el.classList.add(\'btn-warning\'); el.classList.remove(\'btn-danger\'); setTimeout(function(){ if(confirm(\'Deseja excluir este item?\')){ window.location=url;}else{el.classList.add(\'btn-danger\'); el.classList.remove(\'btn-warning\');} }, 1);}</script>' . $quebra;
             $php .= '<div class="row">' . $quebra;
             $php .= '<div class="container">' . $quebra;
             $php .= '<div class="col-md-12 ">' . $quebra;
@@ -267,6 +269,9 @@ class Bin extends Controller {
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
+            if (!empty($footerView)) {
+                $php .= "{$footerView}" . $quebra;
+            }
             fwrite($fp, $php);
             fclose($fp);
             touch($file_path);
@@ -276,7 +281,7 @@ class Bin extends Controller {
         }
     }
 
-    public function makeViewEdit($view_dir, $table_structure, $bootstrap = false) {
+    public function makeViewEdit($view_dir, $table_structure, $bootstrap = false, $headerView, $footerView) {
         if (PATH_SEPARATOR == ":") {
             $quebra = "\r\n";
         } else {
@@ -294,12 +299,14 @@ class Bin extends Controller {
                 $mytables[] = $table1->$DB_KEY . "_ID";
             }
             $php = file_get_contents("{$_SERVER['DOCUMENT_ROOT']}/../app/core/gnu.php") . $quebra;
-            if ($bootstrap) {
+            if ($bootstrap && empty($headerView)) {
                 $php .= '<style>.openmvc-form input, .openmvc-form textarea, .openmvc-form button, .openmvc-form select {width:100%;}</style>' . $quebra;
                 $php .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . $quebra;
                 $php .= '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">' . $quebra;
                 $php .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>' . $quebra;
                 $php .= '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>' . $quebra;
+            } else if (!empty($headerView)) {
+                $php .= "{$headerView}" . $quebra;
             }
             $php .= '<div class="row">' . $quebra;
             $php .= '<div class="container">' . $quebra;
@@ -375,6 +382,9 @@ class Bin extends Controller {
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
+            if (!empty($footerView)) {
+                $php .= "{$footerView}" . $quebra;
+            }
             fwrite($fp, $php);
             fclose($fp);
             touch($file_path);
