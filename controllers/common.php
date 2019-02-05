@@ -42,8 +42,8 @@ class Common extends Controller {
         $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : (!empty($params[3]) && $params[3] != "false" ? $params[3] : false));
 
         $this->load("components", "CrudGenerator");
-        $this->CrudGenerator->headerView = '<?php execute_action("common","header");?>';
-        $this->CrudGenerator->footerView = '<?php execute_action("common","footer");?>';
+        $this->CrudGenerator->headerView = '<?php execute_action("common", "header"); ?>';
+        $this->CrudGenerator->footerView = '<?php execute_action("common", "footer"); ?>';
         $this->CrudGenerator->bootstrap = (bool) $bootstrap;
         $this->CrudGenerator->execute($crud);
     }

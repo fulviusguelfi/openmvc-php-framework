@@ -18,7 +18,9 @@
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 ?>
+<?php execute_action("common", "header"); ?>
 <center>
     <h2>Hello World</h2>
 </center>
 <p><?php echo $var; ?></p>
+<?php execute_action("common", "footer"); ?>
