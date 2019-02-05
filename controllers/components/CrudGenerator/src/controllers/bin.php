@@ -224,8 +224,9 @@ class Bin extends Controller {
             } else if (!empty($headerView)) {
                 $php .= "{$headerView}" . $quebra;
             }
-            $php .= '<div class="row">' . $quebra;
-            $php .= '<div class="container">' . $quebra;
+            $php .= '<div class="m-portlet  m-portlet--unair">' . $quebra;
+            $php .= '<div class="m-portlet__body  m-portlet__body--no-padding">' . $quebra;
+            $php .= '<div class="row m-row--no-padding m-row--col-separator-xl">' . $quebra;
             $php .= '<div class="col-md-12 ">' . $quebra;
             $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
             $php .= '<a role="button" class="btn btn-primary" href="/' . $table_name . '/adicionar" ><span class="glyphicon glyphicon-plus-sign"></span> Adicionar</a><br>' . $quebra;
@@ -269,6 +270,7 @@ class Bin extends Controller {
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
+            $php .= '</div>' . $quebra;
             if (!empty($footerView)) {
                 $php .= "{$footerView}" . $quebra;
             }
@@ -308,8 +310,9 @@ class Bin extends Controller {
             } else if (!empty($headerView)) {
                 $php .= "{$headerView}" . $quebra;
             }
-            $php .= '<div class="row">' . $quebra;
-            $php .= '<div class="container">' . $quebra;
+            $php .= '<div class="m-portlet  m-portlet--unair">' . $quebra;
+            $php .= '<div class="m-portlet__body  m-portlet__body--no-padding">' . $quebra;
+            $php .= '<div class="row m-row--no-padding m-row--col-separator-xl">' . $quebra;
             $php .= '<div class="col-md-12 ">' . $quebra;
             $php .= '<a role="button" class="btn btn-primary" href="#" onclick="window.history.back();" ><span class="glyphicon glyphicon-circle-arrow-left"></span> Voltar</a> ' . $quebra;
             $php .= '<a role="button" class="btn btn-primary" href="/" ><span class="glyphicon glyphicon-home"></span> Home</a><br>' . $quebra;
@@ -376,9 +379,12 @@ class Bin extends Controller {
                             . '?>' . $quebra;
                 }
             }
-            $php .= '<div class="col-md-6"><?php echo $forms->reset(\'<span class="glyphicon glyphicon-remove-circle"></span> Limpar\',array("class"=>"btn btn-danger","role"=>"button"));?></div>' . $quebra;
-            $php .= '<div class="col-md-6"><?php echo $forms->submit(\'<span class="glyphicon glyphicon-ok-circle"></span> Enviar\',array("class"=>"btn btn-success","role"=>"button"));?></div>' . $quebra;
+            $php .= '<div class="col-md-12">' . $quebra;
+            $php .= '<?php echo $forms->reset(\'<span class="glyphicon glyphicon-remove-circle"></span> Limpar\',array("class"=>"w50 btn btn-danger","role"=>"button"));?>' . $quebra;
+            $php .= '<?php echo $forms->submit(\'<span class="glyphicon glyphicon-ok-circle"></span> Enviar\',array("class"=>"w50 btn btn-success","role"=>"button"));?>' . $quebra;
+            $php .= '</div>' . $quebra;
             $php .= '<?php echo $forms->close();?>' . $quebra;
+            $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;
             $php .= '</div>' . $quebra;

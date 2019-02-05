@@ -38,12 +38,12 @@ class CLASS_NAME_TABLE_ extends Controller {
         $page = (int) (!isset($_REQUEST['page']) ? @$param[2] : @$_REQUEST['page']);
         $max_for_page = 100;
         $list = $this->TABLE_Model->list_($page, $max_for_page);
-        $this->view("TABLE_/list", array("list" => $list));
+        $this->view("TABLE_/list", array("list" => $list, "title" => "CLASS_NAME_TABLE_"));
     }
 
     public function listar($param = array()) {
         $list = $this->TABLE_Model->find();
-        $this->view("TABLE_/list", array("list" => $list));
+        $this->view("TABLE_/list", array("list" => $list, "title" => "CLASS_NAME_TABLE_"));
     }
 
     public function deletar($param) {
@@ -80,7 +80,7 @@ class CLASS_NAME_TABLE_ extends Controller {
                 $this->redirect("/TABLE_/listar");
             }
         }
-        $this->view("TABLE_/edit", array("obj" => $obj /* VAR_RELATIONS */));
+        $this->view("TABLE_/edit", array("obj" => $obj, "title" => "CLASS_NAME_TABLE_" /* VAR_RELATIONS */));
     }
 
 }

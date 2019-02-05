@@ -22,18 +22,26 @@
 
 class Common extends Controller {
 
-    public function header() {
-
-        $this->view("common/header", array());
+    public function header($title) {
+        $tmp = glob(__dir__ . '/*.php');
+        $controllers = [];
+        if (!empty($tmp)) {
+            foreach ($tmp as $controller_path) {
+                $arr = explode("/", $controller_path);
+                $name = str_replace(".php", "", strtolower(end($arr)));
+                if ($name != "common") {
+                    $controllers[] = $name;
+                }
+            }
+        }
+        $this->view("common/header", array("controllers" => $controllers, "title" => $title));
     }
 
     public function index() {
-        $this->load_crud();
-//        $this->view("common/index", array("var" => "Lorem Ipsum"));
+        $this->view("common/index", array("parentController" => $this, "title" => "Dashboard"));
     }
 
     public function footer() {
-
         $this->view("common/footer", array());
     }
 
@@ -42,7 +50,7 @@ class Common extends Controller {
         $bootstrap = (!empty($_REQUEST['bootstrap']) ? $_REQUEST['bootstrap'] : (!empty($params[3]) && $params[3] != "false" ? $params[3] : false));
 
         $this->load("components", "CrudGenerator");
-        $this->CrudGenerator->headerView = '<?php execute_action("common", "header"); ?>';
+        $this->CrudGenerator->headerView = '<?php execute_action("common", "header", $title); ?>';
         $this->CrudGenerator->footerView = '<?php execute_action("common", "footer"); ?>';
         $this->CrudGenerator->bootstrap = (bool) $bootstrap;
         $this->CrudGenerator->execute($crud);
