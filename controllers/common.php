@@ -25,11 +25,12 @@ class Common extends Controller {
     public function header($title) {
         $tmp = glob(__dir__ . '/*.php');
         $controllers = [];
+        $exclude_from_menu = ["common"];
         if (!empty($tmp)) {
             foreach ($tmp as $controller_path) {
                 $arr = explode("/", $controller_path);
                 $name = str_replace(".php", "", strtolower(end($arr)));
-                if ($name != "common") {
+                if (!in_array($name, $exclude_from_menu)) {
                     $controllers[] = $name;
                 }
             }
