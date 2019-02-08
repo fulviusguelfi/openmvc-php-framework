@@ -58,7 +58,7 @@ class Common extends Controller {
         if ($action == "create") {
             $this->load_crud(array(null, null, $table, $bootstrap));
         }
-        if ($action == "delete") {
+        if ($action == "delete" || $action == "remove") {
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../controllers/{$table}.php");
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../models/{$table}Model.php");
             unlink("{$_SERVER["DOCUMENT_ROOT"]}/../models/persistences/{$table}Object.php");
