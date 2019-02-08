@@ -791,12 +791,64 @@ class Form extends Loader {
         return " <label for=\"{$fieldName}\" id=\"label-{$fieldName}\" {$this->contain_error($fieldName)}>{$text}</label>";
     }
 
-    public function open($attrs = array()) {
+    public static function newCsrf() {
+        $token = md5(uniqid(session_id(), true)) . md5(uniqid(rand(0, time()), true));
+        $_SESSION['OPENMVC_CSRF']["tokens"][] = $token;
+        if (count($_SESSION['OPENMVC_CSRF']["tokens"]) > 100) {
+            while (count($_SESSION['OPENMVC_CSRF']["tokens"]) > 100) {
+                unset($_SESSION['OPENMVC_CSRF']["tokens"][0]);
+                $_SESSION['OPENMVC_CSRF']["tokens"] = array_values($_SESSION['OPENMVC_CSRF']["tokens"]);
+            }
+        }
+        return $token;
+    }
 
+    public static function validateCsrf() {
+        if (!empty($_POST)) {
+            $error = false;
+            if (!isset($_POST['__openmvc_csrf']) || empty($_POST['__openmvc_csrf'])) {
+                $error = 1;
+            }
+            if (!empty($_POST['__openmvc_csrf']) && !in_array($_POST['__openmvc_csrf'], $_SESSION['OPENMVC_CSRF']["tokens"])) {
+                $error = 2;
+            }
+            if (!isset($_SERVER['HTTP_REFERER']) || empty($_SERVER['HTTP_REFERER'])) {
+                $error = 3;
+            }
+            if (!isset($_SERVER['HTTP_ORIGIN']) || empty($_SERVER['HTTP_ORIGIN'])) {
+                $error = 4;
+            }
+            if (!empty($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_ORIGIN']) && strstr($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_ORIGIN']) === false) {
+                $error = 5;
+            }
+            if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_ORIGIN']) && strstr($_SERVER['HTTP_ORIGIN'], $_SERVER['HTTP_HOST']) === false) {
+                $error = 6;
+            }
+            if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_REFERER']) && strstr($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false) {
+                $error = 7;
+            }
+            if (!empty($_POST['__openmvc_csrf']) && in_array($_POST['__openmvc_csrf'], $_SESSION['OPENMVC_CSRF']["tokens"])) {
+                $key = array_search($_POST['__openmvc_csrf'], $_SESSION['OPENMVC_CSRF']["tokens"]);
+                unset($_SESSION['OPENMVC_CSRF']["tokens"][$key]);
+            }
+            if ($error) {
+                echo_error("Error on validate POST to OPENMVC! Error::{$error}", 500);
+                return false;
+            }
+        }
+    }
+
+    private function inputCsrfToken() {
+        $this->fields["__openmvc_csrf"] = new HiddenField(false);
+        $this->fields["__openmvc_csrf"]->value = $this->newCsrf();
+        return $this->render("__openmvc_csrf");
+    }
+
+    public function open($attrs = array()) {
         $opts = array("action" => "", "method" => "post", "enctype" => "multipart/form-data");
         $attributes = array_merge($opts, $attrs);
         $attr = $this->parseFormAttrs($attributes);
-        return "<form {$attr}>";
+        return "<form {$attr}>" . $this->inputCsrfToken();
     }
 
     public function submit($text = "Enviar", $attrs = array()) {

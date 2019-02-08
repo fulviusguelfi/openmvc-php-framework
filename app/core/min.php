@@ -19,7 +19,7 @@
  */
 ?>
 <?php
-
+@session_start();
 require_once 'color.class.php';
 
 function console_output($string, $color = "white", $noInfo = false, $resetColor = true) {
