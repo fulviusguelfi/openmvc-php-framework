@@ -33,7 +33,7 @@ define('EZSQL_VERSION', 'WP1.25');
 /**
  * @since 0.71
  */
-define('OBJECT', 'OBJECT', true);
+define('OBJECT', 'OBJECT', false);
 
 /**
  * @since {@internal Version Unknown}}
