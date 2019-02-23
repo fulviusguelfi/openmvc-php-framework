@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /*
   Este arquivo é parte do OpenMvc PHP Framework
@@ -16,34 +16,35 @@
   Você deve ter recebido uma cópia da Licença Pública Geral GNU
   junto com este programa, se não, escreva para a Fundação do Software
   Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * 
+ *  ---GERADOR DE CRUD AUTOMÁTICO---
+ * Model userModel.php criado por OpenMvc PHP Framework CrudGenerator
  */
-?>
-<?php
-// ** Configuraações do OpenMvcPHP - Essas configurações são ultilizadas para as chamadas via console do framework ** //
-//
-/** Raiz da aplicação OpenMvcPHP */
-define('OPENMVC_DOCUMENT_ROOT', str_replace('app'.DIRECTORY_SEPARATOR.'configs', 'public', __DIR__));
 
-/** Raiz da include_path do PHP */
-define('OPENMVC_INCLUDE_PATH', OPENMVC_DOCUMENT_ROOT);
+class UserModel extends Model {
 
-/** URL aplicação OpenMvcPHP */
-define('OPENMVC_HTTP_HOST', 'openmvc.local');
+    var $name = "user";
 
-/** Ativa o Debug de aplicação OpenMvcPHP */
-define('OPENMVC_DEBUG', TRUE);
+    public function init() {
+        $this->db->show_errors = FALSE;
+    }
 
+    public function delete_($id) {
+        return $this->delete($id);
+    }
 
-ini_set('memory_limit', '-1');
-/**
- *  Timezone adequado a região
- */
-define('TIMEZONE', 'America/Sao_Paulo');
+    public function save_($dados) {
+        return $this->save($dados);
+    }
 
+    public function list_($page = null, $max_for_page = null) {
+        return $this->listar($page, $max_for_page);
+    }
 
-define('ONESIGNAL_APP_IP', '$YOUR-ONESIGNAL-APP-ID');
-define('ONESIGNAL_API_KEY', '$YOUR-ONESIGNAL-APP-KEY');
+    public function get_($id) {
+        return $this->get($id);
+    }
 
+}
 
-define("NOW_ACTION", @$_SERVER['REQUEST_URI']);
 ?>
